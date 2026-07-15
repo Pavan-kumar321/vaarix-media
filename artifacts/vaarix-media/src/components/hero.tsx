@@ -79,7 +79,7 @@ export function Hero() {
           className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 border-t border-border/60 pt-12 w-full max-w-5xl"
         >
           {[
-            { value: "50+", label: "Brands Scaled" },
+            { value: "20+", label: "Brands Scaled" },
             { value: "100M+", label: "Organic Views" },
             { value: "500+", label: "Campaigns Launched" },
             { value: "2", label: "Global Hubs" },
