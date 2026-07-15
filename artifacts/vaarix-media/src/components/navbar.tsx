@@ -35,10 +35,10 @@ export function Navbar() {
         >Vaarix Media.</div>
         
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/80">
-          <button onClick={() => scrollTo("services")} className="hover:text-primary transition-colors">Services</button>
-          <button onClick={() => scrollTo("work")} className="hover:text-primary transition-colors">Work</button>
-          <button onClick={() => scrollTo("results")} className="hover:text-primary transition-colors">Results</button>
-          <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors">Testimonials</button>
+          <button onClick={() => scrollTo("services")} className="hover:text-primary transition-colors text-[15px]">Services</button>
+          <button onClick={() => scrollTo("work")} className="hover:text-primary transition-colors text-[15px]">Work</button>
+          <button onClick={() => scrollTo("results")} className="hover:text-primary transition-colors text-[15px]">Results</button>
+          <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors text-[15px]">Testimonials</button>
         </div>
 
         <button 

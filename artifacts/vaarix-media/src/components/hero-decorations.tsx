@@ -85,15 +85,13 @@ export function HeroAvatarStack() {
           {AVATAR_COLORS.map((color, i) => (
             <span
               key={i}
-              className={`h-8 w-8 rounded-full border-2 border-background ${color} flex items-center justify-center text-[10px] font-semibold text-white shadow-sm`}
+              className="h-8 w-8 rounded-full border-2 border-background bg-rose-500 flex items-center justify-center text-[10px] font-semibold text-white shadow-sm text-center"
             >
               {String.fromCharCode(65 + i)}
             </span>
           ))}
         </div>
-        <span className="text-xs font-medium uppercase tracking-wider text-foreground/50">
-          Trusted by 50+ local brands
-        </span>
+        <span className="text-xs font-medium uppercase tracking-wider text-foreground/50">Trusted by 20+ local brands</span>
       </motion.div>
     </div>
   );

@@ -21,7 +21,6 @@ export function Hero() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
       </div>
-
       <div className="container relative z-10 mx-auto px-6 md:px-12 flex flex-col items-center text-center">
         {/* Creative Agency · Texas & India badge — weighted scroll-parallax + idle float */}
         <HeroBadge />
@@ -85,7 +84,7 @@ export function Hero() {
             { value: "2", label: "Global Hubs" },
           ].map((stat, i) => (
             <div key={i} className="flex flex-col items-center justify-center text-center">
-              <span className="font-serif text-4xl md:text-5xl font-medium text-foreground">{stat.value}</span>
+              <span className="font-serif md:text-5xl font-medium text-foreground text-[48px]">{stat.value}</span>
               <span className="mt-2 text-sm font-medium uppercase tracking-wider text-foreground/50">{stat.label}</span>
             </div>
           ))}
