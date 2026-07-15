@@ -30,7 +30,7 @@ export function Navbar() {
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         <div 
-          className="font-serif font-bold cursor-pointer tracking-tight text-[25px]"
+          className="font-serif font-bold cursor-pointer tracking-tight text-[26px]"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >Vaarix Media.</div>
         
