@@ -80,7 +80,7 @@ export function Hero() {
         >
           {[
             { value: "20+", label: "Brands Scaled" },
-            { value: "100M+", label: "Organic Views" },
+            { value: "50M+", label: "Organic Views" },
             { value: "500+", label: "Campaigns Launched" },
             { value: "2", label: "Global Hubs" },
           ].map((stat, i) => (
