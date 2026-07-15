@@ -1,0 +1,135 @@
+Remove the existing lead/contact form completely.
+
+Do not display the form after the qualification question.
+
+Instead, completely redesign the booking experience.
+
+--------------------------------------------------------
+
+STEP 1
+
+When the visitor clicks "Book Strategy Call",
+
+display a premium qualification screen.
+
+Headline
+
+Book Your Free Strategy Call
+
+Subtitle
+
+Before scheduling your strategy call, we'd like to make sure we're the right fit.
+
+Question
+
+Our restaurant marketing partnerships begin at $429/month (approximately ₹40,755/month).
+
+Is this a comfortable monthly investment for your business?
+
+Options
+
+○ Yes, this budget works for me.
+
+○ No, I'm looking for a lower investment.
+
+--------------------------------------------------------
+
+If the visitor selects
+
+YES
+
+Do NOT display the existing contact form.
+
+Instead, transition to a premium calendar booking page inspired by Calendly.
+
+The layout should feel very similar to Calendly while matching the Vaarix Media branding.
+
+Left Panel
+
+Display:
+
+Vaarix Media
+
+Free Strategy Call
+
+30 Minutes
+
+Google Meet
+
+Small description:
+
+During this strategy call we'll review your restaurant's current marketing, identify growth opportunities, and discuss how Vaarix Media can help attract more customers.
+
+Right Panel
+
+Display a modern booking calendar.
+
+Allow users to:
+
+• Select a date
+• Select an available time
+• Continue to booking
+
+After selecting a time,
+
+display a very small booking form only for:
+
+• Full Name
+
+• Email Address
+
+• Phone Number
+
+No other questions.
+
+After submission,
+
+display a confirmation page.
+
+--------------------------------------------------------
+
+If the visitor selects
+
+NO
+
+Display a premium message.
+
+Thank you for your interest in Vaarix Media.
+
+At the moment, our marketing partnerships begin at $429/month (approximately ₹40,755/month).
+
+Based on your selection, it looks like we may not be the right fit right now.
+
+We truly appreciate your interest and wish you continued success with your business.
+
+Display
+
+Return Home
+
+--------------------------------------------------------
+
+Design Requirements
+
+Keep the existing Vaarix Media visual identity.
+
+Rounded cards
+
+Soft shadows
+
+Large typography
+
+Premium spacing
+
+Smooth GSAP animations
+
+Fade transitions
+
+Glassmorphism
+
+Elegant interactions
+
+The booking page should look inspired by Calendly but should NOT copy its branding.
+
+Use the Vaarix Media logo, colors, fonts, and design language.
+
+The entire booking experience should feel modern, premium, minimal, and trustworthy.
