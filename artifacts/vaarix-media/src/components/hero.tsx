@@ -23,24 +23,11 @@ export function Hero() {
       </div>
 
       <div className="container relative z-10 mx-auto px-6 md:px-12 flex flex-col items-center text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1, delay: 1.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/50 bg-white/50 px-4 py-1.5 text-sm font-medium backdrop-blur-md"
-        >
-          <span className="flex h-2 w-2 rounded-full bg-primary" />
-          Creative Agency • Texas & India
-        </motion.div>
+        {/* Creative Agency · Texas & India badge — weighted scroll-parallax + idle float */}
+        <HeroBadge />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.8, ease: [0.22, 1, 0.36, 1] }}
-          className="font-serif text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-foreground max-w-5xl leading-[1.1]"
-        >
-          We turn local businesses into brands <span className="text-primary italic">people can't ignore.</span>
-        </motion.h1>
+        {/* Hero headline — word-by-word GSAP-style reveal with video pills */}
+        <HeroHeadline />
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -74,12 +61,22 @@ export function Hero() {
           </button>
         </motion.div>
 
+        {/* Avatar stack — weighted parallax at a different speed for depth */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 2.4 }}
+          className="mt-10"
+        >
+          <HeroAvatarStack />
+        </motion.div>
+
         {/* Trust Indicators */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 2.5 }}
-          className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 border-t border-border/60 pt-12 w-full max-w-5xl"
+          transition={{ duration: 1, delay: 2.6 }}
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 border-t border-border/60 pt-12 w-full max-w-5xl"
         >
           {[
             { value: "50+", label: "Brands Scaled" },

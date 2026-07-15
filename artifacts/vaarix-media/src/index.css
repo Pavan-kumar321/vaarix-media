@@ -54,6 +54,22 @@
     0% { transform: translateX(0%); }
     100% { transform: translateX(-100%); }
   }
+
+  /* Portfolio infinite marquee — left means moves left (default), right reverses */
+  @keyframes marquee-left {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-right {
+    0%   { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+
+  /* Hero decorations idle float */
+  @keyframes hero-idle-float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-6px); }
+  }
 }
 
 :root {

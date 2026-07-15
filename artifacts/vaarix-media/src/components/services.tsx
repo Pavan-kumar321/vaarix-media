@@ -65,20 +65,34 @@ export function Services() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative rounded-[2rem] bg-card p-10 border border-card-border shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 overflow-hidden"
+              transition={{ delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{
+                scale: 1.025,
+                transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+              }}
+              className="group relative rounded-[2rem] bg-card p-10 border border-card-border shadow-sm hover:shadow-2xl hover:border-primary/20 hover:brightness-[1.02] transition-shadow transition-[border-color,filter] duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
+              style={{ willChange: "transform" }}
             >
+              {/* Glass highlight border */}
+              <div className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-[450ms] pointer-events-none ring-1 ring-inset ring-white/60" />
+
               {/* Subtle hover gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-[450ms]" />
               
               <div className="relative z-10 flex flex-col h-full">
-                <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary text-foreground group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+                <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary text-foreground group-hover:bg-primary group-hover:text-white transition-colors duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
                   {service.icon}
                 </div>
-                <h3 className="text-2xl font-semibold mb-4 text-card-foreground">{service.title}</h3>
-                <p className="text-muted-foreground leading-relaxed flex-grow">
-                  {service.desc}
-                </p>
+                <motion.div
+                  className="flex flex-col gap-4"
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <h3 className="text-2xl font-semibold text-card-foreground">{service.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed flex-grow">
+                    {service.desc}
+                  </p>
+                </motion.div>
               </div>
             </motion.div>
           ))}

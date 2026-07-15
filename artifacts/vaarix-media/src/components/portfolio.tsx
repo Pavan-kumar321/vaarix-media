@@ -1,31 +1,29 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useCallback } from "react";
+import { motion } from "framer-motion";
 import img1 from "@assets/generated_images/portfolio-1.jpg";
 import img2 from "@assets/generated_images/portfolio-2.jpg";
 import img3 from "@assets/generated_images/portfolio-3.jpg";
 import img4 from "@assets/generated_images/portfolio-4.jpg";
 import img5 from "@assets/generated_images/portfolio-5.jpg";
 import { PortfolioItem, type PortfolioEntry } from "./portfolio-item";
+import { PortfolioLightbox } from "./portfolio-lightbox";
 
-// Auto-discovered client assets: drop files into src/assets/portfolio and
-// they show up here automatically. See src/assets/portfolio/README.md for
-// the naming convention (slug--category.ext, matching basenames pair a
-// poster with a video).
-const posterModules = import.meta.glob("../assets/portfolio/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", {
-  eager: true,
-  import: "default",
-}) as Record<string, string>;
+// ─── Asset discovery ──────────────────────────────────────────────────────────
 
-const videoModules = import.meta.glob("../assets/portfolio/*.{mp4,webm,MP4,WEBM}", {
-  eager: true,
-  import: "default",
-}) as Record<string, string>;
+const posterModules = import.meta.glob(
+  "../assets/portfolio/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",
+  { eager: true, import: "default" },
+) as Record<string, string>;
+
+const videoModules = import.meta.glob(
+  "../assets/portfolio/*.{mp4,webm,MP4,WEBM}",
+  { eager: true, import: "default" },
+) as Record<string, string>;
 
 function basename(path: string) {
   const file = path.split("/").pop() ?? path;
   return file.replace(/\.[^./]+$/, "");
 }
-
 function toTitleCase(slug: string) {
   return slug
     .replace(/^\d+[-_]?/, "")
@@ -34,7 +32,6 @@ function toTitleCase(slug: string) {
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
 }
-
 function parseName(name: string) {
   const [slugPart, categoryPart] = name.split("--");
   return {
@@ -46,7 +43,6 @@ function parseName(name: string) {
 function useUploadedPortfolio(): PortfolioEntry[] {
   return useMemo(() => {
     const byName = new Map<string, { poster?: string; video?: string }>();
-
     for (const [path, url] of Object.entries(posterModules)) {
       const name = basename(path);
       byName.set(name, { ...byName.get(name), poster: url });
@@ -55,7 +51,6 @@ function useUploadedPortfolio(): PortfolioEntry[] {
       const name = basename(path);
       byName.set(name, { ...byName.get(name), video: url });
     }
-
     return Array.from(byName.keys())
       .sort()
       .map((name) => {
@@ -74,38 +69,108 @@ const placeholderItems: PortfolioEntry[] = [
   { poster: img5, title: "Michelin Plating", category: "Videography" },
 ];
 
-function splitIntoRows(items: PortfolioEntry[]): [PortfolioEntry[], PortfolioEntry[]] {
-  if (items.length === 0) return [[], []];
-  // Repeat items so each row has at least 4 entries for a smooth marquee,
-  // regardless of how many the client has uploaded so far.
-  const filled: PortfolioEntry[] = [];
-  while (filled.length < 8) {
-    filled.push(...items);
-  }
-  const row1 = filled.slice(0, 4);
-  const row2 = filled.slice(4, 8);
-  return [row1, row2];
+// ─── Marquee row ──────────────────────────────────────────────────────────────
+
+const DURATION = 38; // seconds — linear, never stops
+
+interface MarqueeRowProps {
+  items: PortfolioEntry[];
+  direction: "left" | "right";
+  allItems: PortfolioEntry[]; // full list for lightbox
+  onClickItem: (globalIndex: number) => void;
+  globalOffset: number; // where this row's items start in allItems
 }
 
-export function Portfolio() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const x1 = useTransform(scrollYProgress, [0, 1], [0, -400]);
-  const x2 = useTransform(scrollYProgress, [0, 1], [-400, 0]);
-
-  const uploaded = useUploadedPortfolio();
-  const items = uploaded.length > 0 ? uploaded : placeholderItems;
-  const [row1, row2] = splitIntoRows(items);
+function MarqueeRow({ items, direction, allItems, onClickItem, globalOffset }: MarqueeRowProps) {
+  const [paused, setPaused] = useState(false);
+  // Duplicate track for seamless loop
+  const track = [...items, ...items];
 
   return (
-    <section id="work" className="py-32 bg-foreground text-background overflow-hidden" ref={containerRef}>
+    <div
+      className="relative overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div
+        className="flex gap-[22px] w-max"
+        style={{
+          animation: `${direction === "left" ? "marquee-left" : "marquee-right"} ${DURATION}s linear infinite`,
+          animationPlayState: paused ? "paused" : "running",
+        }}
+      >
+        {track.map((item, i) => {
+          // Map back to the real index in allItems for lightbox
+          const realIndex = globalOffset + (i % items.length);
+          return (
+            <PortfolioItem
+              key={`${direction}-${i}`}
+              {...item}
+              onClick={() => onClickItem(realIndex)}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── Row distribution ─────────────────────────────────────────────────────────
+
+function distributeIntoRows(
+  items: PortfolioEntry[],
+): [PortfolioEntry[], PortfolioEntry[], PortfolioEntry[]] {
+  if (items.length === 0) return [[], [], []];
+
+  // Ensure each row has at least 5 items for smooth marquee
+  const minPerRow = 5;
+  const filled: PortfolioEntry[] = [];
+  while (filled.length < minPerRow * 3) filled.push(...items);
+
+  const row1: PortfolioEntry[] = [];
+  const row2: PortfolioEntry[] = [];
+  const row3: PortfolioEntry[] = [];
+  filled.forEach((item, i) => {
+    if (i % 3 === 0) row1.push(item);
+    else if (i % 3 === 1) row2.push(item);
+    else row3.push(item);
+  });
+
+  return [row1, row2, row3];
+}
+
+// ─── Portfolio section ────────────────────────────────────────────────────────
+
+export function Portfolio() {
+  const uploaded = useUploadedPortfolio();
+  const items = uploaded.length > 0 ? uploaded : placeholderItems;
+  const [row1, row2, row3] = distributeIntoRows(items);
+
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const handleOpen = useCallback((idx: number) => setLightboxIndex(idx), []);
+  const handleClose = useCallback(() => setLightboxIndex(null), []);
+  const handlePrev = useCallback(
+    () => setLightboxIndex((i) => (i === null ? null : (i - 1 + items.length) % items.length)),
+    [items.length],
+  );
+  const handleNext = useCallback(
+    () => setLightboxIndex((i) => (i === null ? null : (i + 1) % items.length)),
+    [items.length],
+  );
+
+  // Row offsets in the allItems array (for lightbox to show the correct item)
+  // We're using the original items list for lightbox navigation, mapping each
+  // row card back to its source index via modulo inside MarqueeRow.
+  const row2Offset = row1.length % items.length;
+  const row3Offset = (row1.length + row2.length) % items.length;
+
+  return (
+    <section id="work" className="py-32 bg-foreground text-background overflow-hidden">
+      {/* Header */}
       <div className="container mx-auto px-6 md:px-12 mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
         <div className="max-w-2xl">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -113,7 +178,7 @@ export function Portfolio() {
           >
             Selected Works
           </motion.span>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -130,22 +195,43 @@ export function Portfolio() {
           className="text-white/60 max-w-sm"
         >
           A glimpse into the brands we've transformed through strategic design and compelling content.
+          Hover to pause · click to explore.
         </motion.p>
       </div>
 
-      <div className="flex flex-col gap-8 md:gap-12 w-[150vw] md:w-[120vw] relative left-1/2 -translate-x-1/2">
-        <motion.div style={{ x: x1 }} className="flex gap-8 md:gap-12 px-6">
-          {row1.map((item, i) => (
-            <PortfolioItem key={i} {...item} />
-          ))}
-        </motion.div>
-
-        <motion.div style={{ x: x2 }} className="flex gap-8 md:gap-12 px-6">
-          {row2.map((item, i) => (
-            <PortfolioItem key={i} {...item} />
-          ))}
-        </motion.div>
+      {/* Three marquee rows */}
+      <div className="flex flex-col gap-[22px]">
+        <MarqueeRow
+          items={row1}
+          direction="left"
+          allItems={items}
+          onClickItem={handleOpen}
+          globalOffset={0}
+        />
+        <MarqueeRow
+          items={row2}
+          direction="right"
+          allItems={items}
+          onClickItem={handleOpen}
+          globalOffset={row2Offset}
+        />
+        <MarqueeRow
+          items={row3}
+          direction="left"
+          allItems={items}
+          onClickItem={handleOpen}
+          globalOffset={row3Offset}
+        />
       </div>
+
+      {/* Lightbox */}
+      <PortfolioLightbox
+        items={items}
+        index={lightboxIndex}
+        onClose={handleClose}
+        onPrev={handlePrev}
+        onNext={handleNext}
+      />
     </section>
   );
 }

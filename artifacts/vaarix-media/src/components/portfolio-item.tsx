@@ -7,7 +7,11 @@ export interface PortfolioEntry {
   video?: string;
 }
 
-export function PortfolioItem({ title, category, poster, video }: PortfolioEntry) {
+interface PortfolioItemProps extends PortfolioEntry {
+  onClick: () => void;
+}
+
+export function PortfolioItem({ title, category, poster, video, onClick }: PortfolioItemProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleEnter = () => {
@@ -25,10 +29,12 @@ export function PortfolioItem({ title, category, poster, video }: PortfolioEntry
 
   return (
     <div
-      className="portfolio-item group relative w-[60vw] md:w-[35vw] aspect-[4/3] rounded-[2rem] overflow-hidden shrink-0"
+      className="portfolio-item group relative w-[280px] md:w-[300px] aspect-video rounded-[24px] overflow-hidden shrink-0 cursor-pointer select-none"
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
+      onClick={onClick}
     >
+      {/* Media */}
       {video ? (
         <video
           ref={videoRef}
@@ -38,20 +44,32 @@ export function PortfolioItem({ title, category, poster, video }: PortfolioEntry
           loop
           playsInline
           preload="metadata"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
         />
       ) : (
         <img
           src={poster}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
         />
       )}
-      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
-      <div className="absolute bottom-0 left-0 p-8 w-full flex justify-between items-end opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-        <div>
-          <div className="text-white/80 text-sm font-medium tracking-wide mb-2 uppercase">{category}</div>
-          <div className="text-white text-2xl font-serif">{title}</div>
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition-all duration-500 ease-out" />
+
+      {/* Glass card — slides up on hover */}
+      <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] p-4">
+        <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 px-4 py-3">
+          <p className="text-white/70 text-[10px] font-semibold uppercase tracking-widest mb-0.5">
+            {category}
+          </p>
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-white font-serif text-base leading-tight">{title}</p>
+            <span className="shrink-0 text-white/60 text-[10px] font-semibold uppercase tracking-wider border border-white/25 rounded-full px-2 py-0.5 whitespace-nowrap">
+              View →
+            </span>
+          </div>
         </div>
       </div>
     </div>
