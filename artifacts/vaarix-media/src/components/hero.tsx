@@ -81,7 +81,7 @@ export function Hero() {
           {[
             { value: "20+", label: "Brands Scaled" },
             { value: "50M+", label: "Organic Views" },
-            { value: "500+", label: "Campaigns Launched" },
+            { value: "100+", label: "Campaigns Launched" },
             { value: "2", label: "Global Hubs" },
           ].map((stat, i) => (
             <div key={i} className="flex flex-col items-center justify-center text-center">
