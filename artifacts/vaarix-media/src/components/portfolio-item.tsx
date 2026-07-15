@@ -1,6 +1,8 @@
 import { useRef } from "react";
 
 export interface PortfolioEntry {
+  /** Stable index into the original items array — used for lightbox mapping. */
+  id: number;
   title: string;
   category: string;
   poster?: string;
@@ -13,17 +15,26 @@ interface PortfolioItemProps extends PortfolioEntry {
 
 export function PortfolioItem({ title, category, poster, video, onClick }: PortfolioItemProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  // Track the in-flight play() promise so we never call pause() before it settles.
+  const playPromise = useRef<Promise<void> | null>(null);
 
   const handleEnter = () => {
     if (video && videoRef.current) {
       videoRef.current.currentTime = 0;
-      void videoRef.current.play();
+      playPromise.current = videoRef.current.play().catch(() => {});
     }
   };
 
   const handleLeave = () => {
     if (video && videoRef.current) {
-      videoRef.current.pause();
+      const vid = videoRef.current;
+      if (playPromise.current) {
+        // Wait for play() to settle before pausing to avoid the interrupted-by-pause error.
+        playPromise.current.then(() => { vid.pause(); }).catch(() => {});
+        playPromise.current = null;
+      } else {
+        vid.pause();
+      }
     }
   };
 

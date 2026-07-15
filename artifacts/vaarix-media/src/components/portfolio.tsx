@@ -53,20 +53,21 @@ function useUploadedPortfolio(): PortfolioEntry[] {
     }
     return Array.from(byName.keys())
       .sort()
-      .map((name) => {
+      .map((name, idx) => {
         const { poster, video } = byName.get(name)!;
         const { title, category } = parseName(name);
-        return { title, category, poster, video };
+        // id is the stable index into the master items array — used for lightbox
+        return { id: idx, title, category, poster, video };
       });
   }, []);
 }
 
 const placeholderItems: PortfolioEntry[] = [
-  { poster: img1, title: "The Burger Joint", category: "Food Photography" },
-  { poster: img2, title: "Lumina Roasters", category: "Brand Identity" },
-  { poster: img3, title: "Noir Cocktail Bar", category: "Social Media" },
-  { poster: img4, title: "Aura Skincare", category: "Art Direction" },
-  { poster: img5, title: "Michelin Plating", category: "Videography" },
+  { id: 0, poster: img1, title: "The Burger Joint", category: "Food Photography" },
+  { id: 1, poster: img2, title: "Lumina Roasters", category: "Brand Identity" },
+  { id: 2, poster: img3, title: "Noir Cocktail Bar", category: "Social Media" },
+  { id: 3, poster: img4, title: "Aura Skincare", category: "Art Direction" },
+  { id: 4, poster: img5, title: "Michelin Plating", category: "Videography" },
 ];
 
 // ─── Marquee row ──────────────────────────────────────────────────────────────
@@ -76,12 +77,10 @@ const DURATION = 38; // seconds — linear, never stops
 interface MarqueeRowProps {
   items: PortfolioEntry[];
   direction: "left" | "right";
-  allItems: PortfolioEntry[]; // full list for lightbox
-  onClickItem: (globalIndex: number) => void;
-  globalOffset: number; // where this row's items start in allItems
+  onClickItem: (id: number) => void;
 }
 
-function MarqueeRow({ items, direction, allItems, onClickItem, globalOffset }: MarqueeRowProps) {
+function MarqueeRow({ items, direction, onClickItem }: MarqueeRowProps) {
   const [paused, setPaused] = useState(false);
   // Duplicate track for seamless loop
   const track = [...items, ...items];
@@ -99,17 +98,15 @@ function MarqueeRow({ items, direction, allItems, onClickItem, globalOffset }: M
           animationPlayState: paused ? "paused" : "running",
         }}
       >
-        {track.map((item, i) => {
-          // Map back to the real index in allItems for lightbox
-          const realIndex = globalOffset + (i % items.length);
-          return (
-            <PortfolioItem
-              key={`${direction}-${i}`}
-              {...item}
-              onClick={() => onClickItem(realIndex)}
-            />
-          );
-        })}
+        {track.map((item, i) => (
+          // Use item.id (stable original index) — never the rendered array index.
+          // This ensures duplicated marquee cards always open their own project.
+          <PortfolioItem
+            key={`${direction}-${i}`}
+            {...item}
+            onClick={() => onClickItem(item.id)}
+          />
+        ))}
       </div>
     </div>
   );
@@ -159,12 +156,6 @@ export function Portfolio() {
     [items.length],
   );
 
-  // Row offsets in the allItems array (for lightbox to show the correct item)
-  // We're using the original items list for lightbox navigation, mapping each
-  // row card back to its source index via modulo inside MarqueeRow.
-  const row2Offset = row1.length % items.length;
-  const row3Offset = (row1.length + row2.length) % items.length;
-
   return (
     <section id="work" className="py-32 bg-foreground text-background overflow-hidden">
       {/* Header */}
@@ -201,27 +192,9 @@ export function Portfolio() {
 
       {/* Three marquee rows */}
       <div className="flex flex-col gap-[22px]">
-        <MarqueeRow
-          items={row1}
-          direction="left"
-          allItems={items}
-          onClickItem={handleOpen}
-          globalOffset={0}
-        />
-        <MarqueeRow
-          items={row2}
-          direction="right"
-          allItems={items}
-          onClickItem={handleOpen}
-          globalOffset={row2Offset}
-        />
-        <MarqueeRow
-          items={row3}
-          direction="left"
-          allItems={items}
-          onClickItem={handleOpen}
-          globalOffset={row3Offset}
-        />
+        <MarqueeRow items={row1} direction="left"  onClickItem={handleOpen} />
+        <MarqueeRow items={row2} direction="right" onClickItem={handleOpen} />
+        <MarqueeRow items={row3} direction="left"  onClickItem={handleOpen} />
       </div>
 
       {/* Lightbox */}
