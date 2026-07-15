@@ -1,0 +1,737 @@
+You are a senior UI/UX designer, Framer expert, motion designer, and frontend developer.
+
+Your task is to redesign the website for our agency "Vaarix Media."
+
+This should NOT look like a generic Framer template.
+
+The website should feel like an Awwwards-winning creative agency website with premium motion design, luxurious spacing, cinematic animations, editorial typography, and an unforgettable browsing experience.
+
+Think of the visual quality of Apple, Linear, Cuberto, Locomotive, and premium creative studios.
+
+The website should immediately communicate trust, creativity, and premium quality while being optimized for lead generation.
+
+--------------------------------------------------
+OUR COMPANY
+--------------------------------------------------
+
+Agency Name:
+
+Vaarix Media
+
+We specialize in:
+
+• Restaurant Marketing
+• Social Media Management
+• Content Creation
+• Instagram Reels
+• Short-form Video Editing
+• Branding
+• Graphic Design
+• Poster Design
+• Photography
+• Videography
+• Paid Advertising (Meta & Google)
+• Website Design
+• Local Business Marketing
+
+DO NOT mention AI Agents anywhere.
+
+This website is purely about our marketing services.
+
+--------------------------------------------------
+DESIGN STYLE
+--------------------------------------------------
+
+Overall Style:
+
+Luxury Minimalism
+
+Editorial Design
+
+Premium White Space
+
+Apple-inspired UI
+
+Glassmorphism
+
+Soft Shadows
+
+Rounded Cards
+
+Large Bold Typography
+
+Black & White Palette
+
+Subtle Blue Accent
+
+High-end Portfolio Website
+
+The design should never feel cluttered.
+
+Everything should breathe.
+
+Lots of whitespace.
+
+Large margins.
+
+Smooth animations.
+
+Premium typography.
+
+--------------------------------------------------
+COLOR PALETTE
+--------------------------------------------------
+
+Background
+
+#F7F7F7
+
+Primary Text
+
+#111111
+
+Secondary Text
+
+#666666
+
+Cards
+
+#FFFFFF
+
+Accent
+
+#0057FF
+
+Success
+
+#30D158
+
+--------------------------------------------------
+TYPOGRAPHY
+--------------------------------------------------
+
+Headings
+
+General Sans
+
+or
+
+Satoshi
+
+Body
+
+Inter
+
+Small Labels
+
+Cormorant Garamond
+
+Typography should be one of the strongest visual elements.
+
+--------------------------------------------------
+GLOBAL ANIMATIONS
+--------------------------------------------------
+
+The website should feel alive even when the user does nothing.
+
+Everything should move subtly.
+
+Use premium motion.
+
+Never use aggressive animations.
+
+Animations should use easing similar to Apple products.
+
+Examples:
+
+Fade Up
+
+Opacity
+
+Scale
+
+Blur to Sharp
+
+Parallax
+
+Floating Objects
+
+Smooth Hover Effects
+
+Magnetic Buttons
+
+Glass Hover
+
+Animated Counters
+
+Image Zoom
+
+Continuous Marquee
+
+Stagger Animations
+
+--------------------------------------------------
+PAGE LOADER
+--------------------------------------------------
+
+Create a premium loading animation.
+
+Background fades in.
+
+Logo scales.
+
+Small loading bar.
+
+Fade into homepage.
+
+Duration around 1 second.
+
+--------------------------------------------------
+NAVIGATION
+--------------------------------------------------
+
+Transparent initially.
+
+After scrolling:
+
+Glassmorphism background.
+
+Blur.
+
+Rounded edges.
+
+Smooth transition.
+
+Navigation Items
+
+Home
+
+Services
+
+Work
+
+Results
+
+Testimonials
+
+Contact
+
+CTA Button
+
+Book Strategy Call
+
+--------------------------------------------------
+HERO SECTION
+--------------------------------------------------
+
+Large headline.
+
+We Turn Restaurants Into Brands People Can't Ignore.
+
+Subheading
+
+Helping restaurants and local businesses grow through creative branding, social media, paid advertising and content that actually converts.
+
+Primary Button
+
+Book Free Strategy Call
+
+Secondary Button
+
+View Our Work
+
+Under the buttons:
+
+Trust Indicators
+
+50+ Brands
+
+100M+ Views
+
+500+ Campaigns
+
+Texas • India
+
+Background should contain very subtle moving light rays.
+
+Tiny grain overlay.
+
+Soft gradient.
+
+Floating rounded media cards.
+
+--------------------------------------------------
+FLOATING MEDIA
+--------------------------------------------------
+
+Around the hero section create floating media previews.
+
+Examples
+
+Instagram Reel
+
+Poster Design
+
+Food Photography
+
+Facebook Ad
+
+Restaurant Reel
+
+Brand Identity
+
+Each card should slowly float.
+
+Different speed.
+
+Very subtle.
+
+Like floating in space.
+
+--------------------------------------------------
+SERVICES SECTION
+--------------------------------------------------
+
+Center large typography.
+
+"We engineer brands people remember."
+
+Around the heading place floating pill-shaped service badges.
+
+Restaurant Marketing
+
+Branding
+
+Social Media
+
+Photography
+
+Videography
+
+Paid Ads
+
+Website Design
+
+Graphic Design
+
+Posters
+
+Hover:
+
+Lift
+
+Shadow
+
+Small rotation
+
+--------------------------------------------------
+FEATURED WORK
+--------------------------------------------------
+
+This is the most important section.
+
+DO NOT use static images.
+
+Use autoplay muted looping videos.
+
+We will replace them later.
+
+Create an infinite scrolling portfolio wall.
+
+Three rows.
+
+Row 1 scrolls left.
+
+Row 2 scrolls right.
+
+Row 3 scrolls left.
+
+Cards never stop moving.
+
+Loop infinitely.
+
+No visible jump.
+
+Linear animation.
+
+Pause on hover.
+
+Cards
+
+Large
+
+Rounded
+
+Soft Shadow
+
+Hover
+
+Scale
+
+Video Zoom
+
+Dark Overlay
+
+Glass Panel slides upward.
+
+Information appears:
+
+Project Name
+
+Services
+
+View Case Study
+
+Placeholder categories
+
+Restaurant Reels
+
+Food Photography
+
+Poster Design
+
+Brand Identity
+
+Website Design
+
+Paid Advertising
+
+Social Media Campaign
+
+Each card should feel cinematic.
+
+--------------------------------------------------
+POSTER GALLERY
+--------------------------------------------------
+
+Create another section specifically for poster designs.
+
+Large premium cards.
+
+Pinterest-inspired layout.
+
+Each poster gently floats.
+
+Hover:
+
+Lift
+
+Scale
+
+Shadow
+
+Rotate slightly
+
+Click opens full view.
+
+--------------------------------------------------
+SOCIAL MEDIA SHOWCASE
+--------------------------------------------------
+
+Create an Instagram-inspired section.
+
+Display posts in a clean premium grid.
+
+Autoplay reels.
+
+Infinite slow movement.
+
+Hover reveals project information.
+
+--------------------------------------------------
+RESULTS SECTION
+--------------------------------------------------
+
+Animated counters.
+
+Numbers count upward when visible.
+
+Examples
+
+100M+
+
+Views Generated
+
+50+
+
+Brands Worked With
+
+500+
+
+Campaigns
+
+8+
+
+Industries
+
+--------------------------------------------------
+PROCESS SECTION
+--------------------------------------------------
+
+Timeline
+
+Discover
+
+Strategy
+
+Create
+
+Launch
+
+Scale
+
+Cards animate upward while scrolling.
+
+Thin animated connecting line.
+
+--------------------------------------------------
+TESTIMONIALS
+--------------------------------------------------
+
+Large rounded cards.
+
+Horizontal scrolling.
+
+Client image.
+
+Review.
+
+Company.
+
+Stars.
+
+Auto scrolling slowly.
+
+--------------------------------------------------
+CLIENT LOGOS
+--------------------------------------------------
+
+Infinite marquee.
+
+Slow movement.
+
+Pause on hover.
+
+Logos:
+
+Velvet Cloud
+
+Bawarchi
+
+Bharat Bhavan
+
+Around The Corner
+
+Pizza O Pizza
+
+HSK Technologies
+
+and more placeholders.
+
+--------------------------------------------------
+FINAL CTA
+--------------------------------------------------
+
+Black background.
+
+Large typography.
+
+Ready to Grow Your Brand?
+
+Book a free strategy call and let's build marketing that people actually remember.
+
+CTA
+
+Book Strategy Call
+
+Background contains slow moving light rays.
+
+Very subtle.
+
+--------------------------------------------------
+FOOTER
+--------------------------------------------------
+
+Minimal.
+
+Logo.
+
+Email.
+
+Instagram.
+
+LinkedIn.
+
+WhatsApp.
+
+Copyright.
+
+--------------------------------------------------
+MICRO INTERACTIONS
+--------------------------------------------------
+
+Buttons
+
+Magnetic hover
+
+Arrow slides
+
+Glow
+
+Cards
+
+Lift
+
+Scale
+
+Shadow
+
+Images
+
+Zoom
+
+Navbar
+
+Blur
+
+Buttons
+
+Ripple
+
+Hover
+
+Mouse
+
+Subtle custom cursor
+
+Desktop only
+
+--------------------------------------------------
+SCROLL ANIMATIONS
+--------------------------------------------------
+
+Every section should animate into view.
+
+Never instantly appear.
+
+Use stagger animations.
+
+Fade.
+
+Scale.
+
+Blur.
+
+Opacity.
+
+--------------------------------------------------
+PERFORMANCE
+--------------------------------------------------
+
+Animations should remain smooth.
+
+60 FPS.
+
+Avoid heavy effects.
+
+Use optimized autoplay videos.
+
+Lazy load media.
+
+--------------------------------------------------
+MOBILE EXPERIENCE
+--------------------------------------------------
+
+Fully responsive.
+
+Animations simplified on mobile.
+
+Scrolling remains smooth.
+
+Cards resize beautifully.
+
+Nothing should overlap.
+
+--------------------------------------------------
+OVERALL FEELING
+--------------------------------------------------
+
+When someone lands on this website after clicking one of our Meta Ads or Google Ads, they should immediately feel they are looking at one of the best creative marketing agencies.
+
+The experience should be luxurious, modern, cinematic, and memorable.
+
+The website should not feel like a template.
+
+Every interaction should communicate quality, creativity, trust, and professionalism.
+
+The website should be designed primarily to convert visitors into booked strategy calls while showcasing our creative work in an engaging way.
+
+
+
+What I would build for Vaarix Media
+
+Imagine opening the website...
+
+Hero
+
+Background light rays slowly moving.
+
+Logo fades in.
+
+Headline builds word by word.
+
+Floating reels.
+
+Cards drifting.
+
+Scroll
+
+The page doesn't "scroll."
+
+It glides.
+
+Like Apple.
+
+Portfolio
+
+Restaurant reels autoplay.
+
+Posters slowly move.
+
+Cards scroll forever.
+
+Alternate directions.
+
+Hover pauses.
+
+Click expands.
+
+Mouse
+
+Custom cursor.
+
+When hovering
+
+VIEW PROJECT
+
+appears.
+
+Cursor enlarges.
+
+Sections
+
+Everything fades in.
+
+Nothing suddenly appears.
+
+CTA
+
+Background becomes dark.
+
+Light rays animate.
+
+Typography grows.
+
+Button pulses subtly.
+
+This is the kind of experience people remember.

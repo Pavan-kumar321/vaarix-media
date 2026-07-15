@@ -1,0 +1,150 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: leads
+    description: Lead capture operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /leads:
+    post:
+      operationId: createLead
+      tags: [leads]
+      summary: Submit a new lead capture form
+      description: Stores a lead form submission from the marketing site
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+        "400":
+          description: Invalid input
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    LeadInput:
+      type: object
+      required:
+        - fullName
+        - businessName
+        - phone
+        - email
+        - monthlyBudget
+        - servicesInterested
+        - message
+      properties:
+        fullName:
+          type: string
+          minLength: 1
+        businessName:
+          type: string
+          minLength: 1
+        phone:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+        websiteOrInstagram:
+          type: ["string", "null"]
+        monthlyBudget:
+          type: string
+          enum:
+            - under_1000
+            - "1000_2500"
+            - "2500_5000"
+            - "5000_10000"
+            - over_10000
+        servicesInterested:
+          type: array
+          items:
+            type: string
+            enum:
+              - restaurant_marketing
+              - social_media_management
+              - content_creation
+              - instagram_reels
+              - short_form_video_editing
+              - branding
+              - graphic_design
+              - poster_design
+              - photography
+              - videography
+              - paid_advertising
+              - website_design
+              - local_business_marketing
+          minItems: 1
+        message:
+          type: string
+          minLength: 1
+    Lead:
+      type: object
+      required:
+        - id
+        - fullName
+        - businessName
+        - phone
+        - email
+        - websiteOrInstagram
+        - monthlyBudget
+        - servicesInterested
+        - message
+        - createdAt
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        businessName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        websiteOrInstagram:
+          type: ["string", "null"]
+        monthlyBudget:
+          type: string
+        servicesInterested:
+          type: array
+          items:
+            type: string
+        message:
+          type: string
+        createdAt:
+          type: string
+          format: date-time

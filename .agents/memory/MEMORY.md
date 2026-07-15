@@ -1,0 +1,2 @@
+- [Orval zod codegen + zod v3](orval-zod-v3-email.md) — `format: email` in OpenAPI generates `zod.email()`, which breaks on the workspace's pinned zod v3; avoid `format: email` in specs.
+- [Screenshot tool timing vs staggered animations](screenshot-timing-staggered-animations.md) — the appPreview Screenshot tool captures very early after load; pages with >1s entry animation delays will look "stuck" even when the code is correct.

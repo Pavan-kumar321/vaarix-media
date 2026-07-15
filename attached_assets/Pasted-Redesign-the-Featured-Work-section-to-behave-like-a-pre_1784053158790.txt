@@ -1,0 +1,113 @@
+Redesign the "Featured Work" section to behave like a premium creative agency portfolio.
+
+Current Issues:
+- The portfolio cards are too large.
+- Users can only see a few projects at once.
+- Clicking a project does nothing.
+- Only a limited number of media items appear during scrolling.
+- The experience feels like a static gallery instead of a premium portfolio.
+
+Requirements:
+
+1. Card Size
+- Reduce the card width by approximately 30-40%.
+- Maintain a 16:9 aspect ratio for videos.
+- Show 5-7 cards across on desktop depending on screen width.
+- Use consistent spacing (20-24px gap).
+
+2. Infinite Portfolio
+Create a true infinite scrolling portfolio.
+
+- Every uploaded image and video must appear.
+- Duplicate the track internally so the loop has no visible jump.
+- Continue scrolling forever.
+- Use linear animation.
+- Speed should be slow (35-45 seconds).
+- Alternate row directions.
+- Never leave empty space.
+
+3. Multiple Rows
+Create three marquee rows.
+
+Row 1
+← moves left
+
+Row 2
+→ moves right
+
+Row 3
+← moves left
+
+Distribute all uploaded media across the rows.
+
+4. Hover Behaviour
+When hovering over a card:
+
+- Pause only that row.
+- Continue all other rows.
+- Slightly enlarge the hovered card.
+- Increase shadow.
+- Zoom media slightly.
+- Show a dark glass overlay.
+- Display:
+  • Project Name
+  • Category
+  • "Click to View"
+
+5. Click Behaviour
+Clicking any project should open a fullscreen lightbox.
+
+The lightbox should include:
+
+- Large video or image preview
+- Autoplay for videos
+- Previous / Next navigation
+- Keyboard navigation
+- Escape to close
+- Close button
+- Background blur
+
+For videos:
+- Autoplay
+- Controls enabled
+- Muted by default
+- Fullscreen supported
+
+6. Loading
+Lazy-load all media.
+
+Load additional media smoothly while maintaining continuous scrolling.
+
+7. Performance
+Maintain smooth 60 FPS animations.
+
+Optimize videos.
+
+Only play videos that are visible.
+
+Pause videos when hidden.
+
+8. Responsive
+Desktop:
+5-7 cards visible.
+
+Tablet:
+3-4 cards.
+
+Mobile:
+2 cards.
+
+Maintain the infinite scrolling experience across all devices.
+
+9. Visual Style
+Rounded corners (24px)
+
+Soft shadow
+
+Glass hover overlay
+
+Premium spacing
+
+Luxury creative agency aesthetic
+
+The final portfolio should feel similar to an Awwwards-winning agency website where the work is continuously showcased and every uploaded media item eventually appears without breaking the scrolling experience.

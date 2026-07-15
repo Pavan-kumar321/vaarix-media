@@ -1,0 +1,66 @@
+Proceed with the following defaults:
+1. Website Structure
+- Build a premium single-page scrolling website.
+- Every section should transition smoothly with cinematic scroll animations.
+- The experience should feel luxurious and highly interactive rather than like a standard business website.
+2. Lead Capture
+- Build a fully functional lead capture form.
+- Store every submission in the database.
+- Fields:
+  • Full Name
+  • Business Name
+  • Phone Number
+  • Email Address
+  • Website / Instagram (Optional)
+  • Monthly Marketing Budget (Dropdown)
+  • Services Interested In
+  • Message
+- Add client-side validation.
+- Show a premium success animation after submission.
+- Do not configure email notifications yet.
+3. Media
+- Use premium placeholder videos and images.
+- Use realistic restaurant marketing examples, branding, posters, websites, food photography and social media creatives.
+- Make every placeholder easily replaceable later.
+4. Conversion Optimization
+This website is primarily designed to convert traffic coming from Meta Ads and Google Ads.
+The user journey should be:
+Hero
+↓
+Services
+↓
+Portfolio
+↓
+Results
+↓
+Testimonials
+↓
+Lead Form
+↓
+Final CTA
+Every section should naturally encourage users to book a strategy call.
+5. Animations
+Focus heavily on premium motion.
+Include:
+• Smooth page load animation
+• Scroll-triggered fade and scale effects
+• Blur-to-sharp reveals
+• Floating elements
+• Auto-scrolling portfolio rows
+• Infinite logo marquee
+• Autoplay muted videos
+• Hover interactions
+• Glassmorphism transitions
+• Animated counters
+• Magnetic buttons
+• Smooth scrolling
+• Subtle parallax
+• Staggered text reveals
+Animations should remain elegant, lightweight, and performant.
+6. Performance
+Optimize for desktop, tablet, and mobile.
+Maintain 60 FPS where possible.
+Lazy-load videos and images.
+Avoid unnecessary heavy animations.
+The final website should feel like a premium creative agency that specializes in restaurant marketing, branding, content creation, paid advertising, website design, photography, videography, social media management, and graphic design.
+The goal is not simply to showcase our work, but to maximize conversions and generate qualified leads while delivering an unforgettable visual experience.
