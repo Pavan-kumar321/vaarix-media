@@ -20,29 +20,57 @@ const videoModules = import.meta.glob(
   { eager: true, import: "default" },
 ) as Record<string, string>;
 
+/** Strip the last extension: "MM Lounge Test Reel.mp4" → "MM Lounge Test Reel" */
 function basename(path: string) {
   const file = path.split("/").pop() ?? path;
   return file.replace(/\.[^./]+$/, "");
 }
-function toTitleCase(slug: string) {
-  return slug
-    .replace(/^\d+[-_]?/, "")
-    .split("-")
-    .filter(Boolean)
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
+
+/**
+ * Convert a raw filename stem to a display title.
+ *
+ * Handles two conventions without requiring either:
+ *   • Hyphen/underscore slugs  — "burger-joint"  → "Burger Joint"
+ *   • Human-readable names     — "MM Lounge Test Reel" → "MM Lounge Test Reel"
+ *
+ * Leading numeric prefixes are stripped ("01-burger" → "Burger").
+ */
+function toDisplayTitle(raw: string): string {
+  // Strip leading number prefix (e.g. "01-", "1_", "01 ")
+  const stripped = raw.replace(/^\d+[-_\s]+/, "").trim();
+  if (!stripped) return "Untitled Project";
+
+  // If the stem is a hyphen/underscore slug (no spaces), convert it
+  if (/[-_]/.test(stripped) && !/ /.test(stripped)) {
+    return stripped
+      .split(/[-_]+/)
+      .filter(Boolean)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+  }
+
+  // Already a human-readable name — return as-is
+  return stripped;
 }
-function parseName(name: string) {
-  const [slugPart, categoryPart] = name.split("--");
+
+/**
+ * Extract title and optional category from a filename stem.
+ * Filenames may optionally encode a category after "--":
+ *   "my-project--Social Media" → { title: "My Project", category: "Social Media" }
+ * Any filename without "--" gets an auto-detected category based on asset type.
+ */
+function parseName(name: string): { title: string; explicitCategory?: string } {
+  const [namePart, categoryPart] = name.split("--");
   return {
-    title: toTitleCase(slugPart) || "Untitled Project",
-    category: categoryPart ? toTitleCase(categoryPart) : "Case Study",
+    title: toDisplayTitle(namePart) || "Untitled Project",
+    explicitCategory: categoryPart?.trim() || undefined,
   };
 }
 
 function useUploadedPortfolio(): PortfolioEntry[] {
   return useMemo(() => {
     const byName = new Map<string, { poster?: string; video?: string }>();
+
     for (const [path, url] of Object.entries(posterModules)) {
       const name = basename(path);
       byName.set(name, { ...byName.get(name), poster: url });
@@ -51,11 +79,15 @@ function useUploadedPortfolio(): PortfolioEntry[] {
       const name = basename(path);
       byName.set(name, { ...byName.get(name), video: url });
     }
+
     return Array.from(byName.keys())
       .sort()
       .map((name, idx) => {
         const { poster, video } = byName.get(name)!;
-        const { title, category } = parseName(name);
+        const { title, explicitCategory } = parseName(name);
+        // Auto-detect category: video files → Videography, image-only → Photography.
+        // An explicit "--Category" suffix in the filename always wins.
+        const category = explicitCategory ?? (video ? "Videography" : "Photography");
         // id is the stable index into the master items array — used for lightbox
         return { id: idx, title, category, poster, video };
       });

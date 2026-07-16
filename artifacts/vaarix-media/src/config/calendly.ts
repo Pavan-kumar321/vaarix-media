@@ -8,4 +8,4 @@
  * Example:
  *   export const CALENDLY_URL = "https://calendly.com/yourname/strategy-call";
  */
-export const CALENDLY_URL = ""; // ← paste your Calendly scheduling URL here
+export const CALENDLY_URL = "https://calendly.com/parduduvvi939/30min"; // ← paste your Calendly scheduling URL here

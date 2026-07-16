@@ -25,10 +25,18 @@ export function Footer() {
           <div>
             <h4 className="footer-label font-semibold uppercase tracking-widest text-sm mb-6">Socials</h4>
             <ul className="space-y-4">
-              <li><a href="#" className="footer-link">Instagram</a></li>
-              <li><a href="#" className="footer-link">LinkedIn</a></li>
+              <li><a href="https://www.instagram.com/vaarix.media/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link">Instagram</a></li>
+              <li><a href="https://wa.me/919701790548"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-link">Whatsapp</a></li>
               <li><a href="#" className="footer-link">Twitter / X</a></li>
-              <li><a href="#" className="footer-link">Behance</a></li>
+              <li><a href="https://www.facebook.com/profile.php?id=61592042032388"
+                    target="_blank"
+                    rel="noopener noreferrer"className="footer-link">FaceBook</a></li>
             </ul>
           </div>
         </div>
