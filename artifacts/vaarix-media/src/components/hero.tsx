@@ -15,10 +15,15 @@ export function Hero() {
     <section className="relative min-h-[100dvh] flex items-center pt-24 pb-12 overflow-hidden">
       {/* Background Image/Gradient */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={heroBg} 
-          alt="Abstract Background" 
-          className="w-full h-full object-cover opacity-60 mix-blend-multiply" 
+        {/*
+          Light mode: mix-blend-multiply tones the image into the warm ivory bg.
+          Dark  mode: mix-blend-screen lifts the image against the dark bg
+                      so it remains visible rather than collapsing to black.
+        */}
+        <img
+          src={heroBg}
+          alt="Abstract Background"
+          className="w-full h-full object-cover opacity-60 mix-blend-multiply dark:mix-blend-screen dark:opacity-20"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
       </div>

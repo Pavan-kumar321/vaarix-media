@@ -74,80 +74,81 @@
 }
 
 :root {
-  --background: 0 0% 97%; /* #F7F7F7 */
+  /* Warm ivory — #F8F7F4 ≈ HSL(45 22% 97%) */
+  --background: 45 22% 97%;
   --foreground: 0 0% 9%;
 
-  --border: 0 0% 90%;
-  --input: 0 0% 90%;
+  --border: 40 12% 88%;
+  --input: 40 12% 88%;
   --ring: 219 100% 50%;
 
-  --card: 0 0% 100%;
+  --card: 45 20% 99%;
   --card-foreground: 0 0% 9%;
-  --card-border: 0 0% 94%;
+  --card-border: 40 14% 92%;
 
-  --popover: 0 0% 100%;
+  --popover: 45 20% 99%;
   --popover-foreground: 0 0% 9%;
-  --popover-border: 0 0% 94%;
+  --popover-border: 40 14% 92%;
 
-  --primary: 219 100% 50%; /* #0057FF */
+  --primary: 219 100% 50%; /* #0057FF — preserved */
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 0 0% 94%;
+  --secondary: 40 14% 93%;
   --secondary-foreground: 0 0% 9%;
 
-  --muted: 0 0% 94%;
-  --muted-foreground: 0 0% 40%;
+  --muted: 40 14% 93%;
+  --muted-foreground: 0 0% 42%;
 
-  --accent: 0 0% 94%;
+  --accent: 40 14% 93%;
   --accent-foreground: 0 0% 9%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
   --radius: 1rem;
-  
+
   --shadow-sm: 0 4px 24px -4px rgba(0,0,0,0.03);
   --shadow-md: 0 8px 32px -8px rgba(0,0,0,0.05);
   --shadow-lg: 0 16px 48px -12px rgba(0,0,0,0.08);
 
-  --sidebar-background: 0 0% 98%;
+  --sidebar-background: 45 20% 98%;
   --sidebar-foreground: 240 5.3% 26.1%;
   --sidebar-primary: 240 5.9% 10%;
   --sidebar-primary-foreground: 0 0% 98%;
   --sidebar-accent: 240 4.8% 95.9%;
   --sidebar-accent-foreground: 240 5.9% 10%;
-  --sidebar-border: 220 13% 91%;
+  --sidebar-border: 40 12% 90%;
   --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
 .dark {
-  /* Using same for dark mode as user explicitly wants light */
-  --background: 0 0% 97%;
-  --foreground: 0 0% 9%;
+  /* Deep charcoal — #111111 ≈ HSL(0 0% 7%) */
+  --background: 0 0% 7%;
+  --foreground: 0 0% 94%;
 
-  --border: 0 0% 90%;
-  --input: 0 0% 90%;
+  --border: 0 0% 17%;
+  --input: 0 0% 17%;
   --ring: 219 100% 50%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 9%;
-  --card-border: 0 0% 94%;
+  --card: 0 0% 10%;
+  --card-foreground: 0 0% 94%;
+  --card-border: 0 0% 16%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 9%;
-  --popover-border: 0 0% 94%;
+  --popover: 0 0% 10%;
+  --popover-foreground: 0 0% 94%;
+  --popover-border: 0 0% 16%;
 
-  --primary: 219 100% 50%;
+  --primary: 219 100% 50%; /* Blue CTA preserved */
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 0 0% 94%;
-  --secondary-foreground: 0 0% 9%;
+  --secondary: 0 0% 13%;
+  --secondary-foreground: 0 0% 88%;
 
-  --muted: 0 0% 94%;
-  --muted-foreground: 0 0% 40%;
+  --muted: 0 0% 13%;
+  --muted-foreground: 0 0% 52%;
 
-  --accent: 0 0% 94%;
-  --accent-foreground: 0 0% 9%;
+  --accent: 0 0% 13%;
+  --accent-foreground: 0 0% 88%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
@@ -160,6 +161,37 @@
   body {
     @apply font-sans antialiased bg-background text-foreground selection:bg-primary selection:text-primary-foreground cursor-default;
   }
+}
+
+/* ── Theme transition ──────────────────────────────────────────────────────────
+   The .theme-transitioning class is added by ThemeContext for exactly 500ms
+   around each toggle. It enables smooth color transitions without polluting
+   normal hover/animation durations. */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition:
+    background-color 450ms ease,
+    color 450ms ease,
+    border-color 450ms ease,
+    fill 450ms ease,
+    opacity 450ms ease !important;
+}
+
+/* ── Portfolio section dark override ──────────────────────────────────────────
+   The portfolio uses bg-foreground text-background (an intentional inversion).
+   In dark mode bg-foreground would resolve to near-white, flipping the section
+   light. This keeps it dark regardless of theme. */
+.dark #work {
+  background-color: hsl(0 0% 8%);
+  color: hsl(0 0% 94%);
+}
+
+/* ── Navbar glass — dark variant ─────────────────────────────────────────────*/
+.dark .glass {
+  background: rgba(17, 17, 17, 0.82);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 /* Custom Hide Scrollbar */
