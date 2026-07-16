@@ -3,6 +3,7 @@ import { ArrowUpRight, PlayCircle } from "lucide-react";
 import heroBg from "@assets/generated_images/hero-bg.jpg";
 import { HeroBadge, HeroAvatarStack } from "./hero-decorations";
 import { HeroHeadline } from "./hero-headline";
+import { GlassLightEffect } from "./GlassLightEffect";
 
 export function Hero() {
   const scrollToContact = () => {
@@ -21,6 +22,10 @@ export function Hero() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
       </div>
+
+      {/* Glass light reflections — above bg (z-1), below all content (z-10) */}
+      <GlassLightEffect />
+
       <div className="container relative z-10 mx-auto px-6 md:px-12 flex flex-col items-center text-center">
         {/* Creative Agency · Texas & India badge — weighted scroll-parallax + idle float */}
         <HeroBadge />
