@@ -194,6 +194,59 @@
   border-color: rgba(255, 255, 255, 0.08);
 }
 
+/* ── Footer theme variables ────────────────────────────────────────────────────
+   Light: warm ivory bg with dark editorial type.
+   Dark:  existing dark bg with white type — unchanged. */
+:root {
+  --footer-bg:         #F8F7F4;
+  --footer-heading:    #111111;
+  --footer-body:       #555555;
+  --footer-label:      #333333;
+  --footer-link:       #555555;
+  --footer-link-hover: #000000;
+  --footer-border:     rgba(0, 0, 0, 0.08);
+  --footer-meta:       rgba(0, 0, 0, 0.35);
+}
+
+.dark {
+  --footer-bg:         #111111;
+  --footer-heading:    #ffffff;
+  --footer-body:       rgba(255,255,255,0.60);
+  --footer-label:      rgba(255,255,255,0.80);
+  --footer-link:       rgba(255,255,255,0.60);
+  --footer-link-hover: #ffffff;
+  --footer-border:     rgba(255,255,255,0.10);
+  --footer-meta:       rgba(255,255,255,0.40);
+}
+
+/* Footer utility classes */
+.footer-section  { background-color: var(--footer-bg); }
+.footer-heading  { color: var(--footer-heading); }
+.footer-body     { color: var(--footer-body); }
+.footer-label    { color: var(--footer-label); }
+.footer-meta     { color: var(--footer-meta); }
+.footer-border   { border-color: var(--footer-border); }
+
+.footer-link             { color: var(--footer-link); transition: color 200ms ease; }
+.footer-link:hover       { color: var(--footer-link-hover); }
+
+/* ── "View our work" hero button ───────────────────────────────────────────── */
+.btn-view-work {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+.btn-view-work:hover {
+  background: #F3F3F3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.09);
+}
+.btn-view-work:active {
+  transform: scale(0.95) translateY(0);
+}
+
 /* Custom Hide Scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

@@ -63,9 +63,9 @@ export function Hero() {
           
           <button 
             onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: "smooth" })}
-            className="group flex h-14 items-center justify-center gap-2 rounded-full border border-border bg-white/50 backdrop-blur-sm px-8 text-base font-semibold text-foreground transition-all hover:bg-white hover:scale-105 active:scale-95"
+            className="btn-view-work group flex h-14 items-center justify-center gap-2 rounded-full px-8 text-base font-semibold"
           >
-            <PlayCircle className="h-5 w-5 text-foreground/60 group-hover:text-primary transition-colors" />
+            <PlayCircle className="h-5 w-5 opacity-50 group-hover:opacity-70 transition-opacity" />
             view our work
           </button>
         </motion.div>

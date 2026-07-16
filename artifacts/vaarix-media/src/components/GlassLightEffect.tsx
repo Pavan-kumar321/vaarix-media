@@ -1,17 +1,18 @@
 /**
  * GlassLightEffect
  * ─────────────────────────────────────────────────────────────────────────────
- * Soft frosted-glass light reflections behind the hero.
+ * Premium luxury editorial hero background.
+ * Resembles soft daylight through frosted glass.
  *
- * Light mode: warm ivory/cream orbs — sunlight through frosted glass.
- * Dark  mode: cool silver-white highlights — moonlight on dark glass.
- *
- * Rules:
- *  • Normal compositing (no mix-blend-mode) so orbs show on any background.
+ * Design rules:
+ *  • Light mode: pure warm cream/ivory orbs — zero blue tint.
+ *  • Dark  mode: neutral silver-white highlights — zero blue tint.
+ *  • Two staggered sweep beams: varied widths, very low opacity (5–8%),
+ *    heavy blur, slow motion, randomised pause so nothing repeats mechanically.
+ *  • Normal compositing (no mix-blend-mode) — shows on any background.
  *  • pointer-events: none — never intercepts clicks/scroll.
- *  • z-[1] — above bg image (z-0), below all content (z-10).
  *  • GSAP animates transform only — compositor thread, 60 fps.
- *  • prefers-reduced-motion: orbs always render; only animation is suppressed.
+ *  • prefers-reduced-motion: orbs always render; only animation suppressed.
  */
 
 import { useEffect, useRef } from "react";
@@ -26,88 +27,116 @@ export function GlassLightEffect() {
   const orb1Ref      = useRef<HTMLDivElement>(null);
   const orb2Ref      = useRef<HTMLDivElement>(null);
   const orb3Ref      = useRef<HTMLDivElement>(null);
-  const sweepRef     = useRef<HTMLDivElement>(null);
+  const sweep1Ref    = useRef<HTMLDivElement>(null);
+  const sweep2Ref    = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) return;
 
     const ctx = gsap.context(() => {
-      // ── Orb 1 — large primary, top-left, slow diagonal drift ──────
+
+      // ── Orb 1 — large primary, top-left, slow diagonal drift ──────────────
       gsap.to(orb1Ref.current, {
-        x: "20%", y: "13%",
-        duration: 19, repeat: -1, yoyo: true, ease: "sine.inOut",
+        x: "18%", y: "11%",
+        duration: 28, repeat: -1, yoyo: true, ease: "sine.inOut",
       });
 
-      // ── Orb 2 — secondary, right side, counter-rhythm ─────────────
+      // ── Orb 2 — secondary, right side, counter-rhythm ─────────────────────
       gsap.to(orb2Ref.current, {
-        x: "-16%", y: "20%",
-        duration: 23, repeat: -1, yoyo: true, ease: "sine.inOut",
-        delay: 5,
+        x: "-14%", y: "18%",
+        duration: 34, repeat: -1, yoyo: true, ease: "sine.inOut",
+        delay: 7,
       });
 
-      // ── Orb 3 — small accent, lower-center ────────────────────────
+      // ── Orb 3 — small accent, lower-center, gentle wander ─────────────────
       gsap.to(orb3Ref.current, {
-        x: "12%", y: "-9%",
-        duration: 16, repeat: -1, yoyo: true, ease: "sine.inOut",
-        delay: 9,
+        x: "10%", y: "-7%",
+        duration: 24, repeat: -1, yoyo: true, ease: "sine.inOut",
+        delay: 13,
       });
 
-      // ── Diagonal sweep — feathered beam, crosses full width ────────
-      // Widths and timing vary naturally; pause between sweeps is random.
+      // ── Sweep beams — randomised so they never repeat mechanically ─────────
       const container = containerRef.current;
-      const sweep     = sweepRef.current;
+      const sweep1    = sweep1Ref.current;
+      const sweep2    = sweep2Ref.current;
 
-      if (container && sweep) {
-        const runSweep = () => {
+      if (container && sweep1) {
+        const runSweep1 = () => {
           const cw = container.offsetWidth;
-          const sw = sweep.offsetWidth;
+          const sw = sweep1.offsetWidth;
           gsap.fromTo(
-            sweep,
-            { x: -sw - 60 },
+            sweep1,
+            { x: -sw - 80 },
             {
-              x: cw + 60,
-              duration: 18 + Math.random() * 4,
+              x: cw + 80,
+              duration: 32 + Math.random() * 8,   // 32–40 s
               ease: "power1.inOut",
               onComplete: () => {
-                gsap.delayedCall(12 + Math.random() * 6, runSweep);
+                gsap.delayedCall(18 + Math.random() * 12, runSweep1); // 18–30 s gap
               },
             },
           );
         };
-        gsap.delayedCall(5, runSweep);
+        gsap.delayedCall(4, runSweep1);
+      }
+
+      if (container && sweep2) {
+        const runSweep2 = () => {
+          const cw = container.offsetWidth;
+          const sw = sweep2.offsetWidth;
+          gsap.fromTo(
+            sweep2,
+            { x: -sw - 80 },
+            {
+              x: cw + 80,
+              duration: 38 + Math.random() * 10,   // 38–48 s
+              ease: "power1.inOut",
+              onComplete: () => {
+                gsap.delayedCall(22 + Math.random() * 14, runSweep2); // 22–36 s gap
+              },
+            },
+          );
+        };
+        // Offset sweep2 so they never coincide
+        gsap.delayedCall(16 + Math.random() * 8, runSweep2);
       }
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);   // intentionally no [isDark] dep — animation params are theme-agnostic
+  }, []);  // animation params are theme-agnostic — no [isDark] dep
 
-  // ── Orb colour palettes ─────────────────────────────────────────────────────
+  // ── Colour palettes ─────────────────────────────────────────────────────────
   //
-  // Light: warm cream-ivory — sunlight through frosted linen.
-  //   Peak centres use rgba(255, 248, 220, …) — candlelight cream.
-  //   Feathered falloffs hold to rgba(255, 245, 210, …) then transparent.
+  // Light mode: pure warm cream — absolutely NO blue channel boost.
+  //   Centre: rgba(255, 248, 220, …) — beeswax/candlelight cream.
+  //   Falloff: rgba(255, 244, 205, …) — warm parchment, then transparent.
   //
-  // Dark:  cool silver-white — moonlight on dark glass.
-  //   More opaque at centre (larger contrast ratio needed on dark bg).
+  // Dark mode: neutral silver-white — no blue tint anywhere.
+  //   Slightly more opaque to lift above the dark background.
 
   const orb1bg = isDark
-    ? "radial-gradient(ellipse at 38% 38%, rgba(255,255,255,0.13) 0%, rgba(220,230,255,0.06) 45%, transparent 70%)"
-    : "radial-gradient(ellipse at 38% 38%, rgba(255,250,224,0.22) 0%, rgba(255,246,208,0.09) 42%, transparent 70%)";
+    ? "radial-gradient(ellipse at 38% 38%, rgba(255,255,255,0.11) 0%, rgba(240,240,240,0.05) 45%, transparent 70%)"
+    : "radial-gradient(ellipse at 38% 38%, rgba(255,248,220,0.28) 0%, rgba(255,244,205,0.11) 42%, transparent 70%)";
 
   const orb2bg = isDark
-    ? "radial-gradient(ellipse at 62% 44%, rgba(255,255,255,0.10) 0%, rgba(210,225,255,0.04) 52%, transparent 74%)"
-    : "radial-gradient(ellipse at 62% 44%, rgba(255,248,218,0.18) 0%, rgba(255,244,200,0.07) 52%, transparent 74%)";
+    ? "radial-gradient(ellipse at 62% 44%, rgba(255,255,255,0.08) 0%, rgba(235,235,235,0.03) 52%, transparent 74%)"
+    : "radial-gradient(ellipse at 62% 44%, rgba(255,245,215,0.22) 0%, rgba(255,241,198,0.08) 52%, transparent 74%)";
 
   const orb3bg = isDark
-    ? "radial-gradient(ellipse at 50% 54%, rgba(255,255,255,0.08) 0%, rgba(200,215,255,0.03) 58%, transparent 80%)"
-    : "radial-gradient(ellipse at 50% 54%, rgba(255,247,215,0.16) 0%, rgba(255,242,198,0.05) 58%, transparent 80%)";
+    ? "radial-gradient(ellipse at 50% 54%, rgba(255,255,255,0.06) 0%, rgba(230,230,230,0.02) 58%, transparent 80%)"
+    : "radial-gradient(ellipse at 50% 54%, rgba(255,244,210,0.18) 0%, rgba(255,240,195,0.05) 58%, transparent 80%)";
 
-  // Sweep: slightly off-axis linear gradient — feathered on both edges.
-  // Light beam is warm (cream); dark beam is silver-cool.
-  const sweepBg = isDark
-    ? "linear-gradient(109deg, transparent 0%, rgba(255,255,255,0.03) 28%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.03) 72%, transparent 100%)"
-    : "linear-gradient(109deg, transparent 0%, rgba(255,248,220,0.04) 25%, rgba(255,246,210,0.10) 48%, rgba(255,248,220,0.05) 72%, transparent 100%)";
+  // Sweep beams — warm white only (light) / neutral white (dark).
+  // Peak opacity 5–7 % as specified. Heavy blur applied on the element.
+  const sweep1bg = isDark
+    ? "linear-gradient(106deg, transparent 0%, rgba(255,255,255,0.025) 30%, rgba(255,255,255,0.060) 50%, rgba(255,255,255,0.025) 70%, transparent 100%)"
+    : "linear-gradient(106deg, transparent 0%, rgba(255,248,220,0.030) 28%, rgba(255,246,210,0.065) 50%, rgba(255,248,220,0.030) 72%, transparent 100%)";
+
+  // Second beam — wider, slightly different angle, a touch dimmer
+  const sweep2bg = isDark
+    ? "linear-gradient(112deg, transparent 0%, rgba(255,255,255,0.018) 25%, rgba(255,255,255,0.050) 50%, rgba(255,255,255,0.018) 75%, transparent 100%)"
+    : "linear-gradient(112deg, transparent 0%, rgba(255,248,218,0.022) 22%, rgba(255,246,208,0.055) 50%, rgba(255,248,218,0.022) 78%, transparent 100%)";
 
   const base: React.CSSProperties = {
     position: "absolute",
@@ -121,57 +150,69 @@ export function GlassLightEffect() {
       aria-hidden="true"
       className="absolute inset-0 z-[1] overflow-hidden pointer-events-none select-none"
     >
-      {/* ── Orb 1 — large, top-left, primary warm glow ─────────────── */}
+      {/* ── Orb 1 — large, top-left, primary warm glow ───────────────────── */}
       <div
         ref={orb1Ref}
         style={{
           ...base,
           top: "-22%", left: "-12%",
-          width: "72%", height: "74%",
+          width: "76%", height: "78%",
           borderRadius: "50%",
           background: orb1bg,
-          filter: "blur(54px)",
+          filter: "blur(72px)",
         }}
       />
 
-      {/* ── Orb 2 — wide secondary, right side ─────────────────────── */}
+      {/* ── Orb 2 — wide secondary, right side ────────────────────────────── */}
       <div
         ref={orb2Ref}
         style={{
           ...base,
-          top: "14%", right: "-20%",
-          width: "62%", height: "62%",
+          top: "12%", right: "-22%",
+          width: "64%", height: "64%",
           borderRadius: "50%",
           background: orb2bg,
-          filter: "blur(62px)",
+          filter: "blur(80px)",
         }}
       />
 
-      {/* ── Orb 3 — small accent, lower-center ─────────────────────── */}
+      {/* ── Orb 3 — small accent, lower-center ───────────────────────────── */}
       <div
         ref={orb3Ref}
         style={{
           ...base,
-          bottom: "5%", left: "20%",
-          width: "44%", height: "46%",
+          bottom: "4%", left: "18%",
+          width: "46%", height: "48%",
           borderRadius: "50%",
           background: orb3bg,
-          filter: "blur(46px)",
+          filter: "blur(60px)",
         }}
       />
 
-      {/* ── Diagonal sweep — feathered, skewed beam ─────────────────── */}
-      {/* Starts off-screen left; GSAP translates to off-screen right. */}
-      {/* Width is intentionally narrower than full viewport for subtlety. */}
+      {/* ── Sweep beam 1 — narrow, warm, slow diagonal ──────────────────── */}
+      {/* Starts off-screen left; GSAP translates to off-screen right.       */}
       <div
-        ref={sweepRef}
+        ref={sweep1Ref}
         style={{
           ...base,
-          top: "-8%", left: 0,
-          width: "22%", height: "116%",
-          background: sweepBg,
-          filter: "blur(28px)",
-          transform: "skewX(-10deg) translateX(-140%)",
+          top: "-10%", left: 0,
+          width: "16%", height: "120%",
+          background: sweep1bg,
+          filter: "blur(52px)",
+          transform: "skewX(-8deg) translateX(-200%)",
+        }}
+      />
+
+      {/* ── Sweep beam 2 — wider, softer, different rhythm ──────────────── */}
+      <div
+        ref={sweep2Ref}
+        style={{
+          ...base,
+          top: "-10%", left: 0,
+          width: "28%", height: "120%",
+          background: sweep2bg,
+          filter: "blur(72px)",
+          transform: "skewX(-12deg) translateX(-200%)",
         }}
       />
     </div>
