@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 
 export function Footer() {
   return (
-    <footer className="footer-section py-20 pb-10 rounded-t-[3rem] -mt-10 relative z-20">
+    <footer className="footer-section py-12 md:py-20 pb-8 md:pb-10 rounded-t-[2rem] md:rounded-t-[3rem] -mt-10 relative z-20">
       <div className="container mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-10 md:mb-20">
           <div className="lg:col-span-2">
             <h2 className="footer-heading font-serif text-4xl md:text-5xl font-medium mb-6">Vaarix.</h2>
             <p className="footer-body max-w-sm text-lg font-light leading-relaxed">

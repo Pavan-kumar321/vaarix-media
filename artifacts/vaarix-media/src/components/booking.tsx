@@ -26,22 +26,22 @@ export function Booking() {
   return (
     <section
       id="contact"
-      className="py-32 bg-white relative overflow-hidden"
+      className="py-16 md:py-32 bg-white relative overflow-hidden"
       data-cursor="default"
     >
       {/* Decorative blobs */}
       <div className="absolute top-0 right-0 -mr-64 -mt-64 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 -ml-48 -mb-48 w-[600px] h-[600px] bg-primary/3 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
+      <div className="container mx-auto px-4 md:px-12 relative z-10">
         <AnimatePresence mode="wait">
           {/* ── STEP 1: Qualification ── */}
           {step === "qualify" && (
             <motion.div key="qualify" {...fadeUp} className="max-w-2xl mx-auto">
-              <div className="bg-card border border-border shadow-xl rounded-[2.5rem] p-8 md:p-14">
+              <div className="bg-card border border-border shadow-xl rounded-[1.5rem] md:rounded-[2.5rem] p-5 sm:p-8 md:p-14">
                 <div className="mb-10">
                   <span className="text-primary font-medium tracking-wider uppercase text-sm">Book a Call</span>
-                  <h2 className="font-serif text-4xl md:text-5xl font-medium text-foreground mt-4 mb-4 leading-tight">
+                  <h2 className="font-serif text-3xl md:text-5xl font-medium text-foreground mt-4 mb-4 leading-tight">
                     Book Your Free<br />
                     <span className="italic text-primary">Strategy Call</span>
                   </h2>
@@ -50,7 +50,7 @@ export function Booking() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-secondary/60 border border-border p-6 mb-8">
+                <div className="rounded-2xl bg-secondary/60 border border-border p-4 md:p-6 mb-8">
                   <p className="text-foreground font-medium text-lg leading-relaxed">
                     Our restaurant marketing partnerships begin at{" "}
                     <span className="text-primary font-semibold">$429/month</span>{" "}
@@ -69,7 +69,7 @@ export function Booking() {
                     <button
                       key={opt.value}
                       onClick={() => setSelected(opt.value)}
-                      className={`w-full flex items-center gap-4 rounded-2xl border-2 px-6 py-4 text-left transition-all duration-300 ${
+                      className={`w-full flex items-center gap-3 rounded-2xl border-2 px-4 md:px-6 py-3 md:py-4 text-left transition-all duration-300 ${
                         selected === opt.value
                           ? "border-primary bg-primary/5 shadow-md shadow-primary/10"
                           : "border-border bg-background hover:border-primary/40 hover:bg-secondary/50"
@@ -114,10 +114,10 @@ export function Booking() {
                 Back
               </button>
 
-              <div className="bg-card border border-border shadow-xl rounded-[2.5rem] overflow-hidden">
+              <div className="bg-card border border-border shadow-xl rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden">
                 <div className="grid md:grid-cols-[320px_1fr]">
                   {/* Left panel */}
-                  <div className="bg-foreground text-background p-8 md:p-10 flex flex-col gap-6">
+                  <div className="bg-foreground text-background p-5 sm:p-8 md:p-10 flex flex-col gap-4 md:gap-6">
                     <div>
                       <div className="font-serif text-2xl font-medium mb-1">Vaarix Media</div>
                       <div className="text-background/60 text-sm uppercase tracking-widest font-medium">Strategy Call</div>
@@ -154,11 +154,11 @@ export function Booking() {
                   </div>
 
                   {/* Right panel */}
-                  <div className="p-8 md:p-10 min-h-[520px] flex items-center justify-center">
+                  <div className="p-4 sm:p-8 md:p-10 min-h-[320px] md:min-h-[520px] flex items-center justify-center">
                     {CALENDLY_URL ? (
                       <iframe
                         src={CALENDLY_URL}
-                        className="w-full h-[520px] rounded-2xl border-0"
+                        className="w-full h-[340px] sm:h-[440px] md:h-[520px] rounded-2xl border-0"
                         title="Schedule a strategy call"
                         loading="lazy"
                       />
@@ -187,7 +187,7 @@ export function Booking() {
           {/* ── STEP 3: Declined ── */}
           {step === "declined" && (
             <motion.div key="declined" {...fadeUp} className="max-w-2xl mx-auto text-center">
-              <div className="bg-card border border-border shadow-xl rounded-[2.5rem] p-8 md:p-16 relative overflow-hidden">
+              <div className="bg-card border border-border shadow-xl rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-16 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-foreground/3 to-transparent pointer-events-none" />
                 <div className="relative z-10 flex flex-col items-center">
                   <motion.div
@@ -199,7 +199,7 @@ export function Booking() {
                     <CheckCircle2 className="h-8 w-8 text-muted-foreground" />
                   </motion.div>
 
-                  <h2 className="font-serif text-3xl md:text-4xl font-medium text-foreground mb-6 leading-tight">
+                  <h2 className="font-serif text-2xl md:text-4xl font-medium text-foreground mb-5 md:mb-6 leading-tight">
                     Thank you for your interest<br />in{" "}
                     <span className="italic text-primary">Vaarix Media.</span>
                   </h2>

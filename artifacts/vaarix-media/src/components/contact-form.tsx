@@ -84,11 +84,11 @@ export function ContactForm() {
   }
 
   return (
-    <section id="contact" className="py-32 bg-white relative overflow-hidden">
+    <section id="contact" className="py-16 md:py-32 bg-white relative overflow-hidden">
       {/* Decorative blurred blob */}
       <div className="absolute top-0 right-0 -mr-64 -mt-64 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
       
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
+      <div className="container mx-auto px-4 md:px-12 relative z-10">
         <div className="max-w-4xl mx-auto">
           <AnimatePresence mode="wait">
             {!isSuccess ? (
@@ -98,10 +98,10 @@ export function ContactForm() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
                 transition={{ duration: 0.5 }}
-                className="bg-card border border-border shadow-xl rounded-[2.5rem] p-8 md:p-14"
+                className="bg-card border border-border shadow-xl rounded-[1.5rem] md:rounded-[2.5rem] p-5 sm:p-8 md:p-14"
               >
-                <div className="mb-12">
-                  <h2 className="font-serif text-4xl md:text-5xl font-medium text-foreground mb-4">
+                <div className="mb-8 md:mb-12">
+                  <h2 className="font-serif text-3xl md:text-5xl font-medium text-foreground mb-4">
                     Ready to scale? <br />
                     <span className="italic text-primary">Let's talk.</span>
                   </h2>
@@ -112,7 +112,7 @@ export function ContactForm() {
 
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
                       <FormField
                         control={form.control}
                         name="fullName"
@@ -299,7 +299,7 @@ export function ContactForm() {
                 initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-primary text-white rounded-[2.5rem] p-12 md:p-20 text-center shadow-2xl relative overflow-hidden"
+                className="bg-primary text-white rounded-[1.5rem] md:rounded-[2.5rem] p-8 md:p-20 text-center shadow-2xl relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-[url('@assets/generated_images/hero-bg.jpg')] opacity-20 mix-blend-overlay object-cover" />
                 <div className="relative z-10 flex flex-col items-center">
@@ -310,10 +310,10 @@ export function ContactForm() {
                   >
                     <CheckCircle2 className="w-24 h-24 mb-8 text-white" />
                   </motion.div>
-                  <h2 className="font-serif text-4xl md:text-6xl font-medium mb-6">
+                  <h2 className="font-serif text-3xl md:text-6xl font-medium mb-4 md:mb-6">
                     Request Received.
                   </h2>
-                  <p className="text-xl text-white/80 max-w-lg mb-12 font-light">
+                  <p className="text-base md:text-xl text-white/80 max-w-lg mb-8 md:mb-12 font-light">
                     Thank you for your interest in Vaarix Media. We're reviewing your details and will be in touch shortly to schedule your strategy call.
                   </p>
                   <Button 

@@ -189,9 +189,9 @@ export function Portfolio() {
   );
 
   return (
-    <section id="work" className="py-32 bg-foreground text-background overflow-hidden">
+    <section id="work" className="py-16 md:py-32 bg-foreground text-background overflow-hidden">
       {/* Header */}
-      <div className="container mx-auto px-6 md:px-12 mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
+      <div className="container mx-auto px-6 md:px-12 mb-10 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8">
         <div className="max-w-2xl">
           <motion.span
             initial={{ opacity: 0, y: 20 }}

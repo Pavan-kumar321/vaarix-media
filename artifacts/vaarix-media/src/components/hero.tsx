@@ -12,7 +12,7 @@ export function Hero() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative min-h-[100dvh] flex items-center pt-24 pb-12 overflow-hidden">
+    <section className="relative min-h-[100dvh] flex items-center pt-20 md:pt-24 pb-8 md:pb-12 overflow-hidden">
       {/* Background Image/Gradient */}
       <div className="absolute inset-0 z-0">
         {/*
@@ -75,7 +75,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2.4 }}
-          className="mt-10"
+          className="mt-6 md:mt-10"
         >
           <HeroAvatarStack />
         </motion.div>
@@ -85,7 +85,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2.6 }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 border-t border-border/60 pt-12 w-full max-w-5xl"
+          className="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-16 border-t border-border/60 pt-6 md:pt-12 w-full max-w-5xl"
         >
           {[
             { value: "20+", label: "Brands Scaled" },
@@ -94,7 +94,7 @@ export function Hero() {
             { value: "2", label: "Global Hubs" },
           ].map((stat, i) => (
             <div key={i} className="flex flex-col items-center justify-center text-center">
-              <span className="font-serif md:text-5xl font-medium text-foreground text-[48px]">{stat.value}</span>
+              <span className="font-serif text-[2rem] md:text-[48px] font-medium text-foreground">{stat.value}</span>
               <span className="mt-2 text-sm font-medium uppercase tracking-wider text-foreground/50">{stat.label}</span>
             </div>
           ))}

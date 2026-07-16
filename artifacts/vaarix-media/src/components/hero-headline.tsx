@@ -60,7 +60,7 @@ export function HeroHeadline() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-foreground max-w-5xl leading-[1.1]">
+    <h1 className="font-serif text-[2rem] xs:text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-foreground max-w-5xl leading-[1.1]">
       {WORDS.map((word, i) => {
         const delay = REVEAL_START + i * STAGGER;
 

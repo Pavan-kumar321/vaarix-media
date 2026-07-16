@@ -22,9 +22,9 @@ function Counter({ from = 0, to, duration = 2, suffix = "" }: { from?: number; t
 
 export function Results() {
   return (
-    <section id="results" className="py-32 bg-background relative border-b border-border/50">
+    <section id="results" className="py-16 md:py-32 bg-background relative border-b border-border/50">
       <div className="container mx-auto px-6 md:px-12">
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
+        <div className="flex flex-col lg:flex-row gap-10 md:gap-16 items-center">
           <div className="flex-1">
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
@@ -39,7 +39,7 @@ export function Results() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="font-serif text-4xl md:text-6xl font-medium mt-4 text-foreground leading-tight mb-8"
+              className="font-serif text-4xl md:text-6xl font-medium mt-4 text-foreground leading-tight mb-5 md:mb-8"
             >
               Metrics that actually <span className="italic">matter.</span>
             </motion.h2>
@@ -58,7 +58,7 @@ export function Results() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="mt-12"
+              className="mt-8 md:mt-12"
             >
               <button 
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
@@ -82,7 +82,7 @@ export function Results() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-card rounded-[2rem] p-8 border border-card-border shadow-sm flex flex-col justify-center min-h-[200px]"
+                className="bg-card rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-8 border border-card-border shadow-sm flex flex-col justify-center min-h-[140px] md:min-h-[200px]"
               >
                 <div className="text-5xl font-serif text-primary mb-4">
                   <Counter to={stat.value} suffix={stat.suffix} />

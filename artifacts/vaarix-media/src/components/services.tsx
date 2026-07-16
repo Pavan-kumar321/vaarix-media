@@ -36,9 +36,9 @@ export function Services() {
   ];
 
   return (
-    <section id="services" className="py-32 bg-background relative">
+    <section id="services" className="py-16 md:py-32 bg-background relative">
       <div className="container mx-auto px-6 md:px-12">
-        <div className="max-w-2xl mb-20">
+        <div className="max-w-2xl mb-10 md:mb-20">
           <motion.span 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -70,7 +70,7 @@ export function Services() {
                 scale: 1.025,
                 transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
               }}
-              className="group relative rounded-[2rem] bg-card p-10 border border-card-border shadow-sm hover:shadow-2xl hover:border-primary/20 hover:brightness-[1.02] transition-shadow transition-[border-color,filter] duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
+              className="group relative rounded-[1.5rem] md:rounded-[2rem] bg-card p-6 md:p-10 border border-card-border shadow-sm hover:shadow-2xl hover:border-primary/20 hover:brightness-[1.02] transition-shadow transition-[border-color,filter] duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
               style={{ willChange: "transform" }}
             >
               {/* Glass highlight border */}
@@ -88,7 +88,7 @@ export function Services() {
                   whileHover={{ y: -4 }}
                   transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <h3 className="text-2xl font-semibold text-card-foreground">{service.title}</h3>
+                  <h3 className="text-xl md:text-2xl font-semibold text-card-foreground">{service.title}</h3>
                   <p className="text-muted-foreground leading-relaxed flex-grow">
                     {service.desc}
                   </p>

@@ -21,9 +21,9 @@ export function Testimonials() {
   ];
 
   return (
-    <section id="testimonials" className="py-32 bg-secondary/50">
+    <section id="testimonials" className="py-16 md:py-32 bg-secondary/50">
       <div className="container mx-auto px-6 md:px-12">
-        <div className="text-center max-w-2xl mx-auto mb-20">
+        <div className="text-center max-w-2xl mx-auto mb-10 md:mb-20">
           <motion.span 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -51,7 +51,7 @@ export function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="bg-card p-10 rounded-[2rem] border border-card-border shadow-sm flex flex-col justify-between"
+              className="bg-card p-6 md:p-10 rounded-[1.5rem] md:rounded-[2rem] border border-card-border shadow-sm flex flex-col justify-between"
             >
               <div>
                 <div className="flex gap-1 mb-6">
@@ -59,7 +59,7 @@ export function Testimonials() {
                     <Star key={star} className="w-5 h-5 fill-primary text-primary" />
                   ))}
                 </div>
-                <p className="text-lg leading-relaxed text-foreground/80 mb-8 font-light">
+                <p className="text-base md:text-lg leading-relaxed text-foreground/80 mb-6 md:mb-8 font-light">
                   "{testimonial.text}"
                 </p>
               </div>

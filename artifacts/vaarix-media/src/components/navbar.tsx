@@ -33,7 +33,7 @@ export function Navbar() {
         scrolled ? "glass py-4 shadow-sm" : "bg-transparent py-6"
       }`}
     >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-12 flex items-center justify-between">
         <div
           className="font-serif font-bold cursor-pointer tracking-tight text-[26px]"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -85,7 +85,7 @@ export function Navbar() {
           {/* ── CTA ─────────────────────────────────────────────────── */}
           <button
             onClick={() => scrollTo("contact")}
-            className="group relative overflow-hidden rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+            className="hidden sm:inline-flex group relative overflow-hidden rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
           >
             <span className="relative z-10">Book Strategy Call</span>
             <div className="absolute inset-0 z-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
