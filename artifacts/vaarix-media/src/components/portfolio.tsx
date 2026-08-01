@@ -37,22 +37,30 @@ function useFlyerEntries(): PortfolioEntry[] {
   );
 }
 
-// ─── Empty state ──────────────────────────────────────────────────────────────
+// ─── Placeholder grid (shown when no flyers are uploaded yet) ─────────────────
 
-function EmptyState() {
+const PLACEHOLDER_COUNT = 32; // enough to fill the visible wall
+
+function PlaceholderGrid() {
   return (
-    <div className="col-span-full flex flex-col items-center justify-center py-24 gap-4 text-center">
-      <div className="w-14 h-14 rounded-xl border-2 border-dashed border-white/15 flex items-center justify-center">
-        <span className="text-white/20 text-xl">+</span>
+    <>
+      {Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
+        <div
+          key={i}
+          className="aspect-square rounded-lg border border-dashed border-white/10 bg-white/[0.03]"
+        />
+      ))}
+      {/* Drop-zone label centred over the grid */}
+      <div className="col-span-full flex flex-col items-center justify-center gap-3 py-6 pointer-events-none">
+        <p className="text-white/30 text-xs font-medium tracking-wide text-center leading-relaxed">
+          Drop flyers into{" "}
+          <code className="text-white/50 font-mono bg-white/5 px-1.5 py-0.5 rounded">
+            src/assets/portfolio/flyers/
+          </code>
+          {" "}— they fill the wall automatically.
+        </p>
       </div>
-      <p className="text-white/25 text-sm font-medium max-w-xs leading-relaxed">
-        Drop flyer images into{" "}
-        <code className="text-white/40 font-mono text-xs bg-white/5 px-1.5 py-0.5 rounded">
-          src/assets/portfolio/flyers/
-        </code>
-        {" "}— they'll fill the wall automatically.
-      </p>
-    </div>
+    </>
   );
 }
 
@@ -125,22 +133,19 @@ export function Portfolio() {
 
       {/* Dense creative wall — 5 cols mobile → 8 cols desktop */}
       <div className="px-3 md:px-4">
-        {entries.length > 0 ? (
-          <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-[10px] md:gap-[12px]">
-            {entries.map((entry, i) => (
-              <GalleryCard
-                key={entry.id}
-                entry={entry}
-                index={i}
-                onClick={() => setLightboxIdx(entry.id)}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-[10px] md:gap-[12px]">
-            <EmptyState />
-          </div>
-        )}
+        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-[10px] md:gap-[12px]">
+          {entries.length > 0
+            ? entries.map((entry, i) => (
+                <GalleryCard
+                  key={entry.id}
+                  entry={entry}
+                  index={i}
+                  onClick={() => setLightboxIdx(entry.id)}
+                />
+              ))
+            : <PlaceholderGrid />
+          }
+        </div>
       </div>
 
       {/* Lightbox */}
