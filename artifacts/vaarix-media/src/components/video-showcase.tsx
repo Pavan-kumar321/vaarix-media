@@ -90,7 +90,7 @@ function VideoCard({ entry, isCenter, onEnded }: VideoCardProps) {
     <div
       className="relative flex-shrink-0 overflow-hidden rounded-2xl select-none"
       style={{
-        width: isCenter ? "clamp(300px, 32vw, 480px)" : "clamp(180px, 20vw, 300px)",
+        width: isCenter ? "clamp(280px, 30vw, 460px)" : "clamp(160px, 19vw, 280px)",
         aspectRatio: "9/16",
         opacity: isCenter ? 1 : 0.45,
         transition: "width 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease",

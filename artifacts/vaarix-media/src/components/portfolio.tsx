@@ -73,7 +73,7 @@ function GalleryCard({
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: "-20px" }}
       transition={{ duration: 0.35, delay: (index % 21) * 0.025 }}
-      className="group relative aspect-[3/4] rounded-lg overflow-hidden cursor-pointer bg-white/5"
+      className="group relative aspect-square rounded-lg overflow-hidden cursor-pointer bg-white/5"
       onClick={onClick}
     >
       <img
@@ -123,15 +123,10 @@ export function Portfolio() {
         </motion.h2>
       </div>
 
-      {/* Dense masonry wall */}
+      {/* Dense creative wall — 5 cols mobile → 8 cols desktop */}
       <div className="px-3 md:px-4">
         {entries.length > 0 ? (
-          <div
-            className="grid gap-[12px]"
-            style={{
-              gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-            }}
-          >
+          <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-[10px] md:gap-[12px]">
             {entries.map((entry, i) => (
               <GalleryCard
                 key={entry.id}
@@ -142,7 +137,7 @@ export function Portfolio() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-[12px]">
+          <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-[10px] md:gap-[12px]">
             <EmptyState />
           </div>
         )}
