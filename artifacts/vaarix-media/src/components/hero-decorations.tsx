@@ -107,6 +107,9 @@ export function HeroAvatarStack() {
             </span>
           ))}
         </div>
+        <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+          Trusted by 6+ Brands
+        </span>
       </motion.div>
     </div>
   );

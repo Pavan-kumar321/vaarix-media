@@ -1,0 +1,348 @@
+REPLIT REVISION - FIX REMAINING DESIGN ISSUES
+
+The current implementation is not yet complete. Some sections were interpreted incorrectly. Please update the website according to the following requirements.
+
+Do not redesign unrelated sections. Only fix the issues listed below.
+
+1. HERO SECTION - TRUSTED BRANDS
+
+The hero section is still incomplete.
+
+Current Issue
+
+Below the CTA buttons there are only overlapping placeholder logos.
+
+The accompanying text is missing.
+
+Required Design
+
+Keep the overlapping logos exactly where they are.
+
+To the right side of the logos, add the text:
+
+Trusted by 6+ Brands
+
+The layout should look like:
+
+[logo][logo][logo][logo][logo]
+
+Trusted by 6+ Brands
+
+Or
+
+[overlapping logos]   Trusted by 6+ Brands
+
+depending on which alignment looks more balanced.
+
+The text should:
+
+align vertically with the logos
+use medium font weight
+subtle gray color
+not compete with the CTA buttons
+remain responsive
+
+Do not leave only the logos.
+
+The text is mandatory.
+
+2. CLIENT MARQUEE
+
+This section is incorrect.
+
+Current Issue
+
+It scrolls client logos.
+
+That is NOT what was requested.
+
+Required Design
+
+Replace every logo with text only.
+
+The marquee should continuously scroll client names.
+
+Exactly like premium agency websites.
+
+Example:
+
+Velvet Cloud
+
+•
+
+Parotta Palace
+
+•
+
+Bharat Bhavan
+
+•
+
+MNM Lounge
+
+•
+
+Deccan Grill
+
+•
+
+Velvet Cloud
+
+•
+
+Parotta Palace
+
+•
+
+...
+
+Requirements:
+
+No logos
+No profile circles
+No icons
+No avatars
+Text only
+Elegant typography
+Infinite loop
+Smooth continuous animation
+Consistent spacing
+Use separators (• or /)
+
+The section should feel minimal and premium.
+
+3. PORTFOLIO WALL
+
+The overall layout is correct.
+
+However, improve it further.
+
+Requirements:
+
+Reduce gaps slightly.
+Make the wall feel denser.
+Posters should fill the viewport better.
+Avoid large empty margins.
+Maintain the premium black background.
+
+The goal is for visitors to immediately feel that Vaarix has produced a large volume of creative work.
+
+4. VIDEO SHOWCASE
+
+Current implementation is much closer.
+
+However:
+
+Increase polish.
+
+Requirements:
+
+smoother transition animation
+more cinematic easing
+center video slightly larger
+left/right videos slightly faded
+maintain autoplay
+maintain infinite loop
+maintain hover-to-unmute
+
+Do not redesign this section.
+
+Only polish it.
+
+5. "THE IMPACT" SECTION
+
+This section was NOT updated correctly.
+
+It still contains metric cards.
+
+It still talks about ROI.
+
+This is NOT what was requested.
+
+Completely redesign this section.
+
+Delete everything currently inside it.
+
+REMOVE
+
+Delete:
+
+Metrics that actually matter
+Average ROI
+Ads Managed
+Views
+Retention
+Statistic cards
+Blue percentage numbers
+Every metric-based component
+
+Do not reuse any existing cards.
+
+Start from scratch.
+
+NEW SECTION PURPOSE
+
+This section should explain
+
+why businesses choose Vaarix.
+
+It should focus on:
+
+premium creative execution
+strategy before design
+cinematic content
+consistent branding
+restaurant marketing
+campaigns that build recognition
+memorable visual identity
+storytelling
+content that attracts customers
+creative systems
+
+This is not a statistics section anymore.
+
+It is a value proposition section.
+
+New Layout
+
+Create a premium editorial split layout.
+
+Example:
+
+LEFT SIDE
+
+Small label
+
+WHY VAARIX
+
+Large editorial heading
+
+Example:
+
+Marketing that people remember.
+
+or
+
+Creative built to grow restaurants.
+
+Supporting paragraph explaining our approach.
+
+Keep
+
+Start Growing Today
+
+button.
+
+RIGHT SIDE
+
+Instead of metrics,
+
+create elegant feature cards.
+
+Example:
+
+Strategy First
+
+Every campaign begins with customer psychology, not trends.
+Content That Converts
+
+Premium photography, reels and campaigns designed to drive attention.
+Built For Restaurants
+
+Marketing tailored specifically for restaurants and hospitality brands.
+Consistent Branding
+
+Every touchpoint feels cohesive across social media, print and web.
+
+Do not use numbers.
+
+Do not use percentages.
+
+Do not promise guaranteed ROI.
+
+Do not create fake statistics.
+
+Design Direction
+
+This section should feel similar in quality to:
+
+Ramotion
+Locomotive
+Awwwards agency sites
+
+Characteristics:
+
+lots of whitespace
+editorial typography
+premium cards
+subtle hover animations
+rounded corners
+soft shadows
+elegant spacing
+
+Avoid generic SaaS metric blocks.
+
+6. VISUAL CONSISTENCY
+
+Ensure every section feels connected.
+
+The flow should be:
+
+Hero
+
+↓
+
+Portfolio Wall
+
+↓
+
+Video Showcase
+
+↓
+
+Client Marquee
+
+↓
+
+Why Vaarix (new section)
+
+↓
+
+Testimonials
+
+↓
+
+Book Strategy Call
+
+Spacing between sections should feel intentional and consistent.
+
+7. DO NOT CHANGE
+
+Do not modify:
+
+Hero layout
+Loading screen
+Existing animations
+Navigation
+Booking form
+Testimonials
+Footer
+
+Only fix the issues listed above.
+
+Final Acceptance Checklist
+
+The update is complete only if all of the following are true:
+
+"Trusted by 6+ Brands" appears beside the overlapping logos in the hero.
+The client marquee displays text-only brand names, not logos or profile images.
+The marquee loops smoothly with elegant typography.
+The portfolio wall is denser and better utilizes screen space.
+The video showcase is visually refined without changing its overall concept.
+The old "The Impact" section is completely removed.
+No ROI, percentages, or metric cards remain.
+A brand-focused "Why Vaarix" section replaces the metrics section with premium editorial design and feature cards.
+The "Start Growing Today" button remains in the new section.
+No unrelated sections are modified.
+
+This prompt removes the ambiguity that caused Replit to improvise. Instead of saying "change the impact section," it explicitly tells it to delete the entire metrics concept and replace it with a brand value section, which is much closer to the premium agency experience you're aiming for.

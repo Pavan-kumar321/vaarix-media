@@ -133,7 +133,7 @@ export function Portfolio() {
 
       {/* Dense creative wall — 5 cols mobile → 8 cols desktop */}
       <div className="px-3 md:px-4">
-        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-[10px] md:gap-[12px]">
+        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-[5px] md:gap-[6px]">
           {entries.length > 0
             ? entries.map((entry, i) => (
                 <GalleryCard

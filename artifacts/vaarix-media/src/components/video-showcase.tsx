@@ -90,10 +90,10 @@ function VideoCard({ entry, isCenter, onEnded }: VideoCardProps) {
     <div
       className="relative flex-shrink-0 overflow-hidden rounded-2xl select-none"
       style={{
-        width: isCenter ? "clamp(180px, 18vw, 260px)" : "clamp(100px, 11vw, 160px)",
+        width: isCenter ? "clamp(200px, 20vw, 300px)" : "clamp(100px, 11vw, 165px)",
         aspectRatio: "9/16",
-        opacity: isCenter ? 1 : 0.45,
-        transition: "width 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease",
+        opacity: isCenter ? 1 : 0.3,
+        transition: "width 0.7s cubic-bezier(0.16,1,0.3,1), opacity 0.7s cubic-bezier(0.16,1,0.3,1)",
       }}
       onMouseEnter={() => isCenter && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
