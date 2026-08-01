@@ -1,0 +1,329 @@
+Remove Statistics
+
+Completely remove this entire statistics section.
+
+Delete:
+
+20+
+50M+
+100+
+2 Campaigns
+
+Remove:
+
+numbers
+labels
+spacing
+containers
+animations
+
+Nothing should remain.
+
+Hero Height
+
+After removing the statistics section,
+
+the hero section should end immediately after
+
+Trusted by 6+ Brands.
+
+Adjust the hero height so that it fills the screen naturally.
+
+There should be no unnecessary empty whitespace before the next section.
+
+2. PORTFOLIO SECTION
+
+Move the Portfolio section so it appears immediately below the Hero section.
+
+Replace Current Portfolio
+
+Remove the existing infinitely scrolling flyer grid.
+
+Replace it with a static premium portfolio gallery inspired by the provided reference.
+
+Important:
+
+Do not copy the reference exactly.
+
+Instead, recreate the layout style using our own branding.
+
+The gallery should:
+
+show many flyers simultaneously
+have rounded corners
+maintain equal spacing
+look clean
+feel premium
+remain completely static
+
+No auto-scrolling.
+
+No infinite scrolling.
+
+No marquee animation.
+
+Exactly like the reference.
+
+Media Structure
+
+Create a dedicated folder structure for portfolio assets.
+
+Example:
+
+public/
+
+ portfolio/
+
+      flyers/
+
+          flyer-01.webp
+
+          flyer-02.webp
+
+          flyer-03.webp
+
+      videos/
+
+          video-01.mp4
+
+          video-02.mp4
+
+          video-03.mp4
+
+Use dynamic rendering.
+
+Replit should clearly indicate where additional flyers can be added later.
+
+The gallery should automatically display every image inside the folder.
+
+This allows us to keep expanding the portfolio without modifying code.
+
+3. VIDEO SHOWCASE
+
+Immediately below the Flyer Portfolio,
+
+create a dedicated Video Showcase inspired by the provided reference.
+
+Layout
+
+Display one large featured video in the center.
+
+Adjacent videos remain partially visible on the left and right.
+
+The center video should always be the focus.
+
+Playback
+
+Videos should autoplay.
+
+Muted by default.
+
+When one finishes,
+
+the next video automatically slides into the center.
+
+The transition should happen automatically.
+
+No user interaction required.
+
+Continue forever.
+
+Infinite looping.
+
+Hover Interaction
+
+When users
+
+hover
+
+or click
+
+the centered video:
+
+unmute audio
+continue playing
+
+When the cursor leaves,
+
+mute it again.
+
+Video Source
+
+Create another media folder.
+
+Example:
+
+public/
+
+ portfolio/
+
+      videos/
+
+Every video inside this folder should automatically appear in the carousel.
+
+No manual coding required when new videos are added.
+
+4. CLIENT MARQUEE
+
+Keep the infinite scrolling effect.
+
+Only replace the client names.
+
+Remove every current brand.
+
+Replace them with:
+
+Velvet Cloud
+Parotta Palace
+Bharat Bhavan
+MNM Lounge
+Deccan Grill
+
+Loop continuously.
+
+Maintain current animation.
+
+5. "THE IMPACT" SECTION
+
+Completely redesign this section.
+
+Current version focuses too much on marketing metrics.
+
+It doesn't represent Vaarix well.
+
+Remove
+
+Remove references like:
+
+Average ROI
+ROI Guaranteed
+12M+ Ads Managed
+100M Views
+Huge performance metrics
+
+Do not promise unrealistic numbers.
+
+New Direction
+
+The section should communicate
+
+why businesses choose Vaarix.
+
+Focus on:
+
+premium creative
+consistent branding
+cinematic content
+social media presence
+restaurant marketing
+memorable campaigns
+customer experience
+content strategy
+creative execution
+
+Make it feel premium,
+
+editorial,
+
+and agency-focused.
+
+Button
+
+Keep
+
+Start Growing Today
+
+unchanged.
+
+Design
+
+Completely redesign this section while matching the rest of the site.
+
+Use:
+
+premium spacing
+elegant typography
+subtle animations
+clean cards
+tasteful gradients if necessary
+
+Avoid generic SaaS metric cards.
+
+6. LIGHT / DARK MODE
+
+The website should load in Light Mode by default.
+
+Current Dark Mode does not fit the design.
+
+Choose one of these approaches:
+
+Preferred
+
+Improve Dark Mode so it matches the premium editorial feel.
+
+OR
+
+If Dark Mode still feels weak
+
+Remove Dark Mode completely.
+
+A beautifully designed Light Mode is preferable to a mediocre Dark Mode.
+
+7. KEEP EXISTING ANIMATIONS
+
+Do NOT remove:
+
+loading screen
+page transitions
+smooth scrolling
+hover animations
+entrance animations
+existing motion effects
+
+Only modify the sections described above.
+
+8. ADS LANDING PAGE
+
+Currently,
+
+users coming from paid advertisements land on the Hero section.
+
+Instead,
+
+when visitors arrive from social media ads,
+
+they should automatically land on the
+
+Book Strategy Call
+
+section.
+
+Implement smooth scrolling or direct navigation to the booking section.
+
+The experience should feel intentional rather than abrupt.
+
+GENERAL REQUIREMENTS
+Preserve the premium editorial identity.
+Maintain responsive behavior across desktop, tablet, and mobile.
+Do not introduce generic SaaS components.
+Keep typography elegant and spacious.
+Optimize images and videos for performance.
+Lazy-load media where appropriate.
+Keep all animations smooth at 60fps.
+Use reusable React components.
+Do not hardcode portfolio media. Read it dynamically from the asset folders.
+Ensure all existing functionality continues working after these updates.
+Do not modify sections that are not mentioned above.
+
+Acceptance Criteria
+
+Hero ends at Trusted by 6+ Brands with no empty space.
+Statistics section is completely removed.
+Portfolio appears immediately below the hero.
+Flyer gallery is static and dynamically loads images from the portfolio folder.
+Video showcase auto-plays and cycles through videos automatically.
+Client marquee only contains the five specified brands.
+"The Impact" section is redesigned to reflect Vaarix's creative marketing expertise instead of performance claims.
+Light Mode is the default experience.
+Existing animations and loading screens remain intact.
+Visitors from advertisements land directly on the Book Strategy Call section instead of the top of the homepage.

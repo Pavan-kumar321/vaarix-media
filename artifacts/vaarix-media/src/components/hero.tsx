@@ -79,26 +79,6 @@ export function Hero() {
         >
           <HeroAvatarStack />
         </motion.div>
-
-        {/* Trust Indicators */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 2.6 }}
-          className="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-16 border-t border-border/60 pt-6 md:pt-12 w-full max-w-5xl"
-        >
-          {[
-            { value: "20+", label: "Brands Scaled" },
-            { value: "50M+", label: "Organic Views" },
-            { value: "100+", label: "Campaigns Launched" },
-            { value: "2", label: "Global Hubs" },
-          ].map((stat, i) => (
-            <div key={i} className="flex flex-col items-center justify-center text-center">
-              <span className="font-serif text-[2rem] md:text-[48px] font-medium text-foreground">{stat.value}</span>
-              <span className="mt-2 text-sm font-medium uppercase tracking-wider text-foreground/50">{stat.label}</span>
-            </div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
