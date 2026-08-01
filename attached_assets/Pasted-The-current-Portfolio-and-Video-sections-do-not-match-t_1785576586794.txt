@@ -1,0 +1,165 @@
+The current Portfolio and Video sections do not match the design direction provided.
+
+
+
+Completely redesign both sections.
+
+
+
+PORTFOLIO
+
+
+
+Use the MagicFit reference as the layout inspiration.
+
+
+
+This should NOT be a traditional gallery.
+
+
+
+It should feel like a massive wall of creatives.
+
+
+
+Requirements:
+
+
+
+• Use a masonry/grid layout.
+
+• Show approximately 25–30 creatives on screen on desktop. 
+
+• 5–7 columns depending on screen width.
+
+• Small rounded cards.
+
+• Equal spacing (12–16px).
+
+• No oversized posters.
+
+• Black background (#0D0D0D).
+
+• Static layout.
+
+• No infinite scrolling.
+
+• No horizontal movement.
+
+• No large empty spaces.
+
+• Images should lazy-load.
+
+• The grid must automatically render every image inside:
+
+
+
+public/portfolio/flyers/
+
+
+
+Do not hardcode individual posters.
+
+
+
+The heading should remain elegant and premium.
+
+
+
+The entire section should instantly communicate that Vaarix has produced a huge amount of creative work.
+
+
+
+---------------------------------------
+
+
+
+VIDEO SHOWCASE
+
+
+
+Delete the current giant featured video.
+
+
+
+Build a carousel similar to the MagicFit reference.
+
+
+
+Requirements:
+
+
+
+• One centered active video.
+
+• Previous and next videos partially visible.
+
+• Videos approximately 420–500px wide.
+
+• Rounded corners.
+
+• Premium black background.
+
+• Autoplay.
+
+• Muted by default.
+
+• When a video ends, the next video smoothly slides into the center automatically.
+
+• Infinite looping.
+
+• User does not need to click anything.
+
+• Hover or click on the active center video unmutes it.
+
+• Mouse leave mutes it again.
+
+• Surrounding videos remain muted.
+
+
+
+Load every video automatically from:
+
+
+
+public/portfolio/videos/
+
+
+
+No hardcoded videos.
+
+
+
+---------------------------------------
+
+
+
+SPACING
+
+
+
+Reduce excessive whitespace between sections.
+
+
+
+The Portfolio should begin immediately after the Hero.
+
+
+
+The Video section should sit closely below the Portfolio.
+
+
+
+Both sections should feel visually connected.
+
+
+
+Avoid giant vertical gaps.
+
+
+
+The overall experience should resemble a premium creative agency portfolio rather than a standard website gallery.
+
+
+
+Do not modify any other sections of the website.
