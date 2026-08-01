@@ -2,6 +2,11 @@ import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import velvetCloudLogo from "../assets/brands/velvet-cloud.png";
+import bharatBhavanLogo from "../assets/brands/bharat-bhavan.png";
+import parottaPalaceLogo from "../assets/brands/parotta-palace.png";
+import mnmLoungeLogo from "../assets/brands/mnm-lounge.png";
+import deccanGrillLogo from "../assets/brands/deccan-grill.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,7 +70,13 @@ export function HeroBadge() {
   );
 }
 
-const AVATAR_COLORS = ["bg-primary", "bg-foreground", "bg-amber-500", "bg-emerald-500", "bg-rose-500"];
+const BRAND_LOGOS = [
+  { src: velvetCloudLogo, alt: "Velvet Cloud" },
+  { src: bharatBhavanLogo, alt: "Bharat Bhavan" },
+  { src: parottaPalaceLogo, alt: "Parotta Palace" },
+  { src: mnmLoungeLogo, alt: "MNM Lounge" },
+  { src: deccanGrillLogo, alt: "Deccan Grill" },
+];
 
 export function HeroAvatarStack() {
   const outerRef = useRef<HTMLDivElement>(null);
@@ -82,16 +93,20 @@ export function HeroAvatarStack() {
         style={reduceMotion ? undefined : { animation: "hero-idle-float 8s ease-in-out infinite", animationDelay: "0.4s" }}
       >
         <div className="flex -space-x-3">
-          {AVATAR_COLORS.map((color, i) => (
+          {BRAND_LOGOS.map((logo, i) => (
             <span
               key={i}
-              className="h-8 w-8 rounded-full border-2 border-background bg-rose-500 flex items-center justify-center text-[10px] font-semibold text-white shadow-sm text-center"
+              className="h-8 w-8 rounded-full border-2 border-background overflow-hidden shadow-sm bg-white"
+              title={logo.alt}
             >
-              {String.fromCharCode(65 + i)}
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                className="h-full w-full object-cover"
+              />
             </span>
           ))}
         </div>
-        <span className="text-xs font-medium uppercase tracking-wider text-foreground/50">Trusted by 20+ local brands</span>
       </motion.div>
     </div>
   );

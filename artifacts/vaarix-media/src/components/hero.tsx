@@ -44,7 +44,7 @@ export function Hero() {
           transition={{ duration: 1, delay: 2.0, ease: [0.22, 1, 0.36, 1] }}
           className="mt-8 max-w-2xl text-lg md:text-xl text-foreground/70 font-light"
         >
-          Specializing in restaurant marketing, cinematic content creation, and high-ROI paid advertising. We don't just run ads; we craft desire.
+          Specializing in restaurant marketing, cinematic content creation, and paid advertising. We don't just run ads; we craft desire.
         </motion.p>
 
         <motion.div

@@ -18,7 +18,7 @@ interface Word {
 const WORDS: Word[] = [
   { text: "We" },
   { text: "turn" },
-  { text: "local businesses", pillVideo: localBusinessesVideo },
+  { text: "businesses", pillVideo: localBusinessesVideo },
   { text: "into" },
   { text: "brands", pillVideo: brandsVideo },
   { text: "people" },

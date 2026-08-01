@@ -1,0 +1,741 @@
+Vaarix Media Website Update
+
+IMPORTANT
+
+
+
+This is not a complete redesign.
+
+
+
+Update only the sections and functionality mentioned below.
+
+
+
+Keep all existing:
+
+
+
+Loading screen
+
+Page transitions
+
+Smooth animations
+
+Scroll animations
+
+Premium editorial aesthetic
+
+Existing code architecture
+
+Responsive behavior
+
+Performance optimizations
+
+
+
+Do not modify any unrelated sections.
+
+
+
+1. Hero Section Updates
+
+Main Heading
+
+
+
+Remove the word:
+
+
+
+"local"
+
+
+
+The heading should still look perfectly balanced after removing it.
+
+
+
+Adjust the background video positioning so it aligns naturally behind the updated typography.
+
+
+
+Do not simply remove the word and leave awkward spacing.
+
+
+
+The composition should feel intentionally designed.
+
+
+
+Remove "High ROI"
+
+
+
+Remove every mention of:
+
+
+
+High ROI
+
+High-ROI
+
+
+
+from the hero section and anywhere else on the landing page.
+
+
+
+We no longer want ROI-focused messaging.
+
+
+
+Trusted Brands
+
+
+
+Below the primary CTA buttons there is currently:
+
+
+
+A
+
+B
+
+C
+
+D
+
+E
+
+
+
+placeholder icons.
+
+
+
+Replace these placeholders with real client logos.
+
+
+
+I will provide these logos later.
+
+
+
+Keep them:
+
+
+
+very small
+
+premium
+
+minimal
+
+exactly the same visual size as the current placeholders
+
+
+
+Change the text beside them from:
+
+
+
+Trusted by 20+ Local Brands
+
+
+
+to
+
+
+
+Trusted by 6+ Brands
+
+
+
+The spacing should remain elegant.
+
+
+
+Remove Statistics
+
+
+
+Completely remove the section containing:
+
+
+
+20+
+
+50M+
+
+100+
+
+2 Campaigns
+
+
+
+Remove:
+
+
+
+numbers
+
+labels
+
+containers
+
+spacing
+
+
+
+Everything.
+
+
+
+Hero Height
+
+
+
+The hero section should now end immediately after
+
+
+
+Trusted by 6+ Brands
+
+
+
+There should be no unnecessary empty space below it.
+
+
+
+The hero should perfectly fit the viewport height.
+
+
+
+Immediately after the hero, the next section should begin.
+
+
+
+2. Portfolio Section
+
+
+
+This section should appear immediately below the hero.
+
+
+
+Remove the existing portfolio implementation.
+
+
+
+Specifically remove:
+
+
+
+the infinite scrolling flyer grid
+
+the current masonry layout
+
+existing portfolio animations
+
+New Portfolio Layout
+
+
+
+Use the supplied reference as inspiration.
+
+
+
+The layout should be a premium static showcase similar to the reference.
+
+
+
+Characteristics:
+
+
+
+clean grid
+
+evenly spaced
+
+rounded corners
+
+premium spacing
+
+editorial presentation
+
+lots of flyers visible at once
+
+no continuous scrolling animation
+
+
+
+Think of it as a visual wall of our work.
+
+
+
+The layout should remain responsive.
+
+
+
+Desktop should display many flyers.
+
+
+
+Tablet and mobile should automatically adapt.
+
+
+
+Media Folder
+
+
+
+Create a dedicated folder for portfolio assets.
+
+
+
+Example:
+
+
+
+public/
+
+   portfolio/
+
+      flyers/
+
+
+
+or another clean structure.
+
+
+
+I will add all flyer images manually.
+
+
+
+Do not hardcode image imports.
+
+
+
+The implementation should make it easy to replace or add more flyers.
+
+
+
+3. Video Showcase
+
+
+
+Immediately below the flyer portfolio create a dedicated video showcase.
+
+
+
+Use the supplied reference.
+
+
+
+Video Carousel
+
+
+
+Display several vertical videos.
+
+
+
+Requirements:
+
+
+
+center video is active
+
+side videos are partially visible
+
+videos autoplay
+
+muted by default
+
+once the active video finishes
+
+
+
+automatically:
+
+
+
+move to the next video
+
+smoothly animate it into the center
+
+continue forever
+
+
+
+The transition should feel premium and cinematic.
+
+
+
+The user should never need to manually switch videos.
+
+
+
+Hover Behavior
+
+
+
+When a user:
+
+
+
+hovers
+
+or clicks
+
+
+
+on the active video
+
+
+
+it should:
+
+
+
+unmute
+
+play with sound
+
+
+
+When the cursor leaves:
+
+
+
+mute it again.
+
+
+
+Infinite Rotation
+
+
+
+The carousel should never stop.
+
+
+
+After the last video:
+
+
+
+continue seamlessly from the first.
+
+
+
+Media Structure
+
+
+
+Create a dedicated folder.
+
+
+
+Example:
+
+
+
+public/
+
+   portfolio/
+
+      videos/
+
+
+
+I will add many videos later.
+
+
+
+The implementation should automatically support additional videos.
+
+
+
+4. Brand Marquee
+
+
+
+Currently the infinite brand marquee contains names like:
+
+
+
+Lumina Roasters
+
+HSK Technologies
+
+Aura Studios
+
+etc.
+
+
+
+Remove every existing brand.
+
+
+
+Only display:
+
+
+
+Velvet Cloud
+
+Bharat Bhavan
+
+Parotta Palace
+
+MNM Lounge
+
+Deccan Grill
+
+
+
+Keep the same infinite scrolling animation.
+
+
+
+Only replace the brand names.
+
+
+
+5. Impact Section
+
+
+
+Completely redesign this section.
+
+
+
+Current title:
+
+
+
+The Impact
+
+
+
+Remove it entirely.
+
+
+
+New Direction
+
+
+
+The section should feel much more relevant to a creative marketing agency.
+
+
+
+Avoid generic marketing metrics.
+
+
+
+Do NOT use claims like:
+
+
+
+340% ROI
+
+12M+ Ad Spend
+
+100M Views
+
+Guaranteed Growth
+
+
+
+Avoid unrealistic promises.
+
+
+
+Instead communicate things like:
+
+
+
+Brand positioning
+
+Creative strategy
+
+Better content
+
+Consistent social presence
+
+Professional creative production
+
+Paid advertising systems
+
+Websites that convert
+
+Long-term marketing partnerships
+
+
+
+This section should feel premium and believable.
+
+
+
+CTA
+
+
+
+Keep the existing button:
+
+
+
+Start Growing Today
+
+
+
+No changes needed.
+
+
+
+Design
+
+
+
+Give this section a fresh premium editorial layout.
+
+
+
+It should visually feel different from the current version while matching the overall website.
+
+
+
+6. Theme
+
+
+
+The website should load in:
+
+
+
+Light Mode
+
+
+
+by default.
+
+
+
+Dark Mode
+
+
+
+The current dark mode doesn't match the quality of the rest of the website.
+
+
+
+Either:
+
+
+
+Option A (Preferred)
+
+
+
+Improve the dark theme:
+
+
+
+premium blacks
+
+soft contrast
+
+refined typography
+
+elegant borders
+
+luxury feel
+
+
+
+OR
+
+
+
+Option B
+
+
+
+Remove dark mode completely.
+
+
+
+If removed:
+
+
+
+remove the toggle as well.
+
+
+
+Choose whichever produces the best experience.
+
+
+
+7. ADS LANDING PAGE
+
+
+
+Currently,
+
+
+
+users coming from paid advertisements land on the Hero section.
+
+
+
+Instead,
+
+
+
+when visitors arrive from social media ads,
+
+
+
+they should automatically land on the
+
+
+
+Book Strategy Call
+
+
+
+section.
+
+
+
+Implement smooth scrolling or direct navigation to the booking section.
+
+
+
+The experience should feel intentional rather than abrupt.
+
+General Requirements
+
+Do not change the loading screen.
+
+Do not remove existing animations unless specifically requested.
+
+Do not redesign unrelated sections.
+
+Preserve typography and premium editorial branding.
+
+Maintain smooth scrolling and high performance.
+
+Ensure every new section is fully responsive across desktop, tablet, and mobile.
+
+Use reusable React components where appropriate.
+
+Keep the implementation clean and scalable for future additions of flyers, videos, and client logos.
+
+Ensure all animations remain smooth at 60 FPS.
+
+Do not use placeholder content beyond temporary asset references. The implementation should be ready for me to simply drop files into the designated folders.
