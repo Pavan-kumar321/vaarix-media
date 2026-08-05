@@ -47,21 +47,19 @@ export default function Home() {
       <Navbar />
 
       <main>
-        {/* 1. Hero → ends at brand logos */}
+        {/* 1. Hero */}
         <Hero />
-        {/* 2. Scrolling brand marquee */}
-        <Marquee />
-        {/* 3. Static flyer portfolio gallery */}
+        {/* 2. Portfolio wall */}
         <Portfolio />
-        {/* 4. Video showcase carousel */}
+        {/* 3. Video showcase carousel */}
         <VideoShowcase />
-        {/* 5. Services */}
-        <Services />
-        {/* 6. Results / Impact */}
+        {/* 4. Scrolling brand name marquee */}
+        <Marquee />
+        {/* 5. Why Vaarix — value proposition */}
         <Results />
-        {/* 7. Testimonials */}
+        {/* 6. Testimonials */}
         <Testimonials />
-        {/* 8. Booking / Contact */}
+        {/* 7. Booking / Contact */}
         <Booking />
       </main>
 
