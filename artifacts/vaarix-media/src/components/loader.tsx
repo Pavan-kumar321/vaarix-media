@@ -49,7 +49,7 @@ export function Loader() {
                 transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
                 className="font-serif text-5xl tracking-tight text-white"
               >
-                Vaarix Media
+                Pardu Duvvi
               </motion.p>
 
               {/* Loading line */}

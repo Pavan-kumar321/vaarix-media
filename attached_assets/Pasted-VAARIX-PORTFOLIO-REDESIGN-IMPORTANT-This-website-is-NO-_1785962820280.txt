@@ -1,0 +1,248 @@
+VAARIX PORTFOLIO REDESIGN
+IMPORTANT
+
+This website is NO LONGER a digital marketing agency website.
+
+Convert the existing Vaarix Media website into a premium personal portfolio for Pardu Duvvi.
+
+Do NOT redesign from scratch.
+
+Reuse the existing architecture, animations, loader, responsive behavior, and performance optimizations wherever possible.
+
+Keep:
+
+existing codebase
+loader animation
+dark/light mode
+responsive behavior
+premium typography
+smooth animations
+booking system (if still used)
+performance optimizations
+
+Do NOT break existing functionality.
+
+HERO SECTION
+
+Completely redesign the Hero.
+
+Use the uploaded reference only as inspiration.
+
+Do NOT clone it.
+
+The overall feeling should be similar:
+
+large centered portrait
+premium editorial typography
+floating skill badges
+clean white glass background
+premium spacing
+subtle animations
+
+I will upload my portrait later.
+
+Reserve a placeholder for my image.
+
+Use a circular/organic background shape behind the portrait.
+
+Hero Headline
+
+Create a premium headline introducing me as a digital marketer.
+
+For example:
+
+I'm Pardu Duvvi,
+
+Brand Strategist & Digital Marketing Specialist
+
+Keep typography elegant.
+
+Do NOT make the title oversized.
+
+Keep it balanced.
+
+Floating Skill Tags
+
+Around my image create floating badges such as:
+
+Paid Ads
+Branding
+Marketing
+Websites
+Content Creation
+Social Media
+
+Animate them subtly.
+
+CTA
+
+Primary
+
+View Portfolio
+
+Secondary
+
+Book a Call
+
+PORTFOLIO
+
+Keep Portfolio immediately after Hero.
+
+Do NOT move it.
+
+Keep the existing portfolio functionality.
+
+Redesign only the presentation.
+
+Use our posters, flyers, branding work, websites, and videos.
+
+Premium hover effects.
+
+Smooth loading.
+
+Fast media performance.
+
+ABOUT ME
+
+Immediately after Portfolio.
+
+Create a small premium About section.
+
+Layout:
+
+Left
+
+Text
+
+Right
+
+My portrait
+
+(I will upload the portrait later.)
+
+Keep this section clean and minimal.
+
+Include:
+
+Short introduction
+
+Experience
+
+Skills
+
+Current focus
+
+BRANDS I WORKED WITH
+
+Create a brand showcase section.
+
+Display 5 premium cards in a grid.
+
+Each card represents one brand.
+
+Example:
+
+Bharat Bhavan
+Velvet Cloud
+MNM Lounge
+Deccan Grill
+Parotta Palace
+
+Each card should include:
+
+Brand logo
+Brand name
+Hover animation
+Interaction
+
+When someone clicks a brand card:
+
+Open a premium modal or expandable page.
+
+Inside that modal show ONLY that brand's work.
+
+Examples:
+
+Posters
+Flyers
+Videos
+Branding
+Social Media creatives
+
+Each brand should have its own gallery.
+
+Do NOT mix projects between brands.
+
+Maintain smooth animations.
+
+FINAL CONTACT SECTION
+
+Completely redesign the last section.
+
+Use the uploaded reference as inspiration only.
+
+Do NOT clone it.
+
+Create a premium black section.
+
+Large typography.
+
+Headline
+
+Let's Connect
+
+Subheading
+
+Available for freelance work, collaborations, and exciting marketing projects.
+
+Primary button
+
+Message on WhatsApp
+
+Below that:
+
+Social icons
+
+Instagram
+LinkedIn
+X
+Facebook
+Email
+
+Use premium hover animations.
+
+Keep the section clean with lots of breathing room.
+
+LOADER
+
+Keep the existing loader animation.
+
+Do NOT redesign it.
+
+Only change the loading text.
+
+Replace
+
+Vaarix Media
+
+with
+
+Pardu Duvvi
+
+Everything else should remain exactly the same.
+
+DESIGN STYLE
+
+Maintain:
+
+premium editorial feel
+white glass background
+elegant typography
+premium spacing
+smooth page transitions
+subtle parallax
+image reveal animations
+premium hover interactions
+motion blur where appropriate
+
+The final website should feel like an award-winning portfolio built for a senior digital marketing professional.

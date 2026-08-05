@@ -1,21 +1,18 @@
 import { useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
-import { Marquee } from "@/components/marquee";
-import { Services } from "@/components/services";
 import { Portfolio } from "@/components/portfolio";
 import { VideoShowcase } from "@/components/video-showcase";
-import { Results } from "@/components/results";
-import { Testimonials } from "@/components/testimonials";
-import { Booking } from "@/components/booking";
+import { About } from "@/components/about";
+import { Brands } from "@/components/brands";
+import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
 import { Loader } from "@/components/loader";
 import { Cursor } from "@/components/cursor";
 
 /**
  * Visitors arriving from paid social ads (any URL containing a UTM parameter,
- * or a `?ad=1` shorthand) are scrolled directly to the booking section so
- * the call-to-action is the first thing they interact with.
+ * or a `?ad=1` shorthand) are scrolled directly to the contact section.
  */
 function useAdLanding() {
   useEffect(() => {
@@ -28,10 +25,9 @@ function useAdLanding() {
 
     if (!isAdTraffic) return;
 
-    // Wait for the page to fully render (including loader animation) before scrolling
     const timeout = setTimeout(() => {
       document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-    }, 2800); // matches loader exit timing
+    }, 2800);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -47,20 +43,25 @@ export default function Home() {
       <Navbar />
 
       <main>
-        {/* 1. Hero */}
+        {/* 1. Hero — portrait + floating skill badges */}
         <Hero />
-        {/* 2. Portfolio wall */}
-        <Portfolio />
-        {/* 3. Video showcase carousel */}
+
+        {/* 2. Portfolio wall — flyers grid */}
+        <section id="work">
+          <Portfolio />
+        </section>
+
+        {/* 3. Video showcase */}
         <VideoShowcase />
-        {/* 4. Scrolling brand name marquee */}
-        <Marquee />
-        {/* 5. Why Vaarix — value proposition */}
-        <Results />
-        {/* 6. Testimonials */}
-        <Testimonials />
-        {/* 7. Booking / Contact */}
-        <Booking />
+
+        {/* 4. About Me */}
+        <About />
+
+        {/* 5. Brands I Worked With */}
+        <Brands />
+
+        {/* 6. Contact — "Let's Connect" */}
+        <Contact />
       </main>
 
       <Footer />

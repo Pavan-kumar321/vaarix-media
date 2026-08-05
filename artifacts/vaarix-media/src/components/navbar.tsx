@@ -8,18 +8,13 @@ export function Navbar() {
   const { theme, toggle } = useTheme();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollTo = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   const isDark = theme === "dark";
@@ -38,18 +33,18 @@ export function Navbar() {
           className="font-serif font-bold cursor-pointer tracking-tight text-[26px]"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          Vaarix Media.
+          Pardu.
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/80">
-          <button onClick={() => scrollTo("services")} className="hover:text-primary transition-colors text-[15px]">Services</button>
-          <button onClick={() => scrollTo("work")}     className="hover:text-primary transition-colors text-[15px]">Work</button>
-          <button onClick={() => scrollTo("results")}  className="hover:text-primary transition-colors text-[15px]">Results</button>
-          <button onClick={() => scrollTo("testimonials")} className="hover:text-primary transition-colors text-[15px]">Testimonials</button>
+          <button onClick={() => scrollTo("about")}     className="hover:text-primary transition-colors text-[15px]">About</button>
+          <button onClick={() => scrollTo("work")}      className="hover:text-primary transition-colors text-[15px]">Portfolio</button>
+          <button onClick={() => scrollTo("brands")}    className="hover:text-primary transition-colors text-[15px]">Brands</button>
+          <button onClick={() => scrollTo("contact")}   className="hover:text-primary transition-colors text-[15px]">Contact</button>
         </div>
 
         <div className="flex items-center gap-3">
-          {/* ── Theme toggle pill ───────────────────────────────────── */}
+          {/* Theme toggle pill */}
           <button
             onClick={toggle}
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
@@ -62,32 +57,23 @@ export function Navbar() {
               }
             `}
           >
-            {/* Track icons */}
             <Sun  className={`absolute left-2 h-3.5 w-3.5 transition-opacity duration-300 ${isDark ? "opacity-30" : "opacity-70 text-amber-500"}`} />
             <Moon className={`absolute right-2 h-3.5 w-3.5 transition-opacity duration-300 ${isDark ? "opacity-70 text-blue-300" : "opacity-30"}`} />
-
-            {/* Sliding thumb */}
             <motion.span
               layout
               transition={{ type: "spring", stiffness: 500, damping: 36 }}
-              className={`
-                relative z-10 flex h-6 w-6 items-center justify-center rounded-full shadow-sm
-                ${isDark ? "bg-white/15 ml-auto" : "bg-white ml-0"}
-              `}
+              className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-full shadow-sm ${isDark ? "bg-white/15 ml-auto" : "bg-white ml-0"}`}
             >
-              {isDark
-                ? <Moon className="h-3 w-3 text-blue-200" />
-                : <Sun  className="h-3 w-3 text-amber-500" />
-              }
+              {isDark ? <Moon className="h-3 w-3 text-blue-200" /> : <Sun className="h-3 w-3 text-amber-500" />}
             </motion.span>
           </button>
 
-          {/* ── CTA ─────────────────────────────────────────────────── */}
+          {/* CTA */}
           <button
             onClick={() => scrollTo("contact")}
             className="hidden sm:inline-flex group relative overflow-hidden rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
           >
-            <span className="relative z-10">Book Strategy Call</span>
+            <span className="relative z-10">Book a Call</span>
             <div className="absolute inset-0 z-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
           </button>
         </div>

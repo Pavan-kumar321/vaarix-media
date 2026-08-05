@@ -2,21 +2,9 @@ import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import velvetCloudLogo from "../assets/brands/velvet-cloud.png";
-import bharatBhavanLogo from "../assets/brands/bharat-bhavan.png";
-import parottaPalaceLogo from "../assets/brands/parotta-palace.png";
-import mnmLoungeLogo from "../assets/brands/mnm-lounge.png";
-import deccanGrillLogo from "../assets/brands/deccan-grill.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/**
- * Wires a weighted scroll-parallax (via GSAP ScrollTrigger, scrubbed with a
- * lag so it never feels directly pinned to the scrollbar) onto an outer
- * wrapper, while a separate inner wrapper runs a slow idle float. The two
- * transforms live on different elements so they compose instead of fighting
- * over the same `transform` property.
- */
 function useWeightedParallax(
   ref: React.RefObject<HTMLElement | null>,
   { speed, rotation }: { speed: number; rotation: number },
@@ -64,53 +52,35 @@ export function HeroBadge() {
         style={reduceMotion ? undefined : { animation: "hero-idle-float 7s ease-in-out infinite" }}
       >
         <span className="flex h-2 w-2 rounded-full bg-primary" />
-        Creative Agency • Texas & India
+        Digital Marketer • Texas & India
       </motion.div>
     </div>
   );
 }
 
-const BRAND_LOGOS = [
-  { src: velvetCloudLogo, alt: "Velvet Cloud" },
-  { src: bharatBhavanLogo, alt: "Bharat Bhavan" },
-  { src: parottaPalaceLogo, alt: "Parotta Palace" },
-  { src: mnmLoungeLogo, alt: "MNM Lounge" },
-  { src: deccanGrillLogo, alt: "Deccan Grill" },
-];
+// Skill badge shown floating around the portrait
+interface SkillBadgeProps {
+  label: string;
+  emoji: string;
+  delay: number;
+  className?: string;
+}
 
-export function HeroAvatarStack() {
-  const outerRef = useRef<HTMLDivElement>(null);
-  useWeightedParallax(outerRef, { speed: 22, rotation: -1 });
+export function SkillBadge({ label, emoji, delay, className = "" }: SkillBadgeProps) {
   const reduceMotion = useReducedMotion();
-
   return (
-    <div ref={outerRef}>
-      <motion.div
-        initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ duration: 1, delay: 1.7, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-6 flex items-center gap-3"
-        style={reduceMotion ? undefined : { animation: "hero-idle-float 8s ease-in-out infinite", animationDelay: "0.4s" }}
-      >
-        <div className="flex -space-x-3">
-          {BRAND_LOGOS.map((logo, i) => (
-            <span
-              key={i}
-              className="h-8 w-8 rounded-full border-2 border-background overflow-hidden shadow-sm bg-white"
-              title={logo.alt}
-            >
-              <img
-                src={logo.src}
-                alt={logo.alt}
-                className="h-full w-full object-cover"
-              />
-            </span>
-          ))}
-        </div>
-        <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
-          Trusted by 6+ Brands
-        </span>
-      </motion.div>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={`absolute flex items-center gap-1.5 rounded-full border border-border/60 bg-background/80 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm select-none ${className}`}
+      style={reduceMotion ? undefined : {
+        animation: `hero-idle-float ${6 + delay}s ease-in-out infinite`,
+        animationDelay: `${delay * 0.4}s`,
+      }}
+    >
+      <span>{emoji}</span>
+      {label}
+    </motion.div>
   );
 }
