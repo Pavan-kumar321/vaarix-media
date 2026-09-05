@@ -121,11 +121,12 @@ function VideoCard({
   useEffect(() => {
     const v = ref.current;
     if (!v || !shouldLoad) return;
+    if (desktop && hovered) return;
     v.muted = true;
     v.loop = true;
     v.preload = "metadata";
     v.play().catch(() => {});
-  }, [desktop, shouldLoad, entry.src]);
+  }, [desktop, hovered, shouldLoad, entry.src]);
 
   // A desktop hover promotes only this card to an active, full playback.
   useEffect(() => {
