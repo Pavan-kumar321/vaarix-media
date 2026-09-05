@@ -1,0 +1,159 @@
+STOP. The current implementation is NOT what I requested.
+
+You misunderstood the video portfolio requirement by creating multiple vertically arranged video sections/states.
+
+DELETE/REVERT THAT APPROACH.
+
+I need ONE SINGLE VIDEO PORTFOLIO SECTION with ONE SINGLE HORIZONTAL VIDEO RAIL.
+
+IMPORTANT — DO NOT CREATE MULTIPLE SECTIONS.
+
+The structure should visually be:
+
+[video] [video] [video] [FEATURED VIDEO] [video] [video] [video]
+
+All of these belong to ONE horizontal video portfolio/grid.
+
+REQUIREMENTS:
+
+1. ONE section only
+   - Keep the existing "IN MOTION" section.
+   - Keep the existing heading:
+     "Content that moves people."
+   - Do not create additional sections for individual videos.
+   - Do not create separate left/right vertical sections.
+
+2. HORIZONTAL INFINITE VIDEO RAIL
+   - Display the videos horizontally in ONE continuous row.
+   - The video cards should continuously scroll horizontally.
+   - It must loop infinitely/seamlessly.
+   - When the final video reaches the end, continue seamlessly from the first video.
+   - Use duplicated/rendered items internally if necessary to achieve a seamless infinite marquee.
+   - There must never be a visible "end" of the video list.
+
+3. EXISTING DESIGN MUST BE PRESERVED
+   - Do NOT redesign the section.
+   - Preserve the current typography.
+   - Preserve the black background.
+   - Preserve the existing video card styling.
+   - Preserve border radius.
+   - Preserve spacing/aesthetic.
+   - Preserve the existing heading.
+   - Do not introduce a completely new visual design.
+
+4. VIDEO ASSETS
+   - I WILL PROVIDE THE ACTUAL VIDEO FILES.
+   - Use ONLY the videos I place in the assets/public folder.
+   - DO NOT generate videos.
+   - DO NOT download videos.
+   - DO NOT use placeholder videos.
+   - Make the video list easy to update by adding/removing video paths from one configuration/data array.
+
+5. AUTOPLAY
+   - Videos in the horizontal rail should autoplay automatically.
+   - ALL videos must initially be MUTED.
+   - Videos should loop.
+   - Never autoplay audio.
+
+6. HOVER AUDIO
+   - KEEP THE EXISTING "HOVER FOR AUDIO" BEHAVIOR.
+   - Do NOT replace it with a different interaction.
+   - When the user hovers over a video:
+       * that video continues playing
+       * its audio becomes enabled
+   - When the user moves the cursor away:
+       * immediately mute that video again
+   - Only the hovered video should have audio.
+   - Never allow multiple videos to play audio simultaneously.
+
+7. CLICKING A VIDEO
+   - The user can click ANY video in the horizontal rail.
+   - Clicking a video should immediately make that video the selected/featured video.
+   - Do NOT wait for another video to finish.
+   - Do NOT make the user wait for an automatic transition.
+   - Do NOT navigate to another page.
+   - The clicked video should become the active/featured video using the existing visual treatment.
+
+8. DO NOT TURN EACH VIDEO INTO A SECTION
+   - Every video is an ITEM inside the SAME horizontal video rail.
+   - There should be ONE video portfolio section in the DOM/layout.
+   - Do not create one section per video.
+   - Do not vertically stack videos.
+   - Do not create separate left and right carousels.
+
+9. INFINITE SCROLL BEHAVIOR
+   - The horizontal movement should feel continuous and premium.
+   - No abrupt jump when looping.
+   - No pagination between videos.
+   - No requirement to wait for video completion.
+   - The user should be able to interact with any visible video at any time.
+
+10. RESPONSIVE
+   - Keep the existing responsive behavior.
+   - On desktop, show the horizontal video rail.
+   - On mobile, adapt the same horizontal rail rather than creating additional sections.
+   - Do not introduce horizontal page overflow; the rail itself should handle the scrolling.
+
+11. PERFORMANCE
+   - Do not unnecessarily load/play dozens of video files at full resource usage.
+   - Use appropriate preload/lazy-loading techniques where possible.
+   - Keep only the required videos actively playing when practical.
+   - Do not sacrifice the visual behavior.
+
+STRICT NO-CHANGE RULE:
+
+DO NOT MODIFY:
+- Hero
+- Navbar
+- Services
+- Work
+- Results
+- Testimonials
+- Contact
+- Footer
+- Global typography
+- Global colors
+- Global spacing
+- Other animations
+- Other components
+- Other pages
+- Existing website structure outside this portfolio
+
+Only modify the VIDEO PORTFOLIO implementation and the POSTER PORTFOLIO assets/list.
+
+POSTER PORTFOLIO:
+I will provide replacement poster images.
+Keep the EXACT existing poster layout/grid.
+Only replace/remove the specific vague posters and add my supplied posters.
+Do not redesign the poster section.
+
+BEFORE CODING:
+Inspect the existing implementation and identify the current video portfolio component.
+
+Then implement the smallest possible change.
+
+CRITICAL:
+Do NOT interpret "left and right videos" as two vertical columns.
+I want ONE HORIZONTAL CONTINUOUS ROW.
+
+Think of it as a single cinematic horizontal film strip:
+
+[01] [02] [03] [04] [05] [06] [07] [01] [02] [03] ...
+
+All of this is ONE video portfolio section.
+
+Use my actual uploaded assets. Never generate replacement media.
+
+After implementation, test:
+- Is there exactly ONE video portfolio section?
+- Are videos arranged horizontally?
+- Does the row scroll infinitely?
+- Are videos muted by default?
+- Does hover enable audio?
+- Does leaving hover mute audio?
+- Can ANY video be clicked immediately?
+- Does clicking change the selected/featured video?
+- Are there zero additional video sections?
+- Did anything outside the video/poster portfolios change?
+
+If any unrelated section changed, revert that change.

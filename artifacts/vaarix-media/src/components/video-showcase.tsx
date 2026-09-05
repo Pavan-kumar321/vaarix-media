@@ -2,7 +2,6 @@ import {
   useRef,
   useState,
   useEffect,
-  useCallback,
   useMemo,
 } from "react";
 import { motion } from "framer-motion";
@@ -59,7 +58,6 @@ interface VideoCardProps {
   entry: VideoEntry;
   isCenter: boolean;
   duplicate?: boolean;
-  onEnded?: () => void;
   onSelect: (entry: VideoEntry) => void;
 }
 
@@ -67,22 +65,20 @@ function VideoCard({
   entry,
   isCenter,
   duplicate = false,
-  onEnded,
   onSelect,
 }: VideoCardProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
 
-  // The center follows the existing advance-on-ended behavior. Side videos
-  // autoplay muted and loop so the rails stay active without sound.
+  // Every item in the marquee autoplays muted and loops. The featured item
+  // keeps the existing larger-card treatment without becoming a carousel.
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
     v.muted = true;
-    v.loop = !isCenter;
-    if (isCenter) v.currentTime = 0;
+    v.loop = true;
     v.play().catch(() => {});
-  }, [isCenter, entry.src]);
+  }, [entry.src]);
 
   // Hover audio is local to the video under the cursor.
   useEffect(() => {
@@ -98,7 +94,7 @@ function VideoCard({
         "relative flex-shrink-0 overflow-hidden rounded-2xl select-none",
         isCenter
           ? "w-[clamp(170px,53vw,300px)] md:w-[clamp(200px,20vw,300px)]"
-          : "w-[clamp(58px,18vw,135px)] md:w-[clamp(100px,11vw,165px)]",
+          : "w-[clamp(82px,18vw,165px)] md:w-[clamp(100px,11vw,165px)]",
         "cursor-pointer",
       ].join(" ")}
       style={{
@@ -128,9 +124,8 @@ function VideoCard({
         src={entry.src}
         muted
         playsInline
-        loop={!isCenter}
+        loop
         preload="metadata"
-        onEnded={onEnded}
         className="w-full h-full object-cover"
       />
 
@@ -149,105 +144,59 @@ function VideoCard({
   );
 }
 
-// ─── Infinite side rail ───────────────────────────────────────────────────────
+// ─── Single horizontal infinite rail ─────────────────────────────────────────
 
-function VideoRail({
-  entries,
-  direction,
-  onSelect,
-}: {
-  entries: VideoEntry[];
-  direction: "up" | "down";
-  onSelect: (entry: VideoEntry) => void;
-}) {
-  const [paused, setPaused] = useState(false);
-  const railEntries = useMemo(() => [...entries, ...entries], [entries]);
-
-  return (
-    <div
-      className="hidden self-stretch overflow-hidden md:flex"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      aria-label={`${direction === "up" ? "Left" : "Right"} video portfolio`}
-    >
-      <div
-        className="video-rail-track"
-        data-direction={direction}
-        style={{ animationPlayState: paused ? "paused" : "running" }}
-      >
-        {railEntries.map((entry, i) => (
-          <VideoCard
-            key={`${direction}-${i}-${entry.src}`}
-            entry={entry}
-            duplicate={i >= entries.length}
-            isCenter={false}
-            onSelect={onSelect}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ─── Center feature + rails ───────────────────────────────────────────────────
-
-function Carousel() {
+function HorizontalVideoRail() {
   const count = VIDEOS.length;
-  const [idx, setIdx] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const advance = useCallback(() => {
-    setIdx(i => (i + 1) % count);
-  }, [count]);
+  const orderedVideos = useMemo(() => {
+    if (count === 0) return [];
+    const leadCount = Math.min(3, Math.floor(count / 2));
+    return Array.from({ length: count }, (_, position) => {
+      const offset = position - leadCount;
+      return VIDEOS[(selectedIndex + offset + count) % count];
+    });
+  }, [count, selectedIndex]);
 
-  useEffect(() => {
-    if (count <= 1) return;
-    const t = setTimeout(advance, 30_000);
-    return () => clearTimeout(t);
-  }, [idx, advance, count]);
+  const marqueeVideos = useMemo(
+    () => [...orderedVideos, ...orderedVideos],
+    [orderedVideos],
+  );
 
   if (count === 0) return <EmptyState />;
 
   return (
     <>
-      <div className="flex items-stretch justify-center gap-2 sm:gap-3 md:gap-5 px-2 sm:px-4 overflow-hidden">
-        <VideoRail
-          entries={VIDEOS}
-          direction="up"
-          onSelect={entry => setIdx(VIDEOS.indexOf(entry))}
-        />
-
-        <VideoCard
-          key={`center-${VIDEOS[idx].src}`}
-          entry={VIDEOS[idx]}
-          isCenter
-          onEnded={advance}
-          onSelect={entry => setIdx(VIDEOS.indexOf(entry))}
-        />
-
-        <VideoRail
-          entries={[...VIDEOS].reverse()}
-          direction="down"
-          onSelect={entry => setIdx(VIDEOS.indexOf(entry))}
-        />
+      <div className="w-full overflow-hidden px-2 sm:px-4">
+        <div
+          key={`marquee-${selectedIndex}`}
+          className="video-marquee-track items-center"
+          onMouseEnter={event => {
+            event.currentTarget.style.animationPlayState = "paused";
+          }}
+          onMouseLeave={event => {
+            event.currentTarget.style.animationPlayState = "running";
+          }}
+        >
+          {marqueeVideos.map((entry, index) => {
+            const isDuplicate = index >= orderedVideos.length;
+            return (
+              <VideoCard
+                key={`${index}-${entry.src}`}
+                entry={entry}
+                isCenter={entry.src === VIDEOS[selectedIndex].src}
+                duplicate={isDuplicate}
+                onSelect={selected => setSelectedIndex(VIDEOS.indexOf(selected))}
+              />
+            );
+          })}
+        </div>
       </div>
 
-      {/* Dot nav */}
-      {count > 1 && (
-        <div className="flex justify-center gap-2 mt-6">
-          {VIDEOS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIdx(i)}
-              className="h-1.5 rounded-full transition-all duration-300"
-              style={{
-                width: i === idx ? 24 : 6,
-                backgroundColor: i === idx ? "var(--color-primary)" : "rgba(255,255,255,0.2)",
-              }}
-              aria-label={`Video ${i + 1}`}
-            />
-          ))}
-        </div>
-      )}
+      <span className="sr-only" aria-live="polite">
+        Featured video: {VIDEOS[selectedIndex].title}
+      </span>
     </>
   );
 }
@@ -281,7 +230,7 @@ export function VideoShowcase() {
         </motion.h2>
       </div>
 
-      <Carousel />
+      <HorizontalVideoRail />
     </section>
   );
 }
