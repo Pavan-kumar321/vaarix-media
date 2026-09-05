@@ -56,22 +56,17 @@ function EmptyState() {
 
 interface VideoCardProps {
   entry: VideoEntry;
-  isCenter: boolean;
   duplicate?: boolean;
-  onSelect: (entry: VideoEntry) => void;
 }
 
 function VideoCard({
   entry,
-  isCenter,
   duplicate = false,
-  onSelect,
 }: VideoCardProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
 
-  // Every item in the marquee autoplays muted and loops. The featured item
-  // keeps the existing larger-card treatment without becoming a carousel.
+  // Every item in the marquee autoplays muted and loops.
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
@@ -92,29 +87,25 @@ function VideoCard({
     <div
       className={[
         "relative flex-shrink-0 overflow-hidden rounded-2xl select-none",
-        isCenter
-          ? "w-[clamp(170px,53vw,300px)] md:w-[clamp(200px,20vw,300px)]"
-          : "w-[clamp(82px,18vw,165px)] md:w-[clamp(100px,11vw,165px)]",
+        "w-[clamp(90px,23vw,145px)] md:w-[clamp(105px,13vw,165px)]",
         "cursor-pointer",
       ].join(" ")}
       style={{
         aspectRatio: "9/16",
-        opacity: isCenter ? 1 : 0.3,
-        transition: "width 0.7s cubic-bezier(0.16,1,0.3,1), opacity 0.7s cubic-bezier(0.16,1,0.3,1)",
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
         setHovered(false);
         if (ref.current) ref.current.muted = true;
       }}
-      onClick={() => onSelect(entry)}
+      onClick={() => ref.current?.play().catch(() => {})}
       role="button"
       tabIndex={duplicate ? -1 : 0}
       onKeyDown={event => {
         if (duplicate) return;
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          onSelect(entry);
+          ref.current?.play().catch(() => {});
         }
       }}
       aria-label={`Play ${entry.title}`}
@@ -130,13 +121,13 @@ function VideoCard({
       />
 
       {/* Hover audio indicator */}
-      {isCenter && (
+      {hovered && (
         <div
           className="absolute bottom-4 right-4 transition-opacity duration-200 pointer-events-none"
-          style={{ opacity: hovered ? 1 : 0.6 }}
+          style={{ opacity: 1 }}
         >
           <div className="flex items-center gap-1.5 rounded-full bg-black/50 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-white/80">
-            {hovered ? "🔊 Audio on" : "🔇 Hover for audio"}
+            {"🔊 Audio on"}
           </div>
         </div>
       )}
@@ -148,20 +139,9 @@ function VideoCard({
 
 function HorizontalVideoRail() {
   const count = VIDEOS.length;
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const orderedVideos = useMemo(() => {
-    if (count === 0) return [];
-    const leadCount = Math.min(3, Math.floor(count / 2));
-    return Array.from({ length: count }, (_, position) => {
-      const offset = position - leadCount;
-      return VIDEOS[(selectedIndex + offset + count) % count];
-    });
-  }, [count, selectedIndex]);
-
   const marqueeVideos = useMemo(
-    () => [...orderedVideos, ...orderedVideos],
-    [orderedVideos],
+    () => [...VIDEOS, ...VIDEOS],
+    [],
   );
 
   if (count === 0) return <EmptyState />;
@@ -169,34 +149,18 @@ function HorizontalVideoRail() {
   return (
     <>
       <div className="w-full overflow-hidden px-2 sm:px-4">
-        <div
-          key={`marquee-${selectedIndex}`}
-          className="video-marquee-track items-center"
-          onMouseEnter={event => {
-            event.currentTarget.style.animationPlayState = "paused";
-          }}
-          onMouseLeave={event => {
-            event.currentTarget.style.animationPlayState = "running";
-          }}
-        >
+        <div className="video-marquee-track items-center">
           {marqueeVideos.map((entry, index) => {
-            const isDuplicate = index >= orderedVideos.length;
             return (
               <VideoCard
                 key={`${index}-${entry.src}`}
                 entry={entry}
-                isCenter={entry.src === VIDEOS[selectedIndex].src}
-                duplicate={isDuplicate}
-                onSelect={selected => setSelectedIndex(VIDEOS.indexOf(selected))}
+                duplicate={index >= count}
               />
             );
           })}
         </div>
       </div>
-
-      <span className="sr-only" aria-live="polite">
-        Featured video: {VIDEOS[selectedIndex].title}
-      </span>
     </>
   );
 }

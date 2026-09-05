@@ -1,0 +1,248 @@
+The implementation is STILL WRONG. Do not tell me it is complete based on the code/build passing. I am looking at the actual browser preview and the rendered UI does NOT match the requirement.
+
+I have attached a screenshot of the current rendered result.
+
+CURRENT PROBLEM:
+- There are still isolated vertical video cards on the left/right.
+- There is a huge empty area in the middle.
+- The old carousel-style positioning is still visually present.
+- Dot navigation is STILL visible.
+- This does NOT look like one horizontal media rail.
+- The implementation may have changed internally, but the actual rendered layout is wrong.
+
+STOP making assumptions from the code. Inspect the ACTUAL rendered DOM/CSS and fix what is visually wrong.
+
+THE EXACT DESIGN I WANT:
+
+                 IN MOTION
+          Content that moves people.
+
+ [VIDEO] [VIDEO] [VIDEO] [VIDEO] [VIDEO] [VIDEO] [VIDEO]
+   →       →       →       →       →       →       →
+          ONE CONTINUOUS HORIZONTAL RAIL
+
+The videos must form ONE continuous horizontal row across the section.
+
+IMPORTANT:
+This is NOT:
+- a carousel
+- a slider
+- a vertical rail
+- two side rails
+- multiple sections
+- a centered card with two cards beside it
+- a sequence controlled by dots
+
+It is ONE horizontal infinite media marquee.
+
+IMPLEMENT IT AS FOLLOWS:
+
+1. ONE HORIZONTAL TRACK
+
+Create one horizontal track containing all video cards:
+
+video1 video2 video3 video4 video5 video6 video7 ...
+
+The track itself moves horizontally continuously.
+
+Duplicate the video array internally if required:
+
+video1 video2 video3 video4 ... video7 video1 video2 video3 ...
+
+so that the movement is seamless.
+
+The viewport/container should hide the overflow.
+
+There should be NO large empty center area.
+
+2. REMOVE THE OLD CAROUSEL COMPLETELY
+
+Remove ALL remnants of the old carousel behavior:
+
+- pagination dots
+- active slide indicators
+- previous/next logic
+- slide indexes
+- sequential timing
+- "wait for video to finish" behavior
+- carousel state
+- carousel-specific positioning
+- vertical side-rail logic
+- left/right rail logic
+
+Search the entire video portfolio implementation for old carousel/slider logic and remove it if it is no longer needed.
+
+There should be NO dots anywhere under the video rail.
+
+3. DO NOT CREATE A FEATURED CENTER CARD
+
+IMPORTANT CORRECTION:
+
+I do NOT want a large featured video in the center with smaller videos on the sides.
+
+ALL VIDEOS BELONG TO THE SAME HORIZONTAL RAIL.
+
+They should have consistent card sizing and spacing.
+
+Example:
+
+┌────────┐  ┌────────┐  ┌────────┐  ┌────────┐  ┌────────┐
+│ VIDEO  │  │ VIDEO  │  │ VIDEO  │  │ VIDEO  │  │ VIDEO  │
+│        │  │        │  │        │  │        │  │        │
+└────────┘  └────────┘  └────────┘  └────────┘  └────────┘
+              ← continuous horizontal movement →
+
+Do NOT enlarge one video in the middle.
+
+4. HORIZONTAL POSITION
+
+The video cards should be distributed naturally across the horizontal viewport.
+
+There should be enough videos visible at once to clearly communicate that this is a media rail.
+
+Do NOT position videos using:
+- absolute left/right placement
+- one card at center + side cards
+- carousel transforms based on active index
+
+Use a genuine horizontal flex/grid track with continuous translation.
+
+5. INFINITE MARQUEE
+
+The animation must be continuous.
+
+For example:
+
+[1][2][3][4][5][6][7][1][2][3][4][5][6][7]...
+
+As the first set exits the viewport, the duplicate set enters with no visible jump.
+
+Use CSS animation or an equivalent performant animation approach.
+
+The user should never see the end of the list.
+
+6. VIDEO BEHAVIOR
+
+Every video:
+- autoplay
+- loop
+- muted by default
+- plays continuously while visible
+- uses the ACTUAL uploaded video assets
+- no generated media
+- no placeholder media
+
+7. HOVER AUDIO
+
+Preserve the existing hover-audio concept.
+
+When the user hovers over a video:
+- that video's audio becomes enabled
+- that video continues playing
+
+When the user leaves:
+- immediately mute it again
+
+Only the hovered video may have audio.
+
+Do NOT create background audio.
+
+8. CLICK
+
+Clicking a video should NOT trigger a carousel transition.
+
+There is no carousel anymore.
+
+Clicking can simply interact with/select the video if needed, but it must NOT:
+- change slides
+- wait for another video
+- move the entire rail to a new active index
+- show dots
+- create a featured center video
+
+9. KEEP THE EXISTING VISUAL STYLE
+
+Preserve the existing:
+- black background
+- IN MOTION label
+- heading typography
+- video card appearance
+- border radius
+- visual treatment
+- hover-audio indicator style
+
+Only change the video arrangement and interaction.
+
+10. CRITICAL VISUAL TEST
+
+After implementation, OPEN THE ACTUAL BROWSER PREVIEW and visually inspect the section.
+
+Do NOT rely on:
+- TypeScript passing
+- build passing
+- saying "carousel code removed"
+- saying "horizontal marquee implemented"
+
+The rendered result must visibly show:
+
+ONE SINGLE HORIZONTAL ROW OF MULTIPLE VIDEO CARDS.
+
+If I see:
+- two isolated cards
+- vertical side cards
+- a centered featured card
+- huge empty space
+- dots
+- carousel indicators
+
+then the implementation is NOT complete.
+
+11. USE THE ACTUAL ASSETS
+
+I will upload the videos to:
+
+src/assets/portfolio/videos/
+
+Automatically include the uploaded videos.
+
+Do not generate or invent media.
+
+12. DO NOT TOUCH OTHER SECTIONS
+
+Do not modify:
+- Navbar
+- Hero
+- Services
+- Work
+- Results
+- Testimonials
+- Contact
+- Footer
+- Poster portfolio layout
+- Global CSS
+- Other animations
+- Other components
+
+Only modify the video showcase.
+
+FINAL ACCEPTANCE CRITERIA:
+
+When I open the website, I should immediately see:
+
+IN MOTION
+
+Content that moves people.
+
+[video][video][video][video][video][video][video]
+       ← ← ← continuous movement → → →
+
+NO dots.
+NO vertical rails.
+NO center featured card.
+NO carousel.
+NO large empty center space.
+NO waiting for video completion.
+
+ONE HORIZONTAL INFINITE MEDIA RAIL.
+
+Do not give me another completion summary until you have visually verified the actual browser preview.
