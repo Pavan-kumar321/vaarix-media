@@ -58,53 +58,67 @@ function EmptyState() {
 interface VideoCardProps {
   entry: VideoEntry;
   isCenter: boolean;
-  onEnded: () => void;
-  onSelect: () => void;
+  duplicate?: boolean;
+  onEnded?: () => void;
+  onSelect: (entry: VideoEntry) => void;
 }
 
-function VideoCard({ entry, isCenter, onEnded, onSelect }: VideoCardProps) {
+function VideoCard({
+  entry,
+  isCenter,
+  duplicate = false,
+  onEnded,
+  onSelect,
+}: VideoCardProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
 
-  // Play / pause based on center state
+  // The center follows the existing advance-on-ended behavior. Side videos
+  // autoplay muted and loop so the rails stay active without sound.
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
-    if (isCenter) {
-      v.muted = true;
-      v.currentTime = 0;
-      v.play().catch(() => {});
-    } else {
-      v.pause();
-      v.muted = true;
-    }
-  }, [isCenter]);
+    v.muted = true;
+    v.loop = !isCenter;
+    if (isCenter) v.currentTime = 0;
+    v.play().catch(() => {});
+  }, [isCenter, entry.src]);
 
-  // Unmute while hovered (center only)
+  // Hover audio is local to the video under the cursor.
   useEffect(() => {
     const v = ref.current;
-    if (!v || !isCenter) return;
+    if (!v) return;
     v.muted = !hovered;
-  }, [hovered, isCenter]);
+    if (hovered) v.play().catch(() => {});
+  }, [hovered]);
 
   return (
     <div
-      className="relative flex-shrink-0 overflow-hidden rounded-2xl select-none"
+      className={[
+        "relative flex-shrink-0 overflow-hidden rounded-2xl select-none",
+        isCenter
+          ? "w-[clamp(170px,53vw,300px)] md:w-[clamp(200px,20vw,300px)]"
+          : "w-[clamp(58px,18vw,135px)] md:w-[clamp(100px,11vw,165px)]",
+        "cursor-pointer",
+      ].join(" ")}
       style={{
-        width: isCenter ? "clamp(200px, 20vw, 300px)" : "clamp(100px, 11vw, 165px)",
         aspectRatio: "9/16",
         opacity: isCenter ? 1 : 0.3,
         transition: "width 0.7s cubic-bezier(0.16,1,0.3,1), opacity 0.7s cubic-bezier(0.16,1,0.3,1)",
       }}
-      onMouseEnter={() => isCenter && setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={onSelect}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => {
+        setHovered(false);
+        if (ref.current) ref.current.muted = true;
+      }}
+      onClick={() => onSelect(entry)}
       role="button"
-      tabIndex={0}
+      tabIndex={duplicate ? -1 : 0}
       onKeyDown={event => {
+        if (duplicate) return;
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          onSelect();
+          onSelect(entry);
         }
       }}
       aria-label={`Play ${entry.title}`}
@@ -114,7 +128,7 @@ function VideoCard({ entry, isCenter, onEnded, onSelect }: VideoCardProps) {
         src={entry.src}
         muted
         playsInline
-        loop={false}
+        loop={!isCenter}
         preload="metadata"
         onEnded={onEnded}
         className="w-full h-full object-cover"
@@ -135,18 +149,56 @@ function VideoCard({ entry, isCenter, onEnded, onSelect }: VideoCardProps) {
   );
 }
 
-// ─── Carousel ─────────────────────────────────────────────────────────────────
+// ─── Infinite side rail ───────────────────────────────────────────────────────
+
+function VideoRail({
+  entries,
+  direction,
+  onSelect,
+}: {
+  entries: VideoEntry[];
+  direction: "up" | "down";
+  onSelect: (entry: VideoEntry) => void;
+}) {
+  const [paused, setPaused] = useState(false);
+  const railEntries = useMemo(() => [...entries, ...entries], [entries]);
+
+  return (
+    <div
+      className="hidden self-stretch overflow-hidden md:flex"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      aria-label={`${direction === "up" ? "Left" : "Right"} video portfolio`}
+    >
+      <div
+        className="video-rail-track"
+        data-direction={direction}
+        style={{ animationPlayState: paused ? "paused" : "running" }}
+      >
+        {railEntries.map((entry, i) => (
+          <VideoCard
+            key={`${direction}-${i}-${entry.src}`}
+            entry={entry}
+            duplicate={i >= entries.length}
+            isCenter={false}
+            onSelect={onSelect}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Center feature + rails ───────────────────────────────────────────────────
 
 function Carousel() {
   const count = VIDEOS.length;
   const [idx, setIdx] = useState(0);
 
-  const advance = useCallback(
-    () => setIdx(i => (i + 1) % count),
-    [count],
-  );
+  const advance = useCallback(() => {
+    setIdx(i => (i + 1) % count);
+  }, [count]);
 
-  // 30-second fallback auto-advance
   useEffect(() => {
     if (count <= 1) return;
     const t = setTimeout(advance, 30_000);
@@ -155,31 +207,28 @@ function Carousel() {
 
   if (count === 0) return <EmptyState />;
 
-  const prevIdx = (idx - 1 + count) % count;
-  const nextIdx = (idx + 1) % count;
-
-  const slots =
-    count === 1
-      ? [{ entry: VIDEOS[0], isCenter: true }]
-      : [
-          { entry: VIDEOS[prevIdx], isCenter: false },
-          { entry: VIDEOS[idx],     isCenter: true  },
-          { entry: VIDEOS[nextIdx], isCenter: false },
-        ];
-
   return (
     <>
-      {/* Video row */}
-      <div className="flex items-center justify-center gap-4 md:gap-5 px-4 overflow-hidden">
-        {slots.map(({ entry, isCenter }, i) => (
-          <VideoCard
-            key={`${isCenter ? "c" : i}-${entry.src}`}
-            entry={entry}
-            isCenter={isCenter}
-            onEnded={isCenter ? advance : () => {}}
-            onSelect={() => setIdx(VIDEOS.indexOf(entry))}
-          />
-        ))}
+      <div className="flex items-stretch justify-center gap-2 sm:gap-3 md:gap-5 px-2 sm:px-4 overflow-hidden">
+        <VideoRail
+          entries={VIDEOS}
+          direction="up"
+          onSelect={entry => setIdx(VIDEOS.indexOf(entry))}
+        />
+
+        <VideoCard
+          key={`center-${VIDEOS[idx].src}`}
+          entry={VIDEOS[idx]}
+          isCenter
+          onEnded={advance}
+          onSelect={entry => setIdx(VIDEOS.indexOf(entry))}
+        />
+
+        <VideoRail
+          entries={[...VIDEOS].reverse()}
+          direction="down"
+          onSelect={entry => setIdx(VIDEOS.indexOf(entry))}
+        />
       </div>
 
       {/* Dot nav */}

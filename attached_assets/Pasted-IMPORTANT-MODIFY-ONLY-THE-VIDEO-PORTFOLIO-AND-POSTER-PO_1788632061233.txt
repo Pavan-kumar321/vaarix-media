@@ -1,0 +1,141 @@
+IMPORTANT: MODIFY ONLY THE VIDEO PORTFOLIO AND POSTER PORTFOLIO. 
+DO NOT redesign, refactor, or modify any other section of the website.
+
+I want to preserve the CURRENT Vaarix Media website design, layout, typography, colors, spacing, navigation, animations, responsiveness, and visual identity exactly as they are.
+
+VIDEO PORTFOLIO — REQUIRED CHANGE
+
+The current section is titled:
+"IN MOTION"
+"Content that moves people."
+
+Currently there is one large centered video and the user has to wait for the video to finish before moving to another video.
+
+Change ONLY the video portfolio interaction/layout as follows:
+
+1. KEEP the existing center/featured video presentation and its visual styling.
+   - Same dimensions/aspect ratio
+   - Same border radius
+   - Same positioning
+   - Same PLAY button styling
+   - Same "Audio on" indicator/style
+   - Same overall aesthetic
+
+2. Add multiple video items from the existing assets folder.
+   - DO NOT generate, download, replace, or create any videos.
+   - I will manually place the video files inside the project's assets/public folder.
+   - Use those actual uploaded video files.
+
+3. Create an INFINITE LOOPING VIDEO LIST on BOTH sides of the center video:
+   - A vertically scrolling list on the LEFT.
+   - A vertically scrolling list on the RIGHT.
+   - The lists should continuously/infinite-loop scroll automatically.
+   - The animation should be smooth, slow, premium, and subtle.
+   - It should feel like a professional creative-agency portfolio.
+   - Do not make the scrolling distracting.
+   - Do not change the existing section's overall composition unnecessarily.
+
+4. Side videos should AUTOPLAY MUTED.
+   - Videos visible in the left/right scrolling lists should automatically play.
+   - They MUST start muted.
+   - They should loop.
+   - Do not autoplay sound.
+
+5. HOVER AUDIO BEHAVIOR:
+   - Preserve the existing concept where hovering over a video enables/plays its audio.
+   - When the user hovers over a side video, that specific video should play with sound.
+   - When the cursor leaves it, immediately mute that video again.
+   - Do NOT introduce a completely different audio interaction.
+   - Do NOT add persistent background audio.
+
+6. CLICK / SELECT BEHAVIOR:
+   - The user must be able to click ANY video in the left or right scrolling lists.
+   - Clicking a video should immediately make that video the CENTER FEATURED VIDEO.
+   - Do NOT require the currently playing video to finish first.
+   - Do NOT wait for an automatic transition.
+   - The selected video should immediately become the main video.
+   - Update the active/selected state appropriately.
+   - The center video should retain the existing visual treatment.
+
+7. CENTER VIDEO:
+   - The selected video should autoplay/loop according to the existing behavior.
+   - Keep its current audio behavior and controls/indicators.
+   - Do not redesign the center video.
+   - If the current implementation has a play button or audio indicator, preserve its appearance.
+
+8. INFINITE SCROLL IMPLEMENTATION:
+   - The left and right lists must loop seamlessly.
+   - Avoid visible jumps when the list reaches its end.
+   - Duplicate the video list internally if necessary to achieve a seamless infinite loop.
+   - Do not create duplicate DOM elements that cause unnecessary performance problems.
+   - Pause/reduce the scrolling animation when the user interacts with a video if necessary for good UX, but do not remove the infinite-scroll behavior.
+
+9. PERFORMANCE:
+   - Do not load every video at full quality simultaneously if that causes unnecessary performance issues.
+   - Use appropriate preload/lazy-loading behavior where possible.
+   - Do not break mobile performance.
+   - Make sure only the necessary videos are actively playing when possible.
+
+10. RESPONSIVE DESIGN:
+   - Preserve the existing responsive design.
+   - On desktop, show the left and right scrolling video columns around the center video.
+   - On smaller screens, adapt the side-video presentation intelligently WITHOUT redesigning the entire section.
+   - Do not allow the new video lists to cause horizontal overflow or break the page.
+
+POSTER PORTFOLIO
+
+I will also manually add new poster images into the assets folder.
+
+For the poster portfolio:
+- Keep the CURRENT poster portfolio layout exactly as it is.
+- I will tell you which existing/vague posters should be removed.
+- Add the new poster assets I provide.
+- Do not redesign the poster grid.
+- Do not change card dimensions, spacing, typography, animations, or section structure.
+- Do not generate any posters.
+- Do not modify any other portfolio behavior.
+
+STRICT NO-CHANGE RULE
+
+DO NOT TOUCH:
+- Hero section
+- Navbar
+- Services
+- Results
+- Testimonials
+- Contact section
+- Footer
+- Existing typography
+- Existing colors
+- Existing background
+- Existing global animations
+- Existing spacing
+- Existing page structure
+- Existing responsive styling outside what is strictly necessary for the portfolio
+- Any unrelated components
+- Any unrelated dependencies
+
+DO NOT "IMPROVE" THE DESIGN.
+DO NOT CREATE A NEW DESIGN.
+DO NOT REBUILD THE WEBSITE.
+DO NOT CHANGE THE CURRENT VISUAL IDENTITY.
+
+Before making changes:
+1. Inspect the existing code.
+2. Identify the exact component responsible for the video portfolio.
+3. Identify the exact assets structure.
+4. Make the smallest possible code changes required.
+5. Reuse the existing components/styles wherever possible.
+
+After implementation:
+- Verify that clicking ANY side video immediately selects it as the center video.
+- Verify side videos autoplay muted.
+- Verify hover enables audio only for the hovered video.
+- Verify leaving hover mutes it again.
+- Verify the side columns scroll infinitely and smoothly.
+- Verify no video requires another video to finish before it can be selected.
+- Verify poster replacement works with the assets I provide.
+- Verify every other section remains visually and functionally unchanged.
+
+Do NOT finish by telling me that something is implemented if it is not actually working.
+Test the actual website behavior before considering the task complete.
