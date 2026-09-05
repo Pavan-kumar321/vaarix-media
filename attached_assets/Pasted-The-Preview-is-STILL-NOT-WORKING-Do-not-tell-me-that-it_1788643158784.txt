@@ -1,0 +1,73 @@
+The Preview is STILL NOT WORKING. Do not tell me that it is fixed unless you have actually verified that the Preview page loads successfully.
+
+Look at the current Preview error shown in the Replit workspace:
+
+"The server IP address could not be found"
+
+The Preview is attempting to load a generated *.sisko.repl.co URL, but the browser cannot resolve/connect to it.
+
+I need you to diagnose and fix the Preview/Development Server connection itself.
+
+IMPORTANT:
+DO NOT MODIFY the website design, portfolio code, video portfolio, animations, content, or any UI functionality during this task. The only goal right now is to make the Replit Preview work again.
+
+Please do the following IN ORDER:
+
+1. Inspect the current project configuration.
+- Check package.json and the available start/dev scripts.
+- Check the Replit workflow configuration.
+- Check which command is actually being used to start the application.
+- Check which port the application is configured to use.
+- Check whether the server is listening on the expected Replit port.
+- Check whether it is binding to 0.0.0.0 rather than only localhost/127.0.0.1 when required by the Replit Preview environment.
+
+2. Inspect the running process and Preview logs.
+- Determine whether the application is actually running.
+- Determine the exact port the application is listening on.
+- Check for startup errors.
+- Check whether the Preview proxy is pointing to the correct running port.
+- Do not assume that the previous fix worked just because the workflow says it is running.
+
+3. Fix the underlying Preview configuration.
+- Make the smallest necessary configuration change.
+- Ensure the development server starts reliably.
+- Ensure Replit Preview can proxy to the correct application port.
+- Do not randomly change ports or rewrite the server configuration without first checking the existing setup.
+- Do not change the portfolio implementation to solve a Preview networking problem.
+
+4. IMPORTANT: Verify the result.
+After making the fix:
+- Restart the development workflow.
+- Open/reload the Preview.
+- Verify that the actual website loads in the Preview pane.
+- Verify that the Preview URL successfully returns the application instead of a DNS/network error.
+- If the Preview still does not load, continue debugging using the actual logs instead of telling me it is fixed.
+
+5. If there is a stale/broken Preview URL:
+- Determine why Replit is generating or using that URL.
+- Refresh/reinitialize the Preview connection if necessary.
+- Make sure the current running application is connected to the current Preview proxy.
+- Do not simply give me another URL and assume it works. Verify the URL from inside the Replit Preview.
+
+IMPORTANT:
+The previous two attempts said the Preview was fixed, but the Preview is still showing a DNS error. Therefore, this time I need actual verification, not just a configuration change.
+
+Do NOT touch:
+- Video portfolio code
+- Portfolio cards
+- Video playback
+- Hover behavior
+- Scrolling behavior
+- Mobile behavior
+- Website design
+- Content
+- Typography
+- Colors
+- Layout
+
+Only fix the Replit development/Preview environment.
+
+At the end, report:
+1. What was actually causing the Preview connection failure.
+2. What exact configuration/code was changed.
+3. Whether you personally verified that the Preview now loads successfully.
