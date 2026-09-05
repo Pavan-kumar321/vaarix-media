@@ -57,14 +57,14 @@ function EmptyState() {
 interface VideoCardProps {
   entry: VideoEntry;
   duplicate?: boolean;
-  onMobilePlay: (video: HTMLVideoElement) => void;
+  onPlayToCompletion: (video: HTMLVideoElement) => void;
   onVideoEnded: () => void;
 }
 
 function VideoCard({
   entry,
   duplicate = false,
-  onMobilePlay,
+  onPlayToCompletion,
   onVideoEnded,
 }: VideoCardProps) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -102,7 +102,10 @@ function VideoCard({
       style={{
         aspectRatio: "9/16",
       }}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={() => {
+        setHovered(true);
+        if (ref.current) onPlayToCompletion(ref.current);
+      }}
       onMouseLeave={() => {
         setHovered(false);
         if (ref.current) ref.current.muted = true;
@@ -111,7 +114,7 @@ function VideoCard({
         const touchLike =
           event.pointerType === "touch" || isTouchDevice();
         touchPointerRef.current = touchLike;
-        if (touchLike && ref.current) onMobilePlay(ref.current);
+        if (touchLike && ref.current) onPlayToCompletion(ref.current);
       }}
       onClick={() => {
         if (touchPointerRef.current) {
@@ -119,7 +122,7 @@ function VideoCard({
           return;
         }
         if (isTouchDevice()) {
-          if (ref.current) onMobilePlay(ref.current);
+          if (ref.current) onPlayToCompletion(ref.current);
           return;
         }
         ref.current?.play().catch(() => {});
@@ -143,7 +146,10 @@ function VideoCard({
         playsInline
         loop
         preload="metadata"
-        onEnded={onVideoEnded}
+        onEnded={() => {
+          setHovered(false);
+          onVideoEnded();
+        }}
         className="w-full h-full object-cover"
       />
 
@@ -236,7 +242,9 @@ function HorizontalVideoRail() {
                 key={videoKey}
                 entry={entry}
                 duplicate={index >= count}
-                onMobilePlay={video => handleMobilePlay(videoKey, video)}
+                onPlayToCompletion={video =>
+                  handleMobilePlay(videoKey, video)
+                }
                 onVideoEnded={() => {
                   if (activeMobileVideoRef.current) {
                     handleVideoEnded(videoKey, activeMobileVideoRef.current);
