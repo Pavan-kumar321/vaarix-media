@@ -87,7 +87,7 @@ function VideoCard({
     <div
       className={[
         "relative flex-shrink-0 overflow-hidden rounded-2xl select-none",
-        "w-[clamp(90px,23vw,145px)] md:w-[clamp(105px,13vw,165px)]",
+        "w-[clamp(110px,26vw,175px)] md:w-[clamp(135px,15.5vw,205px)] bg-white/5",
         "cursor-pointer",
       ].join(" ")}
       style={{
@@ -113,6 +113,7 @@ function VideoCard({
       <video
         ref={ref}
         src={entry.src}
+        autoPlay
         muted
         playsInline
         loop
@@ -139,17 +140,38 @@ function VideoCard({
 
 function HorizontalVideoRail() {
   const count = VIDEOS.length;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [duration, setDuration] = useState(40);
   const marqueeVideos = useMemo(
     () => [...VIDEOS, ...VIDEOS],
     [],
   );
 
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const updateDuration = () => {
+      const loopDistance = Math.max(track.scrollWidth / 2 - 10, 1);
+      setDuration(loopDistance / 42);
+    };
+
+    updateDuration();
+    const observer = new ResizeObserver(updateDuration);
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, [count]);
+
   if (count === 0) return <EmptyState />;
 
   return (
     <>
-      <div className="w-full overflow-hidden px-2 sm:px-4">
-        <div className="video-marquee-track items-center">
+      <div className="w-full overflow-hidden px-3 sm:px-6">
+        <div
+          ref={trackRef}
+          className="video-marquee-track items-center"
+          style={{ animationDuration: `${duration}s` }}
+        >
           {marqueeVideos.map((entry, index) => {
             return (
               <VideoCard
@@ -168,13 +190,26 @@ function HorizontalVideoRail() {
 // ─── Section ──────────────────────────────────────────────────────────────────
 
 export function VideoShowcase() {
+  useEffect(() => {
+    if (window.location.hash !== "#video-portfolio") return;
+
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById("video-portfolio")?.scrollIntoView({
+        block: "start",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   return (
     <section
-      className="pt-10 pb-12 overflow-hidden"
+      id="video-portfolio"
+      className="pt-16 pb-20 overflow-hidden"
       style={{ backgroundColor: "#0D0D0D" }}
     >
       {/* Header */}
-      <div className="container mx-auto px-6 md:px-10 mb-8 text-center">
+      <div className="container mx-auto px-6 md:px-10 mb-12 text-center">
         <motion.span
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}

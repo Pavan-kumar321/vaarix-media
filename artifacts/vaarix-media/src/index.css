@@ -74,7 +74,7 @@
 }
 @keyframes video-marquee {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(calc(-50% - 0.625rem)); }
+  100% { transform: translateX(calc(-50% + 0.625rem)); }
 }
 
 .video-marquee-track {
@@ -83,7 +83,7 @@
   gap: var(--video-marquee-gap);
   width: max-content;
   will-change: transform;
-  animation: video-marquee 60s linear infinite;
+  animation: video-marquee var(--video-marquee-duration, 40s) linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
