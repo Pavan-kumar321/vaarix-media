@@ -57,14 +57,18 @@ function EmptyState() {
 interface VideoCardProps {
   entry: VideoEntry;
   duplicate?: boolean;
-  onPlayToCompletion: (video: HTMLVideoElement) => void;
+  onHoverStart: (video: HTMLVideoElement) => void;
+  onHoverEnd: (video: HTMLVideoElement) => void;
+  onMobilePlay: (video: HTMLVideoElement) => void;
   onVideoEnded: () => void;
 }
 
 function VideoCard({
   entry,
   duplicate = false,
-  onPlayToCompletion,
+  onHoverStart,
+  onHoverEnd,
+  onMobilePlay,
   onVideoEnded,
 }: VideoCardProps) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -103,18 +107,23 @@ function VideoCard({
         aspectRatio: "9/16",
       }}
       onMouseEnter={() => {
+        if (isTouchDevice()) return;
         setHovered(true);
-        if (ref.current) onPlayToCompletion(ref.current);
+        if (ref.current) onHoverStart(ref.current);
       }}
       onMouseLeave={() => {
+        if (isTouchDevice()) return;
         setHovered(false);
-        if (ref.current) ref.current.muted = true;
+        if (ref.current) {
+          ref.current.muted = true;
+          onHoverEnd(ref.current);
+        }
       }}
       onPointerDown={event => {
         const touchLike =
           event.pointerType === "touch" || isTouchDevice();
         touchPointerRef.current = touchLike;
-        if (touchLike && ref.current) onPlayToCompletion(ref.current);
+        if (touchLike && ref.current) onMobilePlay(ref.current);
       }}
       onClick={() => {
         if (touchPointerRef.current) {
@@ -122,7 +131,7 @@ function VideoCard({
           return;
         }
         if (isTouchDevice()) {
-          if (ref.current) onPlayToCompletion(ref.current);
+          if (ref.current) onMobilePlay(ref.current);
           return;
         }
         ref.current?.play().catch(() => {});
@@ -173,7 +182,11 @@ function VideoCard({
 function HorizontalVideoRail() {
   const count = VIDEOS.length;
   const trackRef = useRef<HTMLDivElement>(null);
-  const activeMobileVideoRef = useRef<HTMLVideoElement | null>(null);
+  const activeInteractionRef = useRef<{
+    key: string;
+    mode: "hover" | "mobile";
+    video: HTMLVideoElement;
+  } | null>(null);
   const [duration, setDuration] = useState(40);
   const [pausedVideoKey, setPausedVideoKey] = useState<string | null>(null);
   const marqueeVideos = useMemo(
@@ -198,30 +211,59 @@ function HorizontalVideoRail() {
 
   if (count === 0) return <EmptyState />;
 
-  const handleMobilePlay = (videoKey: string, video: HTMLVideoElement) => {
-    if (
-      activeMobileVideoRef.current &&
-      activeMobileVideoRef.current !== video
-    ) {
-      activeMobileVideoRef.current.loop = true;
-      activeMobileVideoRef.current.muted = true;
-      activeMobileVideoRef.current.play().catch(() => {});
+  const restoreBackgroundVideo = (video: HTMLVideoElement) => {
+    video.loop = true;
+    video.muted = true;
+    video.play().catch(() => {});
+  };
+
+  const startInteraction = (
+    videoKey: string,
+    mode: "hover" | "mobile",
+    video: HTMLVideoElement,
+  ) => {
+    const activeInteraction = activeInteractionRef.current;
+    if (activeInteraction && activeInteraction.video !== video) {
+      restoreBackgroundVideo(activeInteraction.video);
     }
 
-    activeMobileVideoRef.current = video;
+    activeInteractionRef.current = { key: videoKey, mode, video };
     video.loop = false;
+    video.currentTime = 0;
     setPausedVideoKey(videoKey);
     video.play().catch(() => {});
   };
 
-  const handleVideoEnded = (videoKey: string, video: HTMLVideoElement) => {
-    video.loop = true;
-    video.muted = true;
-    video.play().catch(() => {});
-    if (activeMobileVideoRef.current === video) {
-      activeMobileVideoRef.current = null;
+  const handleHoverStart = (videoKey: string, video: HTMLVideoElement) => {
+    startInteraction(videoKey, "hover", video);
+  };
+
+  const handleHoverEnd = (videoKey: string, video: HTMLVideoElement) => {
+    const activeInteraction = activeInteractionRef.current;
+    if (
+      activeInteraction?.key === videoKey &&
+      activeInteraction.mode === "hover"
+    ) {
+      activeInteractionRef.current = null;
+      setPausedVideoKey(null);
     }
-    setPausedVideoKey(current => (current === videoKey ? null : current));
+    restoreBackgroundVideo(video);
+  };
+
+  const handleMobilePlay = (videoKey: string, video: HTMLVideoElement) => {
+    startInteraction(videoKey, "mobile", video);
+  };
+
+  const handleVideoEnded = (videoKey: string) => {
+    const activeInteraction = activeInteractionRef.current;
+    if (
+      activeInteraction?.key === videoKey &&
+      activeInteraction.mode === "mobile"
+    ) {
+      restoreBackgroundVideo(activeInteraction.video);
+      activeInteractionRef.current = null;
+      setPausedVideoKey(null);
+    }
   };
 
   return (
@@ -242,14 +284,16 @@ function HorizontalVideoRail() {
                 key={videoKey}
                 entry={entry}
                 duplicate={index >= count}
-                onPlayToCompletion={video =>
+                onHoverStart={video =>
+                  handleHoverStart(videoKey, video)
+                }
+                onHoverEnd={video =>
+                  handleHoverEnd(videoKey, video)
+                }
+                onMobilePlay={video =>
                   handleMobilePlay(videoKey, video)
                 }
-                onVideoEnded={() => {
-                  if (activeMobileVideoRef.current) {
-                    handleVideoEnded(videoKey, activeMobileVideoRef.current);
-                  }
-                }}
+                onVideoEnded={() => handleVideoEnded(videoKey)}
               />
             );
           })}
