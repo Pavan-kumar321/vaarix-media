@@ -1,0 +1,108 @@
+I need you to fix and optimize the desktop video portfolio section. Do NOT redesign the section or make unrelated changes.
+
+There are 3 specific issues to fix:
+
+1. FIX THE BLANK CARDS
+In the video portfolio carousel/row, some cards are appearing completely blank/dark instead of showing their video/image content.
+
+Please inspect the portfolio data, media loading, card rendering, and video/image source logic to find the actual cause.
+
+Requirements:
+- Every portfolio card that has valid media should display its content correctly.
+- Do not leave empty placeholder cards when a valid media asset exists.
+- Make sure lazy loading, media paths, conditional rendering, and video initialization are not causing the blank cards.
+- Do not simply hide the blank cards. Fix the underlying rendering/loading issue.
+- Preserve the existing card sizes, spacing, styling, layout, and animation.
+
+2. MAKE VIDEO PLAYBACK SMOOTHER
+The portfolio videos currently lag/stutter while playing on desktop.
+
+Optimize video playback so that videos play smoothly and consistently.
+
+Please:
+- Optimize how videos are loaded and initialized.
+- Avoid unnecessarily loading/decoding multiple videos at the same time.
+- Prevent repeated video initialization/re-rendering when the carousel moves.
+- Use appropriate preload/lazy-loading behavior.
+- Keep the existing visual quality as much as reasonably possible.
+- Make sure hover playback starts smoothly without noticeable freezing or stuttering.
+- Do not replace the videos with lower-quality versions unless absolutely necessary.
+
+3. CHANGE DESKTOP HOVER + SCROLL BEHAVIOR
+
+IMPORTANT: This behavior change is ONLY for the DESKTOP version.
+
+DO NOT CHANGE THE CURRENT MOBILE BEHAVIOR. Mobile should remain exactly as it currently works.
+
+Desktop behavior should work like this:
+
+DEFAULT STATE:
+- The portfolio continues its existing automatic horizontal scrolling/marquee behavior.
+- Videos should show their existing preview/thumbnail behavior.
+- The portfolio should NOT wait for a video to finish playing before continuing to scroll.
+
+WHEN USER HOVERS OVER A VIDEO:
+- The hovered video should play the FULL video.
+- While the user's cursor remains over that video, the portfolio's automatic horizontal scrolling should STOP.
+- The video should continue playing normally while the hover remains active.
+- Only the hovered video should be actively playing.
+
+WHEN USER REMOVES THE HOVER:
+- Immediately stop/pause the hovered video.
+- Immediately resume the portfolio's horizontal scrolling.
+- DO NOT wait for the video to finish.
+- DO NOT wait for any playback completion event.
+- DO NOT introduce a delay before scrolling resumes.
+
+The key interaction is:
+
+Desktop:
+No hover → portfolio scrolls automatically
+Hover video → video plays + scrolling stops
+Keep hover → video continues playing + scrolling remains stopped
+Remove hover → video stops + scrolling resumes IMMEDIATELY
+
+Mobile:
+KEEP THE EXISTING MOBILE IMPLEMENTATION AND BEHAVIOR EXACTLY AS IT IS. Do not apply the new desktop hover/scroll logic to mobile.
+
+IMPLEMENTATION NOTES:
+- Properly separate desktop and mobile behavior using the existing responsive logic/media queries or equivalent React logic.
+- Do not duplicate the entire portfolio component unnecessarily.
+- Make sure mouseenter/mouseleave handling does not cause React re-render loops or video reloads.
+- Use refs/event handling where appropriate for video playback and carousel control.
+- Make sure removing the cursor from the video reliably triggers the scroll resume even if the video is still playing or has not reached the end.
+- Do not use video `ended` as a requirement for resuming the carousel.
+- If the user moves quickly between videos, make sure the previous video stops cleanly and the newly hovered video starts without causing the carousel to get stuck.
+- Only pause the carousel while the cursor is actually hovering over a video/card.
+
+IMPORTANT:
+Do not change:
+- Overall portfolio design
+- Typography
+- Colors
+- Card dimensions
+- Card spacing
+- Existing desktop visual styling
+- Mobile layout or behavior
+- Other sections of the website
+- Navigation/header
+- Any unrelated functionality
+
+After making the changes, test the portfolio on desktop and mobile.
+
+DESKTOP TEST CHECKLIST:
+1. Confirm there are no unexplained blank cards.
+2. Confirm videos play smoothly.
+3. Confirm the portfolio scrolls automatically when nothing is hovered.
+4. Hover a video and confirm scrolling stops immediately.
+5. Keep the cursor over the video and confirm the full video plays.
+6. Move the cursor away before the video ends and confirm scrolling resumes immediately.
+7. Confirm scrolling does NOT wait for the video to finish.
+8. Move between multiple videos and confirm there are no stuck/frozen states.
+
+MOBILE TEST CHECKLIST:
+1. Confirm the existing mobile behavior is unchanged.
+2. Confirm the new desktop hover behavior does not affect mobile.
+3. Confirm the mobile portfolio still behaves exactly as it did before this update.
+
+Please inspect the existing implementation first and fix the underlying issues rather than adding superficial workarounds. Make only the changes described above.

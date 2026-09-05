@@ -15,6 +15,10 @@ const videoModules = import.meta.glob<{ default: string }>(
   "../assets/portfolio/videos/*.{mp4,webm,MP4,WEBM}",
   { eager: true },
 );
+const posterModules = import.meta.glob<{ default: string }>(
+  "../assets/portfolio/videos/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",
+  { eager: true },
+);
 
 function basename(path: string) {
   return (path.split("/").pop() ?? path).replace(/\.[^./]+$/, "");
@@ -26,11 +30,16 @@ function toTitle(raw: string) {
   return s || "Untitled";
 }
 
-interface VideoEntry { src: string; title: string }
+interface VideoEntry { src: string; title: string; poster?: string }
+
+const posterByStem = Object.fromEntries(
+  Object.entries(posterModules).map(([path, mod]) => [basename(path), mod.default]),
+);
 
 const VIDEOS: VideoEntry[] = Object.entries(videoModules).map(([path, mod]) => ({
   src: mod.default,
   title: toTitle(basename(path)),
+  poster: posterByStem[basename(path)],
 }));
 
 // ─── Empty state ──────────────────────────────────────────────────────────────
@@ -57,6 +66,7 @@ function EmptyState() {
 interface VideoCardProps {
   entry: VideoEntry;
   duplicate?: boolean;
+  desktop: boolean;
   onHoverStart: (video: HTMLVideoElement) => void;
   onHoverEnd: (video: HTMLVideoElement) => void;
   onMobilePlay: (video: HTMLVideoElement) => void;
@@ -66,38 +76,82 @@ interface VideoCardProps {
 function VideoCard({
   entry,
   duplicate = false,
+  desktop,
   onHoverStart,
   onHoverEnd,
   onMobilePlay,
   onVideoEnded,
 }: VideoCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLVideoElement>(null);
   const touchPointerRef = useRef(false);
   const [hovered, setHovered] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(!desktop);
 
   const isTouchDevice = () =>
     typeof window !== "undefined" &&
     window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
-  // Every item in the marquee autoplays muted and loops.
+  // Desktop cards use a real first-frame poster and only attach the video
+  // source when the card is close to view or receives a hover. Mobile keeps
+  // the existing autoplay preview behavior.
+  useEffect(() => {
+    if (!desktop) {
+      setShouldLoad(true);
+      return;
+    }
+
+    const card = cardRef.current;
+    if (!card || shouldLoad) return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        setShouldLoad(true);
+        observer.disconnect();
+      },
+      { rootMargin: "240px" },
+    );
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [desktop, shouldLoad]);
+
+  // Mobile continues to autoplay muted previews. Desktop videos remain
+  // paused until hover so marquee duplicates are not all decoded together.
   useEffect(() => {
     const v = ref.current;
-    if (!v) return;
+    if (!v || desktop) return;
     v.muted = true;
     v.loop = true;
     v.play().catch(() => {});
-  }, [entry.src]);
+  }, [desktop, entry.src]);
 
-  // Hover audio is local to the video under the cursor.
+  // A desktop hover promotes only this card to an active, full playback.
   useEffect(() => {
     const v = ref.current;
-    if (!v) return;
-    v.muted = !hovered;
-    if (hovered) v.play().catch(() => {});
-  }, [hovered]);
+    if (!v || !desktop || !hovered || !shouldLoad) return;
+    v.preload = "auto";
+    v.muted = false;
+    v.loop = false;
+    v.play().catch(() => {});
+  }, [desktop, hovered, shouldLoad]);
+
+  const loadForDesktop = () => {
+    setShouldLoad(true);
+    const video = ref.current;
+    if (!video || !desktop) return video;
+
+    video.preload = "auto";
+    if (!video.currentSrc) {
+      video.src = entry.src;
+      video.load();
+    }
+    return video;
+  };
 
   return (
     <div
+      ref={cardRef}
       className={[
         "relative flex-shrink-0 overflow-hidden rounded-2xl select-none",
         "w-[clamp(110px,26vw,175px)] md:w-[clamp(135px,15.5vw,205px)] bg-white/5",
@@ -107,12 +161,13 @@ function VideoCard({
         aspectRatio: "9/16",
       }}
       onMouseEnter={() => {
-        if (isTouchDevice()) return;
+        if (!desktop || isTouchDevice()) return;
         setHovered(true);
-        if (ref.current) onHoverStart(ref.current);
+        const video = loadForDesktop();
+        if (video) onHoverStart(video);
       }}
       onMouseLeave={() => {
-        if (isTouchDevice()) return;
+        if (!desktop || isTouchDevice()) return;
         setHovered(false);
         if (ref.current) {
           ref.current.muted = true;
@@ -134,7 +189,7 @@ function VideoCard({
           if (ref.current) onMobilePlay(ref.current);
           return;
         }
-        ref.current?.play().catch(() => {});
+        loadForDesktop()?.play().catch(() => {});
       }}
       role="button"
       tabIndex={duplicate ? -1 : 0}
@@ -142,21 +197,22 @@ function VideoCard({
         if (duplicate) return;
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          ref.current?.play().catch(() => {});
+          loadForDesktop()?.play().catch(() => {});
         }
       }}
       aria-label={`Play ${entry.title}`}
     >
       <video
         ref={ref}
-        src={entry.src}
-        autoPlay
+        src={!desktop || shouldLoad ? entry.src : undefined}
+        poster={entry.poster}
+        autoPlay={!desktop}
         muted
         playsInline
-        loop
-        preload="metadata"
+        loop={!desktop}
+        preload={desktop ? (shouldLoad ? "metadata" : "none") : "metadata"}
         onEnded={() => {
-          setHovered(false);
+          if (!desktop) setHovered(false);
           onVideoEnded();
         }}
         className="w-full h-full object-cover"
@@ -189,10 +245,22 @@ function HorizontalVideoRail() {
   } | null>(null);
   const [duration, setDuration] = useState(40);
   const [pausedVideoKey, setPausedVideoKey] = useState<string | null>(null);
+  const [desktop, setDesktop] = useState(() =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches,
+  );
   const marqueeVideos = useMemo(
     () => [...VIDEOS, ...VIDEOS],
     [],
   );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const updateDesktop = () => setDesktop(mediaQuery.matches);
+    updateDesktop();
+    mediaQuery.addEventListener("change", updateDesktop);
+    return () => mediaQuery.removeEventListener("change", updateDesktop);
+  }, []);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -212,9 +280,11 @@ function HorizontalVideoRail() {
   if (count === 0) return <EmptyState />;
 
   const restoreBackgroundVideo = (video: HTMLVideoElement) => {
+    video.pause();
+    video.currentTime = 0;
     video.loop = true;
     video.muted = true;
-    video.play().catch(() => {});
+    if (!desktop) video.play().catch(() => {});
   };
 
   const startInteraction = (
@@ -228,6 +298,10 @@ function HorizontalVideoRail() {
     }
 
     activeInteractionRef.current = { key: videoKey, mode, video };
+    if (desktop && mode === "hover") {
+      video.preload = "auto";
+      video.muted = false;
+    }
     video.loop = false;
     video.currentTime = 0;
     setPausedVideoKey(videoKey);
@@ -284,6 +358,7 @@ function HorizontalVideoRail() {
                 key={videoKey}
                 entry={entry}
                 duplicate={index >= count}
+                desktop={desktop}
                 onHoverStart={video =>
                   handleHoverStart(videoKey, video)
                 }
