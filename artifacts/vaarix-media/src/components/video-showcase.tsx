@@ -59,9 +59,10 @@ interface VideoCardProps {
   entry: VideoEntry;
   isCenter: boolean;
   onEnded: () => void;
+  onSelect: () => void;
 }
 
-function VideoCard({ entry, isCenter, onEnded }: VideoCardProps) {
+function VideoCard({ entry, isCenter, onEnded, onSelect }: VideoCardProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -97,6 +98,16 @@ function VideoCard({ entry, isCenter, onEnded }: VideoCardProps) {
       }}
       onMouseEnter={() => isCenter && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={onSelect}
+      role="button"
+      tabIndex={0}
+      onKeyDown={event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
+      aria-label={`Play ${entry.title}`}
     >
       <video
         ref={ref}
@@ -166,6 +177,7 @@ function Carousel() {
             entry={entry}
             isCenter={isCenter}
             onEnded={isCenter ? advance : () => {}}
+            onSelect={() => setIdx(VIDEOS.indexOf(entry))}
           />
         ))}
       </div>
