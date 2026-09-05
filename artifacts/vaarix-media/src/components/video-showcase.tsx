@@ -116,15 +116,16 @@ function VideoCard({
     return () => observer.disconnect();
   }, [desktop, shouldLoad]);
 
-  // Mobile continues to autoplay muted previews. Desktop videos remain
-  // paused until hover so marquee duplicates are not all decoded together.
+  // Loaded cards autoplay muted previews on both breakpoints. Desktop cards
+  // are still lazy-loaded so only visible/nearby cards join playback.
   useEffect(() => {
     const v = ref.current;
-    if (!v || desktop) return;
+    if (!v || !shouldLoad) return;
     v.muted = true;
     v.loop = true;
+    v.preload = "metadata";
     v.play().catch(() => {});
-  }, [desktop, entry.src]);
+  }, [desktop, shouldLoad, entry.src]);
 
   // A desktop hover promotes only this card to an active, full playback.
   useEffect(() => {
@@ -284,7 +285,7 @@ function HorizontalVideoRail() {
     video.currentTime = 0;
     video.loop = true;
     video.muted = true;
-    if (!desktop) video.play().catch(() => {});
+    video.play().catch(() => {});
   };
 
   const startInteraction = (

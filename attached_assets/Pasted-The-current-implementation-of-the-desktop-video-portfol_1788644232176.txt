@@ -1,0 +1,150 @@
+The current implementation of the desktop video portfolio is close, but there is one important behavior problem.
+
+I tested the latest version and noticed that the other portfolio videos are no longer playing their normal animation/video while the portfolio is automatically scrolling.
+
+I need you to correct ONLY this behavior. Do not redesign or restructure the portfolio.
+
+DESKTOP VIDEO PORTFOLIO BEHAVIOR:
+
+1. NORMAL SCROLLING STATE
+When the user is NOT hovering over any portfolio video/card:
+
+- The portfolio should automatically scroll horizontally exactly as before.
+- ALL visible videos should continue playing their normal autoplay/animation while the portfolio is scrolling.
+- Do NOT pause all videos except the hovered one.
+- Do NOT make the portfolio wait for any video to finish.
+- Videos should continue to behave normally while the carousel is moving.
+
+2. WHEN USER HOVERS OVER A VIDEO
+
+When the mouse enters a specific video/card:
+
+- Immediately stop/pause the horizontal portfolio scrolling.
+- The video currently being hovered should play its FULL video from the beginning.
+- Keep the scrolling paused for as long as the cursor remains over that video.
+- The hovered video should continue playing while the cursor remains over it.
+
+The important point is that the hover interaction should temporarily take control of the portfolio, but it should NOT permanently disable the normal autoplay behavior of the other videos.
+
+3. WHEN USER REMOVES HOVER
+
+When the cursor leaves the hovered video/card:
+
+- Immediately stop/pause/reset the hover-controlled video as appropriate.
+- Immediately resume the automatic horizontal scrolling.
+- DO NOT wait for the video to finish.
+- DO NOT wait for an `ended` event.
+- DO NOT add a timeout or artificial delay.
+- As soon as the hover ends, the portfolio should return to its normal scrolling state.
+- The other videos should immediately return to their normal autoplay/animation behavior.
+
+4. IMPORTANT VIDEO STATE LOGIC
+
+Think of the portfolio as having two states:
+
+NORMAL:
+- Horizontal scrolling = ON
+- Normal visible videos = PLAYING/animating according to the existing implementation
+- No hover-controlled full-video playback
+
+HOVER:
+- Horizontal scrolling = OFF
+- Hovered video = plays its full video from the beginning
+- Other videos should not be unnecessarily destroyed, unloaded, or permanently disabled
+
+When hover ends:
+- Return cleanly to NORMAL state.
+
+Do not make the entire portfolio depend on one video's playback state.
+
+5. DO NOT USE VIDEO COMPLETION TO CONTROL SCROLLING
+
+The carousel must NEVER wait for a video to finish before scrolling.
+
+Scrolling is controlled ONLY by mouse hover:
+
+mouseenter → scrolling stops
+mouseleave → scrolling resumes immediately
+
+The video's `ended` event must NOT be required for scrolling to resume.
+
+6. SMOOTHNESS
+
+Keep the video playback smooth.
+
+Avoid:
+- Recreating video elements unnecessarily
+- Reloading every video when hover changes
+- Pausing all videos globally whenever one card is hovered
+- Excessive React re-renders
+- Restarting every video whenever the carousel moves
+
+Use refs/event handlers or the existing architecture where appropriate.
+
+7. MOBILE IS UNCHANGED
+
+VERY IMPORTANT:
+
+Do NOT change ANY of the existing mobile behavior.
+
+The new behavior described above applies ONLY to desktop.
+
+Mobile should retain exactly the previous implementation and interaction.
+
+Use the existing responsive breakpoint/logic to keep the desktop and mobile implementations separate.
+
+8. DO NOT CHANGE ANYTHING ELSE
+
+Do not change:
+- Portfolio design
+- Card dimensions
+- Card spacing
+- Typography
+- Colors
+- Animations unrelated to this issue
+- Content
+- Header/navigation
+- Other website sections
+- Mobile layout
+- Mobile video behavior
+
+Only fix the desktop video autoplay + hover + scrolling interaction.
+
+FINAL DESKTOP TEST:
+
+Test this exact sequence:
+
+A. Move the mouse away from the portfolio.
+→ Portfolio scrolls automatically.
+→ Multiple visible videos are playing/animating normally.
+
+B. Hover over Video A.
+→ Scrolling stops immediately.
+→ Video A starts playing from the beginning.
+→ Video A continues playing while hovered.
+
+C. Keep hovering Video A.
+→ Scrolling remains stopped.
+→ Video A continues playing.
+
+D. Move the mouse away from Video A BEFORE the video finishes.
+→ Video A does NOT need to finish.
+→ Scrolling resumes immediately.
+→ Normal video autoplay/animation resumes.
+
+E. Hover Video B.
+→ Scrolling stops immediately.
+→ Video B plays from the beginning.
+→ Same behavior as Video A.
+
+F. Move quickly between different videos.
+→ No frozen scrolling.
+→ No permanently paused videos.
+→ No stuck hover state.
+→ No video loading/re-rendering loop.
+
+FINAL MOBILE TEST:
+
+Verify that mobile behaves exactly as it did before this change.
+
+Do not tell me the task is complete until you have actually tested the desktop interaction described above.
