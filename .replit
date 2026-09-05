@@ -9,28 +9,6 @@ args = ["pnpm", "store", "prune"]
 env = { "CI" = "true" }
 
 [workflows]
-runButton = "Project"
-
-[[workflows.workflow]]
-name = "Project"
-mode = "parallel"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Start Vaarix Media"
-
-[[workflows.workflow]]
-name = "Start Vaarix Media"
-author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "webview"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT=25541 BASE_PATH=/ pnpm --filter @workspace/vaarix-media run dev"
-waitForPort = 25541
 
 [agent]
 stack = "PNPM_WORKSPACE"
