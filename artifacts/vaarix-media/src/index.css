@@ -88,8 +88,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .video-marquee-track {
-    animation-play-state: paused !important;
+    animation-duration: var(--video-marquee-duration, 40s);
   }
+}
+
+.video-marquee-track--paused {
+  animation-play-state: paused;
 }
 
 :root {

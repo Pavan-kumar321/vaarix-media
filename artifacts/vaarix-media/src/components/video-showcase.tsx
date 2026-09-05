@@ -57,14 +57,23 @@ function EmptyState() {
 interface VideoCardProps {
   entry: VideoEntry;
   duplicate?: boolean;
+  onMobilePlay: (video: HTMLVideoElement) => void;
+  onVideoEnded: () => void;
 }
 
 function VideoCard({
   entry,
   duplicate = false,
+  onMobilePlay,
+  onVideoEnded,
 }: VideoCardProps) {
   const ref = useRef<HTMLVideoElement>(null);
+  const touchPointerRef = useRef(false);
   const [hovered, setHovered] = useState(false);
+
+  const isTouchDevice = () =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
   // Every item in the marquee autoplays muted and loops.
   useEffect(() => {
@@ -98,7 +107,23 @@ function VideoCard({
         setHovered(false);
         if (ref.current) ref.current.muted = true;
       }}
-      onClick={() => ref.current?.play().catch(() => {})}
+      onPointerDown={event => {
+        const touchLike =
+          event.pointerType === "touch" || isTouchDevice();
+        touchPointerRef.current = touchLike;
+        if (touchLike && ref.current) onMobilePlay(ref.current);
+      }}
+      onClick={() => {
+        if (touchPointerRef.current) {
+          touchPointerRef.current = false;
+          return;
+        }
+        if (isTouchDevice()) {
+          if (ref.current) onMobilePlay(ref.current);
+          return;
+        }
+        ref.current?.play().catch(() => {});
+      }}
       role="button"
       tabIndex={duplicate ? -1 : 0}
       onKeyDown={event => {
@@ -118,6 +143,7 @@ function VideoCard({
         playsInline
         loop
         preload="metadata"
+        onEnded={onVideoEnded}
         className="w-full h-full object-cover"
       />
 
@@ -141,7 +167,9 @@ function VideoCard({
 function HorizontalVideoRail() {
   const count = VIDEOS.length;
   const trackRef = useRef<HTMLDivElement>(null);
+  const activeMobileVideoRef = useRef<HTMLVideoElement | null>(null);
   const [duration, setDuration] = useState(40);
+  const [pausedVideoKey, setPausedVideoKey] = useState<string | null>(null);
   const marqueeVideos = useMemo(
     () => [...VIDEOS, ...VIDEOS],
     [],
@@ -164,20 +192,56 @@ function HorizontalVideoRail() {
 
   if (count === 0) return <EmptyState />;
 
+  const handleMobilePlay = (videoKey: string, video: HTMLVideoElement) => {
+    if (
+      activeMobileVideoRef.current &&
+      activeMobileVideoRef.current !== video
+    ) {
+      activeMobileVideoRef.current.loop = true;
+      activeMobileVideoRef.current.muted = true;
+      activeMobileVideoRef.current.play().catch(() => {});
+    }
+
+    activeMobileVideoRef.current = video;
+    video.loop = false;
+    setPausedVideoKey(videoKey);
+    video.play().catch(() => {});
+  };
+
+  const handleVideoEnded = (videoKey: string, video: HTMLVideoElement) => {
+    video.loop = true;
+    video.muted = true;
+    video.play().catch(() => {});
+    if (activeMobileVideoRef.current === video) {
+      activeMobileVideoRef.current = null;
+    }
+    setPausedVideoKey(current => (current === videoKey ? null : current));
+  };
+
   return (
     <>
       <div className="w-full overflow-hidden px-3 sm:px-6">
         <div
           ref={trackRef}
-          className="video-marquee-track items-center"
+          className={[
+            "video-marquee-track items-center",
+            pausedVideoKey ? "video-marquee-track--paused" : "",
+          ].join(" ")}
           style={{ animationDuration: `${duration}s` }}
         >
           {marqueeVideos.map((entry, index) => {
+            const videoKey = `${index}-${entry.src}`;
             return (
               <VideoCard
-                key={`${index}-${entry.src}`}
+                key={videoKey}
                 entry={entry}
                 duplicate={index >= count}
+                onMobilePlay={video => handleMobilePlay(videoKey, video)}
+                onVideoEnded={() => {
+                  if (activeMobileVideoRef.current) {
+                    handleVideoEnded(videoKey, activeMobileVideoRef.current);
+                  }
+                }}
               />
             );
           })}
