@@ -2,3 +2,4 @@ zipFile.zip filter=lfs diff=lfs merge=lfs -text
 artifacts/vaarix-media/src/assets/portfolio/videos/Video[[:space:]]Project[[:space:]]3.mp4 filter=lfs diff=lfs merge=lfs -text
 artifacts/vaarix-media/src/assets/portfolio/videos/fnl[[:space:]]video.mp4 filter=lfs diff=lfs merge=lfs -text
 artifacts/vaarix-media/src/assets/portfolio/videos/whatsapp[[:space:]]video.mp4 filter=lfs diff=lfs merge=lfs -text
+artifacts/vaarix-media/src/assets/portfolio/videos/Video[[:space:]]Project[[:space:]]14[[:space:]](1).mp4 filter=lfs diff=lfs merge=lfs -text
