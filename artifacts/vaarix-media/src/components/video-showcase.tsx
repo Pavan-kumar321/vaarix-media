@@ -36,11 +36,24 @@ const posterByStem = Object.fromEntries(
   Object.entries(posterModules).map(([path, mod]) => [basename(path), mod.default]),
 );
 
-const VIDEOS: VideoEntry[] = Object.entries(videoModules).map(([path, mod]) => ({
+const discoveredVideos: VideoEntry[] = Object.entries(videoModules).map(([path, mod]) => ({
   src: mod.default,
   title: toTitle(basename(path)),
   poster: posterByStem[basename(path)],
 }));
+
+// Keep newly uploaded work at the end without changing the order of the
+// existing portfolio. They intentionally have no generated posters.
+const NEW_VIDEO_STEMS = new Set([
+  "tRnnXuDxUrZDeZkObzSQTUwZT4",
+  "PYfe9ZG002yove5DEP5Oe8hJAc",
+  "JvEdpn9FLEZpQfbC0Zf03zZZw",
+]);
+
+const VIDEOS: VideoEntry[] = [
+  ...discoveredVideos.filter(entry => !NEW_VIDEO_STEMS.has(basename(entry.src))),
+  ...discoveredVideos.filter(entry => NEW_VIDEO_STEMS.has(basename(entry.src))),
+];
 
 // ─── Empty state ──────────────────────────────────────────────────────────────
 
@@ -86,7 +99,9 @@ function VideoCard({
   const ref = useRef<HTMLVideoElement>(null);
   const touchPointerRef = useRef(false);
   const [hovered, setHovered] = useState(false);
-  const [shouldLoad, setShouldLoad] = useState(!desktop);
+  // A card without a poster must load its video immediately so the video's
+  // own first decoded frame is the visual fallback instead of a blank card.
+  const [shouldLoad, setShouldLoad] = useState(!desktop || !entry.poster);
 
   const isTouchDevice = () =>
     typeof window !== "undefined" &&
@@ -208,7 +223,7 @@ function VideoCard({
         ref={ref}
         src={!desktop || shouldLoad ? entry.src : undefined}
         poster={entry.poster}
-        autoPlay={!desktop}
+        autoPlay={!desktop || !entry.poster}
         muted
         playsInline
         loop={!desktop}

@@ -1,0 +1,60 @@
+Update the Video Portfolio with the following changes ONLY.
+
+1. RESTORE/FIX MISSING VIDEO THUMBNAILS
+- Some JPG/thumbnail/poster files for the existing portfolio videos appear to have been deleted.
+- Check the current video portfolio configuration and identify every portfolio video that is showing a blank/dark card because its JPG/poster/thumbnail is missing.
+- Do NOT invent or generate new thumbnails.
+- If the corresponding video file still exists, use the video itself as the visual source/fallback so the portfolio card is never blank.
+- Preserve the existing card design, dimensions, border radius, spacing, overlays, typography, and visual treatment.
+- Do not remove or replace any existing working thumbnails.
+
+2. ADD THE 3 NEW VIDEOS
+- I uploaded 3 additional videos into the portfolio videos/assets folder.
+- Find the 3 newly uploaded video files and add them to the existing Video Portfolio.
+- They must use the exact same card design and behavior as the existing portfolio videos.
+- Do not change the order of the existing videos unless necessary to append the 3 new videos.
+- Make sure all 3 new videos actually appear in the horizontal portfolio.
+
+3. AUTOPLAY BEHAVIOR
+For DESKTOP:
+- All visible portfolio videos should autoplay automatically while the horizontal portfolio is moving.
+- Videos must be muted by default so browser autoplay restrictions are satisfied.
+- Multiple visible videos should be allowed to play simultaneously during normal scrolling.
+- Do NOT globally pause the other videos just because one video is hovered.
+- Keep the existing smooth horizontal auto-scroll/marquee behavior.
+
+4. HOVER BEHAVIOR ON DESKTOP
+- When the mouse hovers over a portfolio video:
+  - Immediately stop the horizontal auto-scroll.
+  - Start that hovered video's FULL video from 0:00.
+  - Keep playing the hovered video while the mouse remains over it.
+- When the mouse leaves:
+  - Immediately stop/reset the hover-controlled playback as appropriate.
+  - Immediately resume the horizontal auto-scroll.
+  - Return the portfolio to the normal state where visible videos autoplay/animate normally.
+- Do NOT wait for the video to finish.
+- Do NOT use an `ended` event or timeout to resume scrolling.
+- Do NOT permanently pause or reset all other videos.
+- Moving the cursor from one card to another must not create a stuck/frozen state.
+
+5. MOBILE
+- DO NOT CHANGE THE EXISTING MOBILE LAYOUT OR BEHAVIOR.
+- Keep the mobile implementation exactly as it currently works.
+- The autoplay/hover logic described above is for DESKTOP only unless the existing mobile implementation already supports it.
+
+6. IMPORTANT
+- Do not redesign anything.
+- Do not change typography, colors, spacing, card sizes, section layout, navigation, or any other website content.
+- Do not modify unrelated assets.
+- Do not delete any existing portfolio videos.
+- First inspect the existing portfolio data/component and the actual files in the video assets folder before making changes.
+- Make the smallest necessary code changes.
+
+7. VERIFY BEFORE FINISHING
+- Confirm all existing portfolio videos render with actual visual content and there are no blank cards caused by missing posters.
+- Confirm the 3 newly uploaded videos appear in the portfolio.
+- Confirm multiple visible videos autoplay simultaneously during normal desktop marquee scrolling.
+- Confirm hovering one video stops the marquee and starts that video from 0:00.
+- Confirm leaving the video immediately resumes marquee scrolling and normal autoplay.
+- Confirm mobile behavior was not changed.
+- Run typecheck and production build after the changes.
