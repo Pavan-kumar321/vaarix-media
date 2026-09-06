@@ -139,9 +139,9 @@ function VideoCard({
     if (desktop && hovered) return;
     v.muted = true;
     v.loop = true;
-    v.preload = "metadata";
+    v.preload = entry.poster ? "metadata" : "auto";
     v.play().catch(() => {});
-  }, [desktop, hovered, shouldLoad, entry.src]);
+  }, [desktop, hovered, shouldLoad, entry.poster, entry.src]);
 
   // A desktop hover promotes only this card to an active, full playback.
   useEffect(() => {
