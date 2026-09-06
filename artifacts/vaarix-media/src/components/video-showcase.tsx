@@ -30,7 +30,12 @@ function toTitle(raw: string) {
   return s || "Untitled";
 }
 
-interface VideoEntry { src: string; title: string; poster?: string }
+interface VideoEntry {
+  src: string;
+  title: string;
+  poster?: string;
+  cropToContent?: boolean;
+}
 
 const posterByStem = Object.fromEntries(
   Object.entries(posterModules).map(([path, mod]) => [basename(path), mod.default]),
@@ -40,6 +45,9 @@ const discoveredVideos: VideoEntry[] = Object.entries(videoModules).map(([path, 
   src: mod.default,
   title: toTitle(basename(path)),
   poster: posterByStem[basename(path)],
+  // This upload is a 9:16 container with a 16:9 picture letterboxed inside it.
+  // Crop the encoded bars in the card without modifying the source MP4.
+  cropToContent: basename(path) === "Video Project 14 (1)",
 }));
 
 // Keep newly uploaded work at the end without changing the order of the
@@ -99,6 +107,9 @@ function VideoCard({
   const ref = useRef<HTMLVideoElement>(null);
   const touchPointerRef = useRef(false);
   const [hovered, setHovered] = useState(false);
+  const videoPresentationStyle = entry.cropToContent
+    ? { transform: "scale(3.16)", transformOrigin: "center center" }
+    : undefined;
   // A card without a poster must load its video immediately so the video's
   // own first decoded frame is the visual fallback instead of a blank card.
   const [shouldLoad, setShouldLoad] = useState(!desktop || !entry.poster);
@@ -246,7 +257,8 @@ function VideoCard({
           video.muted = true;
           video.play().catch(() => {});
         }}
-        className="w-full h-full object-cover"
+         className="w-full h-full object-cover"
+         style={videoPresentationStyle}
       />
 
       {/* Hover audio indicator */}
