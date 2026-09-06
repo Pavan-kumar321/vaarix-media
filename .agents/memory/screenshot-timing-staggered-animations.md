@@ -21,3 +21,8 @@ hero as proof of a bug when the page has deliberate entry-animation delays past 
 code review and/or a temporary console.log / temporarily short-circuiting the delay state instead
 of repeated screenshots. If you need a screenshot of the settled state for presentation purposes,
 temporarily reduce or bypass the relevant delays, capture, then revert.
+
+The same caution applies to posterless video cards: a fresh capture can land before the MP4 has
+decoded its first frame, even when the file is valid and autoplay is configured correctly. Confirm
+the asset is bundled and has a decodable stream, then rely on `loadeddata`/playback verification
+instead of treating one early black frame as a permanent render failure.

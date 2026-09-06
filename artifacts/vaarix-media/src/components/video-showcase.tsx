@@ -223,14 +223,28 @@ function VideoCard({
         ref={ref}
         src={!desktop || shouldLoad ? entry.src : undefined}
         poster={entry.poster}
-        autoPlay={!desktop || !entry.poster}
+        autoPlay
         muted
         playsInline
         loop={!desktop}
-        preload={desktop ? (shouldLoad ? "metadata" : "none") : "metadata"}
+        preload={
+          desktop
+            ? shouldLoad
+              ? entry.poster
+                ? "metadata"
+                : "auto"
+              : "none"
+            : "metadata"
+        }
         onEnded={() => {
           if (!desktop) setHovered(false);
           onVideoEnded();
+        }}
+        onLoadedData={() => {
+          const video = ref.current;
+          if (!video || (desktop && hovered)) return;
+          video.muted = true;
+          video.play().catch(() => {});
         }}
         className="w-full h-full object-cover"
       />
