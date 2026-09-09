@@ -1,4 +1,4 @@
-name: Deploy React site to GitHub Pages
+name: Deploy Vaarix Media to GitHub Pages
 
 on:
   push:
@@ -37,8 +37,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm run build
+      - name: Build Vaarix Media
+        run: pnpm --filter "./artifacts/vaarix-media" run build
         env:
           BASE_PATH: /vaarix-media/
 
@@ -51,12 +51,12 @@ jobs:
           path: artifacts/vaarix-media/dist/public
 
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-
-    runs-on: ubuntu-latest
 
     steps:
       - name: Deploy to GitHub Pages
