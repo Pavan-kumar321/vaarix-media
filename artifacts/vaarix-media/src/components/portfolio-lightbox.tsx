@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
@@ -13,7 +13,18 @@ interface LightboxProps {
 }
 
 export function PortfolioLightbox({ items, index, onClose, onPrev, onNext }: LightboxProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const isOpen = index !== null;
   const item = index !== null ? items[index] : null;
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const root = document.getElementById("root");
+    root?.setAttribute("inert", "");
+    dialogRef.current?.querySelector<HTMLButtonElement>('button[aria-label="Close"]')?.focus();
+    return () => { root?.removeAttribute("inert"); previous?.focus(); };
+  }, [isOpen]);
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
@@ -38,6 +49,18 @@ export function PortfolioLightbox({ items, index, onClose, onPrev, onNext }: Lig
     <AnimatePresence>
       {index !== null && item && (
         <motion.div
+          ref={dialogRef}
+          onKeyDown={(event) => {
+            if (event.key !== "Tab") return;
+            const buttons = dialogRef.current?.querySelectorAll<HTMLButtonElement>("button");
+            if (!buttons?.length) return;
+            const first = buttons[0], last = buttons[buttons.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Artwork preview"
           key="lightbox-backdrop"
           className="fixed inset-0 z-[300] flex items-center justify-center p-4 md:p-8"
           initial={{ opacity: 0 }}
@@ -47,7 +70,7 @@ export function PortfolioLightbox({ items, index, onClose, onPrev, onNext }: Lig
           onClick={onClose}
         >
           {/* Blurred background */}
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-background/95" />
 
           {/* Panel */}
           <motion.div
@@ -60,7 +83,7 @@ export function PortfolioLightbox({ items, index, onClose, onPrev, onNext }: Lig
             onClick={(e) => e.stopPropagation()}
           >
             {/* Media */}
-            <div className="relative rounded-[1.5rem] overflow-hidden bg-black aspect-video shadow-2xl">
+            <div className="relative rounded-[1.5rem] overflow-hidden bg-card aspect-square sm:aspect-video border border-border shadow-2xl">
               {item.video ? (
                 <video
                   key={item.video}
@@ -85,14 +108,14 @@ export function PortfolioLightbox({ items, index, onClose, onPrev, onNext }: Lig
             {/* Info bar */}
             <div className="mt-5 flex items-center justify-between px-1">
               <div>
-                <p className="text-white/60 text-xs font-medium uppercase tracking-widest mb-1">
+                <p className="text-muted-foreground text-xs font-medium uppercase tracking-widest mb-1">
                   {item.category}
                 </p>
-                <h3 className="text-white font-serif text-2xl font-medium">
+                <h3 className="text-foreground font-serif text-2xl font-medium">
                   {item.title}
                 </h3>
               </div>
-              <div className="text-white/40 text-sm font-medium tabular-nums">
+              <div className="text-muted-foreground text-sm font-medium tabular-nums">
                 {(index ?? 0) + 1} / {items.length}
               </div>
             </div>
@@ -101,7 +124,7 @@ export function PortfolioLightbox({ items, index, onClose, onPrev, onNext }: Lig
           {/* Close */}
           <button
             onClick={onClose}
-            className="absolute top-5 right-5 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 border border-white/15 text-white backdrop-blur-sm transition-all hover:bg-white/20 hover:scale-110"
+            className="absolute top-5 right-5 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-card border border-border text-foreground backdrop-blur-sm transition-all hover:bg-secondary hover:scale-110"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -110,7 +133,7 @@ export function PortfolioLightbox({ items, index, onClose, onPrev, onNext }: Lig
           {/* Prev */}
           <button
             onClick={(e) => { e.stopPropagation(); onPrev(); }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 border border-white/15 text-white backdrop-blur-sm transition-all hover:bg-white/20 hover:scale-110 md:left-6"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-card border border-border text-foreground backdrop-blur-sm transition-all hover:bg-secondary hover:scale-110 md:left-6"
             aria-label="Previous"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -119,7 +142,7 @@ export function PortfolioLightbox({ items, index, onClose, onPrev, onNext }: Lig
           {/* Next */}
           <button
             onClick={(e) => { e.stopPropagation(); onNext(); }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 border border-white/15 text-white backdrop-blur-sm transition-all hover:bg-white/20 hover:scale-110 md:right-6"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-card border border-border text-foreground backdrop-blur-sm transition-all hover:bg-secondary hover:scale-110 md:right-6"
             aria-label="Next"
           >
             <ChevronRight className="h-6 w-6" />

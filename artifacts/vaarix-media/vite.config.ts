@@ -7,7 +7,7 @@ import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
 
 export default defineConfig(async ({ command }) => {
   const isBuild = command === 'build';
-  const rawPort = process.env.PORT;
+  const rawPort = process.env.PORT ?? '5173';
 
   // Replit injects PORT for its managed development server. Static builds
   // do not start a server, so Vercel must not need to provide one.
@@ -23,7 +23,7 @@ export default defineConfig(async ({ command }) => {
     throw new Error(`Invalid PORT value: "${rawPort}"`);
   }
 
-  const basePath = process.env.BASE_PATH ?? (isBuild ? '/' : undefined);
+  const basePath = process.env.BASE_PATH ?? '/';
 
   if (!basePath) {
     throw new Error(

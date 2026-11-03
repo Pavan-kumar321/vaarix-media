@@ -1,16 +1,12 @@
 import { useEffect } from "react";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
-import { Marquee } from "@/components/marquee";
 import { Services } from "@/components/services";
 import { Portfolio } from "@/components/portfolio";
 import { VideoShowcase } from "@/components/video-showcase";
 import { Results } from "@/components/results";
-import { Testimonials } from "@/components/testimonials";
 import { Booking } from "@/components/booking";
 import { Footer } from "@/components/footer";
-import { Loader } from "@/components/loader";
-import { Cursor } from "@/components/cursor";
 
 /**
  * Visitors arriving from paid social ads (any URL containing a UTM parameter,
@@ -28,12 +24,12 @@ function useAdLanding() {
 
     if (!isAdTraffic) return;
 
-    // Wait for the page to fully render (including loader animation) before scrolling
-    const timeout = setTimeout(() => {
+    // Scroll after React has committed the destination section.
+    const frame = requestAnimationFrame(() => {
       document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-    }, 2800); // matches loader exit timing
+    });
 
-    return () => clearTimeout(timeout);
+    return () => cancelAnimationFrame(frame);
   }, []);
 }
 
@@ -41,27 +37,21 @@ export default function Home() {
   useAdLanding();
 
   return (
-    <div className="bg-background min-h-screen text-foreground selection:bg-primary selection:text-white font-sans antialiased overflow-x-hidden">
-      <Loader />
-      <Cursor />
+    <div className="bg-background min-h-screen text-foreground selection:bg-primary selection:text-white font-sans antialiased overflow-x-clip">
       <Navbar />
 
       <main>
-        {/* 1. Hero → ends at brand logos */}
+        {/* Hero */}
         <Hero />
-        {/* 2. Scrolling brand marquee */}
-        <Marquee />
-        {/* 3. Static flyer portfolio gallery */}
+        {/* Artwork gallery */}
         <Portfolio />
-        {/* 4. Video showcase carousel */}
+        {/* Video portfolio */}
         <VideoShowcase />
-        {/* 5. Services */}
+        {/* Services */}
         <Services />
-        {/* 6. Results / Impact */}
+        {/* Results */}
         <Results />
-        {/* 7. Testimonials */}
-        <Testimonials />
-        {/* 8. Booking / Contact */}
+        {/* Booking */}
         <Booking />
       </main>
 

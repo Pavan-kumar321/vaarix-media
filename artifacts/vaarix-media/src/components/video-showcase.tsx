@@ -1,469 +1,56 @@
-import {
-  useRef,
-  useState,
-  useEffect,
-  useMemo,
-} from "react";
-import { motion } from "framer-motion";
-
-// ─── Asset discovery ──────────────────────────────────────────────────────────
-// Drop videos into:  src/assets/portfolio/videos/
-// Supported: mp4, webm (case-insensitive)
-// Files auto-appear — no code changes needed.
-
-const videoModules = import.meta.glob<{ default: string }>(
-  "../assets/portfolio/videos/*.{mp4,webm,MP4,WEBM}",
-  { eager: true },
-);
-const posterModules = import.meta.glob<{ default: string }>(
-  "../assets/portfolio/videos/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",
-  { eager: true },
-);
-
-function basename(path: string) {
-  return (path.split("/").pop() ?? path).replace(/\.[^./]+$/, "");
-}
-function toTitle(raw: string) {
-  const s = raw.replace(/^\d+[-_\s]+/, "").replace(/--.*$/, "").trim();
-  if (/[-_]/.test(s) && !/ /.test(s))
-    return s.split(/[-_]+/).filter(Boolean).map(w => w[0].toUpperCase() + w.slice(1)).join(" ");
-  return s || "Untitled";
-}
-
-interface VideoEntry {
-  src: string;
-  title: string;
-  poster?: string;
-  cropToContent?: boolean;
-}
-
-const posterByStem = Object.fromEntries(
-  Object.entries(posterModules).map(([path, mod]) => [basename(path), mod.default]),
-);
-
-const discoveredVideos: VideoEntry[] = Object.entries(videoModules).map(([path, mod]) => ({
-  src: mod.default,
-  title: toTitle(basename(path)),
-  poster: posterByStem[basename(path)],
-  // This upload is a 9:16 container with a 16:9 picture letterboxed inside it.
-  // Crop the encoded bars in the card without modifying the source MP4.
-  cropToContent: basename(path) === "Video Project 14 (1)",
-}));
-
-// Keep newly uploaded work at the end without changing the order of the
-// existing portfolio. They intentionally have no generated posters.
-const NEW_VIDEO_STEMS = new Set([
-  "tRnnXuDxUrZDeZkObzSQTUwZT4",
-  "PYfe9ZG002yove5DEP5Oe8hJAc",
-  "JvEdpn9FLEZpQfbC0Zf03zZZw",
-]);
-
-const VIDEOS: VideoEntry[] = [
-  ...discoveredVideos.filter(entry => !NEW_VIDEO_STEMS.has(basename(entry.src))),
-  ...discoveredVideos.filter(entry => NEW_VIDEO_STEMS.has(basename(entry.src))),
-];
-
-// ─── Empty state ──────────────────────────────────────────────────────────────
-
-function EmptyState() {
-  return (
-    <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
-      <div className="w-14 h-14 rounded-xl border-2 border-dashed border-white/15 flex items-center justify-center">
-        <span className="text-white/20 text-xl">▶</span>
-      </div>
-      <p className="text-white/25 text-sm font-medium max-w-xs leading-relaxed">
-        Drop videos into{" "}
-        <code className="text-white/40 font-mono text-xs bg-white/5 px-1.5 py-0.5 rounded">
-          src/assets/portfolio/videos/
-        </code>
-        {" "}— they'll appear here automatically.
-      </p>
-    </div>
-  );
-}
-
-// ─── Single video card ────────────────────────────────────────────────────────
-
-interface VideoCardProps {
-  entry: VideoEntry;
-  duplicate?: boolean;
-  desktop: boolean;
-  onHoverStart: (video: HTMLVideoElement) => void;
-  onHoverEnd: (video: HTMLVideoElement) => void;
-  onMobilePlay: (video: HTMLVideoElement) => void;
-  onVideoEnded: () => void;
-}
-
-function VideoCard({
-  entry,
-  duplicate = false,
-  desktop,
-  onHoverStart,
-  onHoverEnd,
-  onMobilePlay,
-  onVideoEnded,
-}: VideoCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
+import { useEffect, useRef, useState } from "react";
+import { Play } from "lucide-react";
+const videos = import.meta.glob<string>("../assets/portfolio/videos/*.{mp4,webm,MP4,WEBM}", { eager: true, query: "?url", import: "default" });
+const posters = import.meta.glob<string>("../assets/portfolio/video-posters/*.webp", { eager: true, query: "?url", import: "default" });
+const posterByStem = Object.fromEntries(Object.entries(posters).map(([path, url]) => [(path.split("/").pop() ?? "").replace(/\.[^.]+$/, ""), url]));
+const titles: Record<string, string> = {
+  "Bharat Bhavan Influencerr": "Bharat Bhavan · Influencer feature",
+  "Bharat Bhavann": "Bharat Bhavan",
+  "Empire state towers": "Empire State Towers",
+  "Festive theme Bharat Bhavan": "Bharat Bhavan · Festive campaign",
+  "M N M": "MNM Lounge · Brand film",
+  "MNM loungee": "MNM Lounge",
+  "Velvet cloud": "Velvet Cloud",
+};
+const entries = Object.entries(videos).map(([path, src], index) => {
+  const stem = (path.split("/").pop() ?? "").replace(/\.[^.]+$/, "");
+  return { src, poster: posterByStem[stem], title: titles[stem] ?? `Video project ${index + 1}` };
+});
+function VideoCard({ entry, active, onPlay, onStop }: { entry: typeof entries[number]; active: boolean; onPlay: () => void; onStop: () => void }) {
   const ref = useRef<HTMLVideoElement>(null);
-  const touchPointerRef = useRef(false);
-  const [hovered, setHovered] = useState(false);
-  const videoPresentationStyle = entry.cropToContent
-    ? { transform: "scale(3.16)", transformOrigin: "center center" }
-    : undefined;
-  // A card without a poster must load its video immediately so the video's
-  // own first decoded frame is the visual fallback instead of a blank card.
-  const [shouldLoad, setShouldLoad] = useState(!desktop || !entry.poster);
-
-  const isTouchDevice = () =>
-    typeof window !== "undefined" &&
-    window.matchMedia("(hover: none), (pointer: coarse)").matches;
-
-  // Desktop cards use a real first-frame poster and only attach the video
-  // source when the card is close to view or receives a hover. Mobile keeps
-  // the existing autoplay preview behavior.
   useEffect(() => {
-    if (!desktop) {
-      setShouldLoad(true);
-      return;
-    }
-
-    const card = cardRef.current;
-    if (!card || shouldLoad) return;
-
-    const observer = new IntersectionObserver(
-      entries => {
-        if (!entries.some(entry => entry.isIntersecting)) return;
-        setShouldLoad(true);
-        observer.disconnect();
-      },
-      { rootMargin: "240px" },
-    );
-    observer.observe(card);
-    return () => observer.disconnect();
-  }, [desktop, shouldLoad]);
-
-  // Loaded cards autoplay muted previews on both breakpoints. Desktop cards
-  // are still lazy-loaded so only visible/nearby cards join playback.
-  useEffect(() => {
-    const v = ref.current;
-    if (!v || !shouldLoad) return;
-    if (desktop && hovered) return;
-    v.muted = true;
-    v.loop = true;
-    v.preload = entry.poster ? "metadata" : "auto";
-    v.play().catch(() => {});
-  }, [desktop, hovered, shouldLoad, entry.poster, entry.src]);
-
-  // A desktop hover promotes only this card to an active, full playback.
-  useEffect(() => {
-    const v = ref.current;
-    if (!v || !desktop || !hovered || !shouldLoad) return;
-    v.preload = "auto";
-    v.muted = false;
-    v.loop = false;
-    v.play().catch(() => {});
-  }, [desktop, hovered, shouldLoad]);
-
-  const loadForDesktop = () => {
-    setShouldLoad(true);
     const video = ref.current;
-    if (!video || !desktop) return video;
+    if (!active || !video) return;
+    const observer = new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) video.pause(); }, { threshold: 0.15 });
+    observer.observe(video);
+    const pauseWhenHidden = () => { if (document.hidden) video.pause(); };
+    document.addEventListener("visibilitychange", pauseWhenHidden);
+    return () => { observer.disconnect(); document.removeEventListener("visibilitychange", pauseWhenHidden); };
+  }, [active]);
+  return <article className="min-w-0">
+    <div className="relative aspect-[9/16] overflow-hidden rounded-2xl border border-border bg-secondary">
+      {active ? <video ref={ref} src={entry.src} controls autoPlay playsInline preload="none" className="h-full w-full object-contain" aria-label={entry.title} onEnded={onStop}/> :
+        <button type="button" onClick={onPlay} className="video-cover relative flex h-full w-full flex-col items-center justify-center gap-5 px-4 text-center" aria-label={`Play ${entry.title}`}>
+          <img src={entry.poster} alt="" loading="lazy" decoding="async" width={480} height={854} className="absolute inset-0 h-full w-full object-cover"/>
+          <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-sm"><Play className="ml-1" size={24}/></span>
 
-    video.preload = "auto";
-    if (!video.currentSrc) {
-      video.src = entry.src;
-      video.load();
-    }
-    return video;
-  };
 
-  return (
-    <div
-      ref={cardRef}
-      className={[
-        "relative flex-shrink-0 overflow-hidden rounded-2xl select-none",
-        "w-[clamp(110px,26vw,175px)] md:w-[clamp(135px,15.5vw,205px)] bg-white/5",
-        "cursor-pointer",
-      ].join(" ")}
-      style={{
-        aspectRatio: "9/16",
-      }}
-      onMouseEnter={() => {
-        if (!desktop || isTouchDevice()) return;
-        setHovered(true);
-        const video = loadForDesktop();
-        if (video) onHoverStart(video);
-      }}
-      onMouseLeave={() => {
-        if (!desktop || isTouchDevice()) return;
-        setHovered(false);
-        if (ref.current) {
-          ref.current.muted = true;
-          onHoverEnd(ref.current);
-        }
-      }}
-      onPointerDown={event => {
-        const touchLike =
-          event.pointerType === "touch" || isTouchDevice();
-        touchPointerRef.current = touchLike;
-        if (touchLike && ref.current) onMobilePlay(ref.current);
-      }}
-      onClick={() => {
-        if (touchPointerRef.current) {
-          touchPointerRef.current = false;
-          return;
-        }
-        if (isTouchDevice()) {
-          if (ref.current) onMobilePlay(ref.current);
-          return;
-        }
-        loadForDesktop()?.play().catch(() => {});
-      }}
-      role="button"
-      tabIndex={duplicate ? -1 : 0}
-      onKeyDown={event => {
-        if (duplicate) return;
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          loadForDesktop()?.play().catch(() => {});
-        }
-      }}
-      aria-label={`Play ${entry.title}`}
-    >
-      <video
-        ref={ref}
-        src={!desktop || shouldLoad ? entry.src : undefined}
-        poster={entry.poster}
-        autoPlay
-        muted
-        playsInline
-        loop={!desktop}
-        preload={
-          desktop
-            ? shouldLoad
-              ? entry.poster
-                ? "metadata"
-                : "auto"
-              : "none"
-            : "metadata"
-        }
-        onEnded={() => {
-          if (!desktop) setHovered(false);
-          onVideoEnded();
-        }}
-        onLoadedData={() => {
-          const video = ref.current;
-          if (!video || (desktop && hovered)) return;
-          video.muted = true;
-          video.play().catch(() => {});
-        }}
-         className="w-full h-full object-cover"
-         style={videoPresentationStyle}
-      />
-
-      {/* Hover audio indicator */}
-      {hovered && (
-        <div
-          className="absolute bottom-4 right-4 transition-opacity duration-200 pointer-events-none"
-          style={{ opacity: 1 }}
-        >
-          <div className="flex items-center gap-1.5 rounded-full bg-black/50 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-white/80">
-            {"🔊 Audio on"}
-          </div>
-        </div>
-      )}
+        </button>}
     </div>
-  );
+  </article>;
 }
-
-// ─── Single horizontal infinite rail ─────────────────────────────────────────
-
-function HorizontalVideoRail() {
-  const count = VIDEOS.length;
-  const trackRef = useRef<HTMLDivElement>(null);
-  const activeInteractionRef = useRef<{
-    key: string;
-    mode: "hover" | "mobile";
-    video: HTMLVideoElement;
-  } | null>(null);
-  const [duration, setDuration] = useState(40);
-  const [pausedVideoKey, setPausedVideoKey] = useState<string | null>(null);
-  const [desktop, setDesktop] = useState(() =>
-    typeof window !== "undefined" &&
-    window.matchMedia("(hover: hover) and (pointer: fine)").matches,
-  );
-  const marqueeVideos = useMemo(
-    () => [...VIDEOS, ...VIDEOS],
-    [],
-  );
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const updateDesktop = () => setDesktop(mediaQuery.matches);
-    updateDesktop();
-    mediaQuery.addEventListener("change", updateDesktop);
-    return () => mediaQuery.removeEventListener("change", updateDesktop);
-  }, []);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    const updateDuration = () => {
-      const loopDistance = Math.max(track.scrollWidth / 2 - 10, 1);
-      setDuration(loopDistance / 42);
-    };
-
-    updateDuration();
-    const observer = new ResizeObserver(updateDuration);
-    observer.observe(track);
-    return () => observer.disconnect();
-  }, [count]);
-
-  if (count === 0) return <EmptyState />;
-
-  const restoreBackgroundVideo = (video: HTMLVideoElement) => {
-    video.pause();
-    video.currentTime = 0;
-    video.loop = true;
-    video.muted = true;
-    video.play().catch(() => {});
-  };
-
-  const startInteraction = (
-    videoKey: string,
-    mode: "hover" | "mobile",
-    video: HTMLVideoElement,
-  ) => {
-    const activeInteraction = activeInteractionRef.current;
-    if (activeInteraction && activeInteraction.video !== video) {
-      restoreBackgroundVideo(activeInteraction.video);
-    }
-
-    activeInteractionRef.current = { key: videoKey, mode, video };
-    if (desktop && mode === "hover") {
-      video.preload = "auto";
-      video.muted = false;
-    }
-    video.loop = false;
-    video.currentTime = 0;
-    setPausedVideoKey(videoKey);
-    video.play().catch(() => {});
-  };
-
-  const handleHoverStart = (videoKey: string, video: HTMLVideoElement) => {
-    startInteraction(videoKey, "hover", video);
-  };
-
-  const handleHoverEnd = (videoKey: string, video: HTMLVideoElement) => {
-    const activeInteraction = activeInteractionRef.current;
-    if (
-      activeInteraction?.key === videoKey &&
-      activeInteraction.mode === "hover"
-    ) {
-      activeInteractionRef.current = null;
-      setPausedVideoKey(null);
-    }
-    restoreBackgroundVideo(video);
-  };
-
-  const handleMobilePlay = (videoKey: string, video: HTMLVideoElement) => {
-    startInteraction(videoKey, "mobile", video);
-  };
-
-  const handleVideoEnded = (videoKey: string) => {
-    const activeInteraction = activeInteractionRef.current;
-    if (
-      activeInteraction?.key === videoKey &&
-      activeInteraction.mode === "mobile"
-    ) {
-      restoreBackgroundVideo(activeInteraction.video);
-      activeInteractionRef.current = null;
-      setPausedVideoKey(null);
-    }
-  };
-
-  return (
-    <>
-      <div className="w-full overflow-hidden px-3 sm:px-6">
-        <div
-          ref={trackRef}
-          className={[
-            "video-marquee-track items-center",
-            pausedVideoKey ? "video-marquee-track--paused" : "",
-          ].join(" ")}
-          style={{ animationDuration: `${duration}s` }}
-        >
-          {marqueeVideos.map((entry, index) => {
-            const videoKey = `${index}-${entry.src}`;
-            return (
-              <VideoCard
-                key={videoKey}
-                entry={entry}
-                duplicate={index >= count}
-                desktop={desktop}
-                onHoverStart={video =>
-                  handleHoverStart(videoKey, video)
-                }
-                onHoverEnd={video =>
-                  handleHoverEnd(videoKey, video)
-                }
-                onMobilePlay={video =>
-                  handleMobilePlay(videoKey, video)
-                }
-                onVideoEnded={() => handleVideoEnded(videoKey)}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </>
-  );
-}
-
-// ─── Section ──────────────────────────────────────────────────────────────────
-
 export function VideoShowcase() {
-  useEffect(() => {
-    if (window.location.hash !== "#video-portfolio") return;
-
-    const frame = window.requestAnimationFrame(() => {
-      document.getElementById("video-portfolio")?.scrollIntoView({
-        block: "start",
-      });
-    });
-
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
-
-  return (
-    <section
-      id="video-portfolio"
-      className="pt-16 pb-20 overflow-hidden"
-      style={{ backgroundColor: "#0D0D0D" }}
-    >
-      {/* Header */}
-      <div className="container mx-auto px-6 md:px-10 mb-12 text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-primary font-medium tracking-widest uppercase text-xs"
-        >
-          In Motion
-        </motion.span>
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.08 }}
-          className="font-serif text-4xl md:text-5xl font-medium mt-3 leading-tight text-white"
-        >
-          Content that <span className="italic text-primary">moves</span> people.
-        </motion.h2>
+  const [active, setActive] = useState<string | null>(null);
+  return <section id="video-portfolio" className="bg-background py-14 md:py-20">
+    <div className="container mx-auto px-5 md:px-12">
+      <div className="mb-8 max-w-2xl">
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">In motion</p>
+        <h2 className="mt-3 font-serif text-4xl font-medium leading-tight text-foreground md:text-5xl">Content that <span className="italic text-primary">moves</span> people.</h2>
+        <p className="mt-4 leading-relaxed text-muted-foreground">Explore our films, reels, and restaurant campaigns. Choose a video to watch.</p>
       </div>
-
-      <HorizontalVideoRail />
-    </section>
-  );
+      <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+        {entries.map(entry => <VideoCard key={entry.src} entry={entry} active={active === entry.src} onPlay={() => setActive(entry.src)} onStop={() => setActive(null)}/>)}
+      </div>
+    </div>
+  </section>;
 }

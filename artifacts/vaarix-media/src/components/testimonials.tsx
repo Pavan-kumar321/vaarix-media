@@ -4,7 +4,7 @@ import { Star } from "lucide-react";
 export function Testimonials() {
   const testimonials = [
     {
-      text: "Vaarix completely completely transformed our digital presence. We saw a 40% increase in weekend reservations within the first month of working together.",
+      text: "Vaarix completely transformed our digital presence. We saw a 40% increase in weekend reservations within the first month of working together.",
       author: "Sarah Jenkins",
       role: "Owner, The Rustic Fork"
     },
@@ -25,7 +25,7 @@ export function Testimonials() {
       <div className="container mx-auto px-6 md:px-12">
         <div className="text-center max-w-2xl mx-auto mb-10 md:mb-20">
           <motion.span 
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-primary font-medium tracking-wider uppercase text-sm"
@@ -33,7 +33,7 @@ export function Testimonials() {
             Client Love
           </motion.span>
           <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
@@ -47,7 +47,7 @@ export function Testimonials() {
           {testimonials.map((testimonial, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
