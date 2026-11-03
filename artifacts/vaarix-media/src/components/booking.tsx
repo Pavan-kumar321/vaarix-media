@@ -8,10 +8,10 @@ type Step = "qualify" | "calendly" | "declined";
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
 const fadeUp = {
-  initial: false,
+  initial: { opacity: 0, y: 24, filter: "blur(6px)" },
   animate: { opacity: 1, y: 0, filter: "blur(0px)" },
   exit: { opacity: 0, y: -16, filter: "blur(4px)", scale: 0.98 },
-  transition: { duration: 0.18, ease: EASE },
+  transition: { duration: 0.55, ease: EASE },
 };
 
 export function Booking() {
@@ -26,10 +26,12 @@ export function Booking() {
   return (
     <section
       id="contact"
-      className="py-16 md:py-32 bg-card relative overflow-hidden"
+      className="py-16 md:py-32 bg-white relative overflow-hidden"
       data-cursor="default"
     >
-      {/* Booking content */}
+      {/* Decorative blobs */}
+      <div className="absolute top-0 right-0 -mr-64 -mt-64 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 -ml-48 -mb-48 w-[600px] h-[600px] bg-primary/3 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container mx-auto px-4 md:px-12 relative z-10">
         <AnimatePresence mode="wait">
@@ -52,7 +54,7 @@ export function Booking() {
                   <p className="text-foreground font-medium text-lg leading-relaxed">
                     Our restaurant marketing partnerships begin at{" "}
                     <span className="text-primary font-semibold">$429/month</span>{" "}
-                    <span className="text-muted-foreground text-base">USD</span>.
+                    <span className="text-muted-foreground text-base">(approximately ₹40,755/month)</span>.
                   </p>
                   <p className="mt-3 text-foreground/80 font-medium">
                     Is this a comfortable monthly investment for your business?
@@ -79,7 +81,7 @@ export function Booking() {
                         }`}
                       >
                         {selected === opt.value && (
-                          <span className="h-2 w-2 rounded-full bg-card" />
+                          <span className="h-2 w-2 rounded-full bg-white" />
                         )}
                       </span>
                       <span className={`font-medium ${selected === opt.value ? "text-foreground" : "text-foreground/70"}`}>
@@ -113,12 +115,12 @@ export function Booking() {
               </button>
 
               <div className="bg-card border border-border shadow-xl rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden">
-                <div className="grid lg:grid-cols-[280px_minmax(0,1fr)]">
+                <div className="grid md:grid-cols-[320px_1fr]">
                   {/* Left panel */}
-                  <div className="bg-secondary text-foreground p-5 sm:p-8 md:p-10 flex flex-col gap-4 md:gap-6">
+                  <div className="bg-foreground text-background p-5 sm:p-8 md:p-10 flex flex-col gap-4 md:gap-6">
                     <div>
                       <div className="font-serif text-2xl font-medium mb-1">Vaarix Media</div>
-                      <div className="text-foreground/60 text-sm uppercase tracking-widest font-medium">Strategy Call</div>
+                      <div className="text-background/60 text-sm uppercase tracking-widest font-medium">Strategy Call</div>
                     </div>
 
                     <div>
@@ -127,24 +129,24 @@ export function Booking() {
                       </h3>
 
                       <div className="space-y-3">
-                        <div className="flex items-center gap-3 text-foreground/80 text-sm font-medium">
+                        <div className="flex items-center gap-3 text-background/80 text-sm font-medium">
                           <Clock className="h-4 w-4 shrink-0 text-primary" />
                           30 Minutes
                         </div>
-                        <div className="flex items-center gap-3 text-foreground/80 text-sm font-medium">
+                        <div className="flex items-center gap-3 text-background/80 text-sm font-medium">
                           <Video className="h-4 w-4 shrink-0 text-primary" />
                           Google Meet
                         </div>
                       </div>
                     </div>
 
-                    <p className="text-foreground/60 text-sm leading-relaxed border-t border-border pt-6">
+                    <p className="text-background/60 text-sm leading-relaxed border-t border-white/10 pt-6">
                       During this strategy call we'll review your restaurant's current marketing, identify growth
                       opportunities, and discuss how Vaarix Media can help attract more customers.
                     </p>
 
                     <div className="mt-auto pt-4">
-                      <div className="inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-xs font-medium text-foreground/70">
+                      <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-background/70">
                         <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
                         No obligation · Free
                       </div>
@@ -154,18 +156,12 @@ export function Booking() {
                   {/* Right panel */}
                   <div className="p-4 sm:p-8 md:p-10 min-h-[320px] md:min-h-[520px] flex items-center justify-center">
                     {CALENDLY_URL ? (
-                      <div className="w-full min-w-0">
-                      <div className="flex flex-col items-center gap-4 py-8 text-center sm:hidden">
-                        <p className="text-sm leading-relaxed text-muted-foreground">Choose a time that works for you in our booking calendar.</p>
-                        <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-white">Open booking calendar</a>
-                      </div>
                       <iframe
                         src={CALENDLY_URL}
-                        className="hidden sm:block w-full min-w-0 h-[700px] rounded-2xl border-0"
+                        className="w-full h-[340px] sm:h-[440px] md:h-[520px] rounded-2xl border-0"
                         title="Schedule a strategy call"
                         loading="lazy"
                       />
-                      </div>
                     ) : (
                       <div className="w-full flex flex-col items-center justify-center gap-6 py-16 px-8 text-center rounded-2xl border-2 border-dashed border-border bg-secondary/30">
                         <div className="h-16 w-16 rounded-2xl bg-secondary flex items-center justify-center">
@@ -192,6 +188,7 @@ export function Booking() {
           {step === "declined" && (
             <motion.div key="declined" {...fadeUp} className="max-w-2xl mx-auto text-center">
               <div className="bg-card border border-border shadow-xl rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-16 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-foreground/3 to-transparent pointer-events-none" />
                 <div className="relative z-10 flex flex-col items-center">
                   <motion.div
                     initial={{ scale: 0 }}
@@ -210,7 +207,7 @@ export function Booking() {
                   <p className="text-muted-foreground text-lg leading-relaxed mb-4 max-w-lg">
                     At the moment, our marketing partnerships begin at{" "}
                     <span className="font-medium text-foreground">$429/month</span>{" "}
-                    USD.
+                    (approximately ₹40,755/month).
                   </p>
                   <p className="text-muted-foreground text-lg leading-relaxed mb-10 max-w-lg">
                     Based on your selection, it looks like we may not be the right fit right now.
@@ -224,7 +221,7 @@ export function Booking() {
                         e.preventDefault();
                         window.scrollTo({ top: 0, behavior: "smooth" });
                       }}
-                      className="group flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-semibold text-white shadow-lg transition-all hover:scale-105 active:scale-95"
+                      className="group flex h-14 items-center justify-center gap-2 rounded-full bg-foreground px-8 text-base font-semibold text-background shadow-lg transition-all hover:scale-105 active:scale-95"
                     >
                       <Home className="h-4 w-4" />
                       Return Home
